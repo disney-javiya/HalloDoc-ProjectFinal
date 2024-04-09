@@ -1,0 +1,83 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.viewNotes
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Admin View Notes</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column  justify-content-between admin-dashboard-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <main>
+            <div class="admin-view-notes d-flex flex-column justify-content-center align-items-center mt-1">
+                <form method="post" action="@Url.Action("adminViewNotes", "Admin", new { requestId =  Context.Request.Query["requestId"]})" enctype="multipart/form-data">
+                    <div class="row row-cols-1 justify-content-between align-items-center width-admin-viewnotes">
+                        <div class="col d-flex flex-row justify-content-between mb-2">
+                            <h3>Notes</h3>
+                            <a role="button" class="btn back-btn mt-1" asp-controller="Admin" asp-action="adminDashboard">< Back</a>
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col notes m-1" style="height: 70px">
+                                <strong><i class="fa-solid fa-money-bill-transfer me-1"></i>Transfer Notes</strong>
+                                <p>@Model.TransferNote</p>
+                            </div>
+                            <div class="col notes  m-1 ">
+                                <strong><i class="fa-solid fa-user-nurse me-1"></i> Physician Notes</strong>
+                                <p>@Model.PhysicianNote</p>
+                            </div>
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col notes  m-1">
+                                <strong><i class="fa-solid fa-user-tie me-1"></i> Admin Notes</strong>
+                                <p>@Model.AdminNote</p>
+                            </div>
+                            <div class="col notes  m-1">
+                                <strong>Admin Cancellation Notes</strong>
+                                <p>@Model.AdminCancellationNotes</p>
+                            </div>
+
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col notes  m-1">
+                                <strong>Patient Cancellation Notes</strong>
+                                <p>@Model.PatientCancellationNotes</p>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating m-3">
+                                    <textarea asp-for="AdditionalNote" class="form-control AdditionalNote symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea" style="height: 160px"></textarea>
+                                    <label class="symptoms-create-patient-text" for="floatingTextarea">Additional Notes</label>
+                                </div>
+                                <div class="div d-flex">
+                                    <button class="btn submit-btn-create-patient ms-auto" type="submit">Save Changes</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

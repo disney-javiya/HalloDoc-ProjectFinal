@@ -1,0 +1,289 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.shiftViewModel;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <title>Admin Scheduling Page</title>
+</head>
+
+<body>
+
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <form method="post" class="row row-cols-1" enctype="multipart/form-data">
+            <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+                <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+                    <div class="col  d-flex justify-content-between gy-3">
+                        <h3>Scheduling</h3>
+                        <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="adminDashboard"> < Back</a>
+
+                    </div>
+                    <div class="col d-flex flex-row justify-content-between gy-3">
+                        <select id="region" name="region" class="form-select m-1 w-25" aria-label="Default select example">
+                            <option selected>Select Region</option>
+                           
+                        </select>
+                        <div>
+                            <button role="button" style="height:fit-content; border:none;" class="create-provider-btn p-1  mb-3">Providers On Call</button>
+                            <button role="button" style="height:fit-content; border:none;" class="create-provider-btn  p-1  mb-3">Shifts For Review</button>
+                            <a role="button" id="create-shift" data-bs-toggle="modal" data-bs-target="#modalShift" style="height:fit-content; border:none;" class="create-provider-btn  p-1  mb-3">Add New Shift</a>
+                        </div>
+                       
+                    </div>
+                    
+                    <div class="col gy-3">
+                        <h5>Monday, Dec 4,2023</h5>
+                    </div>
+                    <div class="col d-flex flex-row justify-content-end gy-3">
+                        <div class="m-2" style="background-color:pink; width:5%;  opacity:0.5;"></div>
+                       <div class="m-2 ">Pending Shifts</div>
+                        <div class="m-2" style="background-color:green; width:5%; opacity:0.5;"></div>
+                       <div class="m-2">Approved Shifts</div>
+                       
+                    </div>
+                    <div class="col gy-3">
+                        <span class="p-2 m-1" style="border-radius: 50%; color:white; background: #01bce9;"><</span>
+                        <i class="fa-solid fa-calendar-days" style="color:grey;"> </i>
+                        <span class="p-2 m-1" style="border-radius: 50%; color:white; background: #01bce9;">></span>
+                      
+                    </div>
+                    <div class="col d-flex flex-row justify-content-end gy-3">
+
+                        <button role="button" style=" border:none;" class="create-provider-btn p-2 m-2">Day</button>
+                        <button role="button" style=" border:none;" class="create-provider-btn  p-2  m-2">Week</button>
+                        <button role="button" style=" border:none;" class="create-provider-btn  p-2  m-2">Month</button>
+                    </div>
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Staff</th>
+
+                                    <th scope="col">12A</th>
+                                    <th scope="col">1A</th>
+                                    <th scope="col">2A</th>
+                                    <th scope="col">3A</th>
+                                    <th scope="col">4A</th>
+                                    <th scope="col">5A</th>
+                                    <th scope="col">6A</th>
+                                    <th scope="col">7A</th>
+                                    <th scope="col">8A</th>
+                                    <th scope="col">9A</th>
+                                    <th scope="col">10A</th>
+                                    <th scope="col">11A</th>
+                                    <th scope="col">12P</th>
+                                    <th scope="col">1P</th>
+                                    <th scope="col">2P</th>
+                                    <th scope="col">3P</th>
+                                    <th scope="col">4P</th>
+                                    <th scope="col">5P</th>
+                                    <th scope="col">6P</th>
+                                    <th scope="col">7P</th>
+                                    <th scope="col">8P</th>
+                                    <th scope="col">9P</th>
+                                    <th scope="col">10P</th>
+                                    <th scope="col">11P</th>
+
+
+                                </tr>
+                                
+                            </thead>
+                            <tbody class="coverage">
+                                
+                               
+                            </tbody>
+                        </table>
+                    </div>
+
+                   
+               </div>
+            </div>
+           
+        </form>
+
+        <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+
+
+       
+    </div>
+    <!--For create shift-->
+    <div class="modal" id="modalShift">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="createShiftForm" asp-controller="Admin" asp-action="insertShift" method="POST">
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="background:#01bce9; color:white;">
+                        <h4 class="modal-title">Create Shift</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+
+                    <div class="modal-body" style="color:grey;">
+                        <select asp-for="RegionId"  class="form-select mb-3 region" aria-label="Default select example">
+                            <option selected>Select Region</option>
+
+
+                        </select>
+
+
+                        <select asp-for="PhysicianId"  id="physician" class="form-select mb-3" aria-label="Default select example">
+                            <option selected>Select Physician</option>
+
+
+                        </select>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="ShiftDate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="dob-create-patient-text" for="floatingInput">Shift Date</label>
+
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="StartTime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                            <label class="dob-create-patient-text">Start</label>
+
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="EndTime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                            <label class="dob-create-patient-text">End</label>
+
+                        </div>
+
+                       
+                        <input name="checktoggle" type="checkbox" id="toggle" />
+                        <label class="toggle-label" for="toggle"></label>
+                        <div class="d-flex justify-content-around mb-1">
+                            <input type="checkbox" id="sun" name="dayList" value="1">
+                            <label for="sun"> Every Sunday</label>
+                            <input type="checkbox" id="mon" name="dayList" value="2">
+                            <label for="mon"> Every Monday</label>
+                            <input type="checkbox" id="tue" name="dayList" value="3">
+                            <label for="tue"> Every Tuesday</label>
+                            
+                        </div>
+                        <div class="d-flex justify-content-around mb-1">
+                            <input type="checkbox" id="wed" name="dayList" value="4">
+                            <label for="wed"> Every Wednesday</label>
+                            <input type="checkbox" id="thur" name="dayList" value="5">
+                            <label for="thur"> Every Thursday</label>
+                            <input type="checkbox" id="fri" name="dayList" value="6">
+                            <label for="fri"> Every Friday</label>
+
+                        </div>
+                        <input type="checkbox" class="mb-3" id="sat" name="dayList" value="7">
+                        <label for="sat"> Every Saturday</label>
+                        <select asp-for="RepeatUpto" id="repeat" class="form-select mb-3" aria-label="Default select example">
+                            <option selected>Repeat End</option>
+                            <option value="1">1-time</option>
+                            <option value="2">2-times</option>
+                            <option value="3">3-times</option>
+
+                        </select>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                        <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/GetAllPhysicians',
+                type: 'GET',
+                success: function (data) {
+                    var physiciansList = $('.coverage');
+                    physiciansList.empty();
+
+                    $.each(data, function (index, coverage) {
+                        var tr = $('<tr></tr>');
+                        tr.append($('<th></th>').attr('value', coverage.physicianId).text(coverage.firstName));
+
+                      
+                        for (var i = 0; i < 24; i++) {
+                            
+                            tr.append($('<td></td>').addClass('scheduleData'));
+                        }
+
+                        physiciansList.append(tr);
+                    });
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/getAllRegions',
+                type: 'GET',
+                success: function (data) {
+
+                    var regionDropdown = $('.region');
+                    regionDropdown.empty();
+                    regionDropdown.append($('<option></option>').text("Select Region"));
+                    $.each(data, function (index, RegionId) {
+                        regionDropdown.append($('<option></option>').attr('value', RegionId.regionId).text(RegionId.name));
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.region').change(function () {
+                var regionId = $(this).val();
+
+                $.ajax({
+                    url: '/Admin/GetPhysicians',
+                    type: 'GET',
+                    data: { regionId: regionId },
+                    success: function (data) {
+
+                        var physicianDropdown = $('#physician');
+                        physicianDropdown.empty();
+                        physicianDropdown.append($('<option></option>').text("Select Physicians"));
+                        $.each(data, function (index, PhysicianId) {
+                            physicianDropdown.append($('<option></option>').attr('value', PhysicianId.physicianId).text(PhysicianId.firstName + "  " + PhysicianId.lastName));
+                        });
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+
+    </body>
+</html>

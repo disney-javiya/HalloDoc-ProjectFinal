@@ -1,0 +1,190 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.Role;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Provider Menu</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between admin-view-documents-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <main>
+
+
+            <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+                <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+
+                    <div class="d-flex flex-row">
+                        <h3>Edit Role</h3>
+
+                    </div>
+                    <div class="d-flex">
+
+                        <a role="button" style="height:fit-content;" asp-controller="Admin" asp-action="adminAccess" class="back-btn p-1 ms-auto mb-2">Back</a>
+                    </div>
+                    <form method="post" class="row row-cols-1 " action="@Url.Action("editRole", "Admin",new { roleId =  Context.Request.Query["roleId"]})" enctype="multipart/form-data">
+                        <div class="col-md-6 gy-3">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Name" type="text" class="form-control rname first-name-create-patient shadow-none e1" id="floatingInput" value="@Model.RoleId" placeholder="">
+                                <label class="first-name-create-patient-text" for="floatingInput">Role Name</label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 gy-3">
+                            <select asp-for="AccountType" class="form-select mb-3 p-3 ainfo" aria-label="Default select example" id="accountType">
+                                <option selected>Account Type</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Physician</option>
+                                <option value="3">All</option>
+                            </select>
+
+                        </div>
+
+                  
+                        <div id="checkbox-container" class="col-md-6 gy-3">
+                            <input type="hidden" id="uncheckedCheckboxesInput" name="uncheckedCheckboxes" />
+
+                        </div>
+
+
+                        <div class="col d-flex justify-content-end mb-2">
+                            <button type="submit" role="button" class="btn save-btn-patient-profile  me-2 p-2" id="submitbtn">Save</button>
+
+                            <a role="button" class="btn cancel-btn-patient-profile  me-2 p-2" id="cancel1">Cancel</a>
+                        </div>
+
+
+
+                     </form> 
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"> </script>
+     <script>
+        $(document).ready(function () {
+
+                var accountType = $('#accountType').val();
+          
+                $.ajax({
+                    url: '/Admin/menuByAccountType',
+                    method: 'GET',
+                    data: { 'accountType': accountType },
+                    success: function (data) {
+                        $('#checkbox-container').empty();
+                        $.each(data, function (index, menu) {
+
+                            var checkbox = $('<input>').attr({
+                                type: 'checkbox',
+                                name: 'menu',
+
+                                value: menu.menuId
+                            });
+
+                            var label = $('<label>').text(menu.name);
+
+                            var container = $('#checkbox-container');
+                            container.append(checkbox).append(" ").append(label).append('<br>');
+
+                           
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching regions:", xhr.status, xhr.statusText);
+                        console.error("Response body:", xhr.responseText);
+                        alert("Failed to fetch pages. Please try again later.");
+                    }
+
+
+
+                });
+           
+        });
+    </script>
+ 
+ 
+    <script>
+        $(document).ready(function () {
+            var accountType = $('#accountType').val();
+            var roleId = $('.rname').val();
+           
+            $.ajax({
+                url: '/Admin/menuByAccountType',
+                method: 'GET',
+                data: { 'accountType': accountType },
+                success: function (data) {
+                    $('#checkbox-container').empty();
+                    $.each(data, function (index, menu) {
+                        var checkbox = $('<input>').attr({
+                            type: 'checkbox',
+                            name: 'menu',
+                            value: menu.menuId
+                        });
+
+                        var label = $('<label>').text(menu.name);
+
+                        var container = $('#checkbox-container');
+                        container.append(checkbox).append(" ").append(label).append('<br>');
+                    });
+
+                   
+                    $.ajax({
+                        url: '/Admin/menuByAccountTypeRoleId',
+                        method: 'GET',
+                        data: { 'accountType': accountType , 'roleId': roleId },
+                        success: function (secondData) {
+                          
+                            $('input[name="menu"]').each(function () {
+                                var menuId = $(this).val();
+                               
+                              
+                                if (secondData.some(menu => menu == menuId)) {
+                                    $(this).prop('checked', true);
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error fetching menus by criteria:", xhr.status, xhr.statusText);
+                            console.error("Response body:", xhr.responseText);
+                            alert("Failed to fetch menus by criteria. Please try again later.");
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching menus by account type:", xhr.status, xhr.statusText);
+                    console.error("Response body:", xhr.responseText);
+                    alert("Failed to fetch menus. Please try again later.");
+                }
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>
+
+
+

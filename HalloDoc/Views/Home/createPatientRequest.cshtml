@@ -1,0 +1,338 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.patientInfo;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <title>Create Patient Request</title>
+</head>
+
+<body>
+
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
+        <header>
+            <partial name="Request_header" />
+        </header>
+            <form method="post" asp-controller="Home" asp-action="createPatientRequest" enctype="multipart/form-data">
+        <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+            <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+                <div class="col  d-flex justify-content-end ">
+                    <a class="btn back-btn mt-1" role="button" asp-controller="Home" asp-action="patientSubmitRequestScreen"> < Back</a>
+               
+                </div>
+                <div class="col">
+                    <h5>Patient Information</h5>
+                </div>
+                
+                    <div class="col-md-12 gy-3">
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Notes" class="form-control symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea"></textarea>
+                            <label class="symptoms-create-patient-text" for="floatingTextarea">Enter Brief Details Of Symptoms (Optional)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="LastName" type="text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 me-auto">
+                        <div class="form-floating mb-3">
+                            <input  asp-for="DateOfBirth" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+                        <h5>Patient Contact Information</h5>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" type="email" id="email" class="form-control email-create-patient shadow-none" id="floatingInput" mailto:placeholder="name@example.com">
+                            <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3 ">
+                        <div class="form-floating mb-3">
+                            <!-- <input type="tel" class="form-control contact-create-patient shadow-none" id="floatingContact" placeholder="">
+                            <label class="contact-create-patient-text" for="floatingContact">Phone Number</label> -->
+                            <input asp-for="PhoneNumber" class=" form-control contact-create-patient shadow-none" id="phone" type="tel"  />
+                            <label class="contact-create-patient-text" for="phone"> </label>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div id="loginPrompt" class="col">
+                        <div class="col-md-6 gy-3">
+                            <div class="form-floating mb-3">
+                                <input asp-for="PasswordHash" type="password" class="form-control password-create-patient shadow-none" id="floatingInput" placeholder="">
+                                <label class="password-create-patient-text" for="floatingInput">Password</label>
+                                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                            </div>
+                        </div>
+                         
+                        <div class="col-md-6 gy-3">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control confirm-password-create-patient shadow-none" id="floatingInput" placeholder="">
+                                <label class="confirm-password-create-patient-text" for="floatingInput">Confirm Password</label>
+                                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+
+
+
+
+
+
+                    <div class="col">
+                        <h5>Patient Location</h5>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Street" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Street</label>
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input asp-for="City" type="text" class="form-control city-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="city-create-patient-text" for="floatingInput">City</label>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="State" type="text" class="form-control state-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="state-create-patient-text" for="floatingInput">State</label>
+                            <span asp-validation-for="State" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="ZipCode" type="text" class="form-control zipcode-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="zipcode-create-patient-text" for="floatingInput">Zipcode</label>
+                            <span asp-validation-for="ZipCode" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 me-auto">
+                        <div class="form-floating mb-3">
+                            <input  type="text" class="form-control room-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="room-create-patient-text" for="floatingInput">Room # / Suite (Optional)</label>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+                        <h5>(Optional) Upload Photo or Document</h5>
+                    </div>
+
+
+                    <div class="col-md-12 gy-3">
+                        
+                     
+
+                            <input type="file" id="real-file" hidden="hidden" asp-for="MultipleFiles" multiple />
+
+                            <div class="input-group mb-3">
+                                <input class="form-control bg-light" type="text" id="custom-text"
+                                       aria-label="readonly input example" value="Select File" readonly>
+                                <button class="btn btn-info" type="button" id="custom-button">
+                                    <i class="bi bi-cloud-arrow-up"></i> Upload
+                                </button>
+                            </div>
+
+                    </div>
+                    <!-- <div class="col-md-3 gy-3">
+                        <button class="btn upload-btn-create-patient position-absolute mb-3"><i class="fa-solid fa-cloud-arrow-up me-2 " style="color: #ffffff;"></i>Upload</button>
+                    </div> -->
+                    <div class="col d-flex justify-content-end mb-2">
+                        <button class="btn submit-btn-create-patient me-2" id="showAlertButton">Submit</button>
+                        <button class="btn cancel-btn-create-patient ms-1">Cancel</button>
+                    </div>
+                    @if (TempData["ShowSuccessAlert"] != null && (bool)TempData["ShowSuccessAlert"])
+                    {
+                        <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> Your request has been submitted successfully.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function () {
+                                document.getElementById('alertContainer').style.display = 'none';
+                            }, 3000); // 3000 milliseconds = 3 seconds
+                        </script>
+                    }
+                    <div class="modal fade" id="confirmation-modal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content ">
+                                <div class="modal-body d-flex flex-column align-items-center justify-content-evenly">
+                                    <i class="fa-solid fa-circle-exclamation mt-4" style="color: #f8a804; font-size: 50px;"></i>
+                                    <h5 class="mt-2">Information</h5>
+                                    <p class="mt-2" style="text-align: center; color: #434946;">When submitting a request, you must provide the correct contact information for the patient or the responsibly party. Failure to provide the correct email and phone number will delay service or be declined.</p>
+                                    <button class="btn btn-ok mt-4" style="background-color: #01BCE9; color: white;">Ok</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+              
+
+
+
+
+            </div>
+        </div>
+
+        </form>
+        <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
+            <partial name="Request_footer" />
+        </footer>
+    </div>
+    <script src="/js/custom.js"></script>
+    <script>
+
+        let file = document.getElementById("real-file");
+        const customBtn = document.getElementById("custom-button");
+        const customTxt = document.getElementById("custom-text");
+
+        customBtn.addEventListener("click", function () {
+            file.click();
+        });
+
+
+        file.addEventListener("input", () => {
+            //if file selected
+            var i;
+            var filename = "";
+            for (i = 0; i < file.files.length; i++) {
+                filename = filename + " " + file.files[i].name;
+            }
+            if (file.files.length) {
+
+                customTxt.setAttribute("value", filename);
+
+            } else {
+                customTxt.setAttribute("value", "Select File");
+            }
+        });
+        // function getFilePath() {
+        //     $('input[type=file]').change(function () {
+        //         var filePath = $('#myFile').val();
+        //         input_text.innerHTML = file.files.item(0).name;
+        //     });
+        
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+    </script>
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('confirmation-modal'), {})
+        var btnOk = document.querySelector(".btn-ok");
+        btnOk.addEventListener("click", function () {
+            myModal.hide();
+        });
+        myModal.show()
+    </script>
+
+    <script>
+        $('#loginPrompt').css('display', 'none');
+        $(document).ready(function () {
+            // Attach blur event handler to the email input field
+            $('#email').blur(function () {
+                // Perform client-side email validation
+                var email = $(this).val();
+                // Perform AJAX validation if the email is valid
+                $.ajax({
+                    url: '/Home/CheckEmail',
+                    method: 'POST',
+                    data: { email: email },
+                    success: function (response) {
+                        if (!response.exists) {
+                            $('#loginPrompt').css('display', 'block');
+                        } else {
+                            $('#loginPrompt').css('display', 'none');
+                        }
+                    }
+                });
+
+            });
+
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $('.confirm-password-create-patient').blur(function () {
+          
+                var password = $('.password-create-patient').val();
+                var confirmPassword = $(this).val();
+
+     
+                if (password !== confirmPassword) {
+              
+                    alert("Password and confirm password do not match!");
+  
+                    $(this).val('');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

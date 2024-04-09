@@ -1,0 +1,1089 @@
+/*Index Page*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-content {
+    background-color: #F9F9F9;
+}
+
+.dark-icon {
+    font-size: 22px;
+    border: 1px solid #01BCE9;
+    border-radius: 2px;
+    color: #01BCE9;
+}
+
+    .dark-icon:hover {
+        background: rgba(1, 188, 233, 0.5);
+        color: whitesmoke;
+    }
+
+.logo {
+    height: 125px;
+    width: 240px;
+}
+
+.forgot-link {
+}
+
+.back-link, .forgot-link {
+    text-decoration: none;
+    color: #01BCE9;
+    font-weight: 500;
+}
+
+    .back-link:hover {
+        color: #86B6F6;
+    }
+
+.login-msg, .signup-msg {
+    color: #434946;
+    text-align: center;
+}
+
+.login-btn, .signup-btn {
+    background-color: #01BCE9;
+    color: white;
+}
+
+    .login-btn:hover, .signup-btn:hover {
+        background-color: #86B6F6;
+    }
+
+.forgot-link:hover {
+    color: #86B6F6;
+}
+
+.email, .password, .password1 {
+    background: transparent;
+    border: 1px solid #E3E3E3;
+}
+
+.email-text, .password-text {
+    color: grey;
+}
+
+.email:focus, .password:focus, .password1:focus {
+    border: 1.5px solid #01BCE9;
+    background: transparent;
+}
+
+.terms-link:hover, .privacy-link:hover {
+    background-color: rgba(67, 73, 70, 0.1);
+}
+
+.terms-link, .privacy-link {
+    color: #434946;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+
+.user-icon, .eye-icon, .eye-icon1 {
+    top: 35%;
+    left: 92%;
+    cursor: pointer;
+}
+
+/* .main-content{
+    background: url(/images/7768657_3763028.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    
+} */
+
+/* .patient-login-main,.patient-reset-main{
+    background: url(/images/11116016_415-modified.jpg);
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+} */
+
+
+
+/*
+Forgot-password-page
+*/
+
+.reset-msg {
+    color: #434946;
+    text-align: center;
+}
+
+.username {
+    background: transparent;
+    border: 1px solid #E3E3E3;
+}
+
+.username-text {
+    color: grey;
+}
+
+.username:focus {
+    border: 1.5px solid #01BCE9;
+    background: transparent;
+}
+
+.reset-btn {
+    background-color: #01BCE9;
+    color: white;
+}
+
+    .reset-btn:hover {
+        background-color: #86B6F6;
+    }
+
+.back-to-login-link {
+    text-decoration: none;
+    color: #01BCE9;
+    font-weight: 500;
+}
+
+    .back-to-login-link:hover {
+        color: #86B6F6;
+    }
+
+
+
+
+
+
+/*Patient Site*/
+.container-fluid {
+    background-color: #F9F9F9;
+}
+
+.submitrequest-btn {
+    background-color: #01BCE9;
+    color: white;
+    font-weight: 498;
+    font-size: 1.3rem;
+}
+
+.registered-btn {
+    background-color: #0D1556;
+    color: white;
+    font-weight: 498;
+    font-size: 1.3rem;
+}
+
+    .submitrequest-btn:hover, .registered-btn:hover {
+        background-color: #86B6F6;
+    }
+
+.width {
+    width: 400px;
+}
+
+/*Patient submit request page*/
+
+.header {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.main-col {
+    background-color: #F9F9F9;
+}
+
+.footer-patient-submit {
+    background-color: #272727;
+}
+
+.logo-patient-submit {
+    height: 100px;
+    width: 210px;
+}
+
+.patient-submit-main {
+    background-color: #F9F9F9;
+}
+
+.back-btn, .download-btn {
+    border: 1px solid #01BCE9;
+    color: #01BCE9;
+}
+
+    .back-btn:hover, .download-btn:hover, .download-btn:hover {
+        background-color: rgba(1, 188, 233, 0.1);
+        border: 1px solid #01BCE9;
+        color: #86B6F6;
+    }
+
+.patient-btn {
+    border: 1px solid #616BA8;
+    background-color: rgba(97, 107, 168, 0.2);
+    color: #616BA8;
+    font-weight: 500;
+}
+
+.family-btn {
+    border: 1px solid #01BCE9;
+    background-color: rgba(1, 188, 233, 0.2);
+    color: #01BCE9;
+    font-weight: 500;
+}
+
+.concierge-btn {
+    border: 1px solid #457A4C;
+    background-color: rgba(69, 122, 76, 0.2);
+    color: #457A4C;
+    font-weight: 500;
+}
+
+.bussiness-btn {
+    border: 1px solid #A02E72;
+    background-color: rgba(160, 46, 114, 0.2);
+    color: #A02E72;
+    font-weight: 500;
+}
+
+    .patient-btn:hover, .family-btn:hover, .concierge-btn:hover, .bussiness-btn:hover {
+        border: 1px solid #616BA8;
+        color: black;
+    }
+
+.terms-link-patient-request:hover, .privacy-link-patient-request:hover {
+    color: whitesmoke;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.terms-link-patient-request, .privacy-link-patient-request, .vr {
+    text-decoration: none;
+    color: whitesmoke;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+/*Create Patient Request*/
+.create-patient-req-main {
+    background-color: #F9F9F9;
+}
+
+.logo-create-patient-req-main {
+    height: 100px;
+    width: 210px;
+}
+
+.header-create-patient-req {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.create-patient-req-footer {
+    background-color: #272727;
+}
+
+.terms-link-create-patient-req, .privacy-link-create-patient-req {
+    text-decoration: none;
+    color: whitesmoke;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+    .terms-link-create-patient-req:hover, .privacy-link-create-patient-req:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        color: whitesmoke;
+    }
+
+.width-create-patient-req {
+    width: 950px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.symptoms-create-patient-text, .first-name-create-patient-text, .last-name-create-patient-text, .dob-create-patient-text, .email-create-patient-text, .contact-create-patient-text, .street-create-patient-text, .city-create-patient-text, .state-create-patient-text, .zipcode-create-patient-text, .room-create-patient-text, .select-file-create-patient-text {
+    color: #434946;
+    border: 1px solid #434946;
+}
+
+.symptoms-create-patient:focus, .first-name-create-patient:focus, .last-name-create-patient:focus, .dob-create-patient:focus, .email-create-patient:focus, .contact-create-patient:focus, .street-create-patient:focus, .city-create-patient:focus, .state-create-patient:focus, .zipcode-create-patient:focus, .room-create-patient:focus, .select-file-create-patient:focus {
+    border: 1px solid #01BCE9;
+}
+
+.upload-btn-create-patient {
+    background-color: #01BCE9;
+    color: white;
+}
+
+.submit-btn-create-patient {
+    background-color: #01BCE9;
+    color: white;
+}
+
+.cancel-btn-create-patient {
+    background-color: white;
+    color: #01BCE9;
+    border: 1px solid #01BCE9;
+}
+
+.upload-btn-create-patient:hover, .submit-btn-create-patient:hover {
+    background-color: rgba(1, 188, 233, 0.3);
+    color: #616BA8;
+}
+
+.cancel-btn-create-patient:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #01BCE9;
+}
+
+
+.iti {
+    display: block !important;
+}
+
+.iti--allow-dropdown input {
+    height: 58px;
+}
+/* Family Create Request Page*/
+.family-first-name-create-patient:focus, .family-last-name-create-patient:focus, .family-contact-create-patient:focus, .family-email-create-patient:focus, .family-relation-create-patient:focus {
+    border: 1px solid #01BCE9;
+}
+
+.family-first-name-create-patient-text, .family-last-name-create-patient-text, .family-contact-create-patient-text, .family-email-create-patient-text, .family-relation-create-patient-text {
+    color: #434946;
+    border: 1px solid #434946;
+}
+
+/*Concierge Create Request Page*/
+
+.concierge-first-name-create-patient:focus, .concierge-last-name-create-patient:focus, .concierge-contact-create-patient:focus, .concierge-email-create-patient:focus, .concierge-property-create-patient:focus, .concierge-street-create-patient:focus, .concierge-city-create-patient:focus, .concierge-state-create-patient:focus, .concierge-zipcode-create:focus, .business-case-create-patient:focus {
+    border: 1px solid #01BCE9;
+}
+
+.concierge-first-name-create-patient-text, .concierge-last-name-create-patient-text, .concierge-contact-create-patient-text, .concierge-email-create-patient-text, .concierge-property-create-patient-text, .concierge-street-create-patient-text, .concierge-city-create-patient-text, .concierge-state-create-patient-text, .concierge-zipcode-create-text, .business-case-create-patient-text {
+    color: #434946;
+    border: 1px solid #434946;
+}
+
+/*Business Create Request Page*/
+.business-first-name-create-patient:focus, .business-last-name-create-patient:focus, .business-contact-create-patient:focus, .business-email-create-patient:focus, .business-property-create-patient:focus {
+    border: 1px solid #01BCE9;
+}
+
+.business-first-name-create-patient-text, .business-last-name-create-patient-text, .business-contact-create-patient-text, .business-email-create-patient-text, .business-property-create-patient-text {
+    color: #434946;
+    border: 1px solid #434946;
+}
+
+
+/*Patient Dashboard*/
+.logo-patient-dashboard-main {
+    height: 80px;
+    width: 190px;
+}
+
+.logout-btn, .create-new-btn, .document-btn {
+    border: 1px solid #01BCE9;
+    color: #01BCE9;
+    text-decoration: none;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+    .logout-btn:hover, .create-new-btn:hover, .document-btn:hover {
+        background-color: rgba(1, 188, 233, 0.1);
+        border: 1px solid #01BCE9;
+        color: #86B6F6;
+    }
+
+.tab-dashboard {
+    background-color: white;
+}
+
+    .tab-dashboard .nav-item .nav-link {
+        color: grey;
+    }
+
+    .tab-dashboard .nav-item .active {
+        color: #01BCE9;
+        text-decoration: none;
+        border-bottom: 2px solid #01BCE9;
+    }
+
+.main-dashboad .table thead tr th, .main-viewdocuments .table thead tr th {
+    background-color: #F9F9F9;
+}
+
+.main-dashboad .table tbody tr td, .main-viewdocuments .table tbody tr td {
+    color: gray;
+}
+
+.menu-bar {
+    display: none;
+}
+
+/*View Documents*/
+.view-documents p {
+    color: gray;
+}
+
+.name-patient {
+    color: #01BCE9;
+    font-size: 22px;
+}
+
+.download-btn, .back-btn {
+    text-decoration: none;
+}
+
+/*review agreement*/
+.review-agreement-main p {
+    font-size: 24px;
+    font-weight: 498;
+}
+
+.review-agreement-main a {
+    text-decoration: none;
+}
+
+#review-agree {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+
+#review-cancel {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+}
+
+#review-agree:hover {
+    background-color: rgba(0, 255, 0, 0.4);
+    color: #272727;
+}
+
+#review-cancel:hover {
+    background-color: rgba(255, 0, 0, 0.4);
+    color: #272727;
+}
+
+/*Patient Profile*/
+.dropdown {
+    background-color: white;
+    border: 1px solid #F9F9F9;
+}
+
+    .dropdown:focus {
+        border: 1px solid #01BCE9;
+    }
+
+.map-btn {
+    text-decoration: none;
+    font-size: 20px;
+    color: #01BCE9;
+    border: 1px solid #01BCE9;
+    border-radius: 5px;
+}
+
+    .map-btn:hover {
+        background-color: rgba(1, 188, 233, 0.1);
+        border: 1px solid #01BCE9;
+        color: #86B6F6;
+    }
+
+.edit-btn-patient-profile {
+    font-size: 18px;
+    background-color: #01BCE9;
+    color: white;
+}
+
+    .edit-btn-patient-profile:hover {
+        background-color: rgba(1, 188, 233, 0.3);
+        color: #616BA8;
+    }
+
+/*Admin Login Page*/
+.admin-loginpage {
+    background-color: #F9F9F9;
+}
+
+.doctor-img {
+    height: 100%;
+}
+/*Admin Dashboard*/
+.adminmobileview {
+    display: none;
+}
+
+.admin-info-tags {
+    background: white;
+}
+
+.admin-map-btn, .admin-mob-btn {
+    text-decoration: none;
+    color: #01BCE9;
+    font-size: 10px;
+    border: 1px solid #01BCE9;
+    border-radius: 5px;
+    height: fit-content;
+}
+
+.admin-mob-button {
+    text-decoration: none;
+    color: white;
+    width: 50%;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#assign-option1 {
+    background: #943DB8;
+}
+
+#cancel-option1, #block-option1, #close-admin-mob-button {
+    background: #E42929;
+}
+
+#view-admin-mob-button, #email-admin-mob-button, #uploads-admin-mob-button, #encounter-admin-mob-button {
+    background: #228B22;
+}
+
+#sendagreement-option1, #clear-option1, #order-admin-mob-button {
+    background: #EE9125;
+}
+
+#transfer-option1 {
+    background: #00ADEF;
+}
+
+#doctor-admin-mob-button {
+    background: #145545;
+}
+
+.admin-mob-btn .fa-user {
+    border-radius:;
+}
+
+#new-state {
+    background-color: #213F99;
+    text-decoration: none;
+    color: white;
+}
+
+    #new-state:hover {
+        background-color: rgba(33, 63, 153, 0.3);
+        border: 1px solid #213F99;
+        text-decoration: none;
+    }
+
+
+#pending-state {
+    color: #00ADEF;
+    background-color: #E5F3F8;
+}
+
+    #pending-state:hover {
+        color: #00ADEF;
+        border: 1px solid #00ADEF;
+        background-color: rgba(229, 243, 248, 0.3);
+    }
+
+#active-state {
+    color: #228B22;
+    background-color: #E8F0E8;
+}
+
+    #active-state:hover {
+        color: #228B22;
+        border: 1px solid #228B22;
+        background-color: rgba(232, 240, 232, 0.3);
+    }
+
+#conclude-state {
+    color: #DB0F81;
+    background-color: #F6E6EF;
+}
+
+    #conclude-state:hover {
+        color: #DB0F81;
+        border: 1px solid #DB0F81;
+        background-color: rgba(246, 230, 239, 0.3);
+    }
+
+#toclose-state {
+    color: #0371D7;
+    background-color: #E5EEF6;
+}
+
+    #toclose-state:hover {
+        color: #0371D7;
+        border: 1px solid #0371D7;
+        background-color: rgba(229, 238, 246, 0.3);
+    }
+
+#unpaid-state {
+    color: #9966CC;
+    background-color: #F1EDF5;
+}
+
+    #unpaid-state:hover {
+        color: #9966CC;
+        border: 1px solid #9966CC;
+        background-color: rgba(241, 237, 245, 0.3);
+    }
+
+.menu-icon-admin {
+    display: none;
+}
+
+.admin-buttons .btn {
+    background-color: #01BCE9;
+    color: white;
+}
+
+    .admin-buttons .btn:hover {
+        background-color: rgba(1, 188, 233, 0.3);
+        border: 1px solid #01BCE9;
+        color: black;
+    }
+
+.color-dots #all {
+    text-decoration: none;
+    color: grey;
+    border: 1px solid grey;
+    height: fit-content;
+}
+
+.admin-info-tags {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.admin-table .dropdown {
+    background: none;
+    border: none;
+}
+
+.table-btn {
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    background-color: transparent;
+}
+
+    .table-btn:hover {
+        background: rgba(0,0,0,0.2);
+    }
+
+.card-title-legend {
+    margin-top: -1.5rem;
+    background: white;
+    border: 1px solid #74C0FC;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 18px;
+}
+
+.adminmobileview .fa-calendar-days, .adminmobileview .fa-solid fa-phone, .adminmobileview .fa-sharp fa-thin fa-envelope, .adminmobileview .fa-check, .adminmobileview .fa-envelope, .adminmobileview .fa-phone, .adminmobileview .fa-user, .adminmobileview .fa-note-sticky, .adminmobileview .fa-user-nurse, .adminmobileview .fa-globe {
+    border: 1px solid #01BCE9;
+    border-radius: 50%;
+}
+
+.submit-btn-cancelcase, .submit-btn-assigncase, .submit-btn-blockcase {
+    background-color: #01BCE9;
+    color: white;
+}
+
+.cancel-btn-cancelcase {
+    border: 1px solid #01bce9;
+}
+/*Admin view uploads*/
+.adminmobileviewuploads {
+    display: none;
+}
+
+.checkall {
+    display: none;
+}
+
+.download-btn span {
+    display: block;
+}
+
+.mob-icon {
+    display: none;
+}
+
+.view-documents {
+    background: white;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+    .pagination a {
+        color: #01bce9;
+        padding: 5px 13px;
+        text-decoration: none;
+        border: 1px solid #01bce9;
+        margin: 0 5px;
+        border-radius: 4px;
+    }
+
+        .pagination a:hover {
+            background-color: #01bce9;
+            color: white;
+        }
+
+    .pagination .active {
+        background-color: #01bce9;
+        color: white;
+    }
+
+#custom-text {
+    background: white;
+}
+
+#page-numbers {
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.width-admin-viewnotes .notes {
+    background: white;
+}
+
+
+/*Provider Menu*/
+.create-provider-btn {
+    background-color: #01BCE9;
+    color: white;
+    text-decoration: none;
+}
+
+    .create-provider-btn :hover {
+        background-color: rgba(1, 188, 233, 0.3);
+        color: #616BA8;
+    }
+
+.providermenu-btn {
+    color: #01BCE9;
+    border: 1px solid #01BCE9;
+    text-decoration: none;
+}
+
+
+
+/*Toggle switch Scheduling*/
+/*.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 30px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }*/
+#toggle {
+    display: none;
+}
+
+.toggle-label {
+    display: inline-block;
+    ;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    margin-left: 32px;
+}
+
+    .toggle-label::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.3s;
+    }
+
+#toggle:checked + .toggle-label {
+    background-color: #2196F3;
+}
+
+.coverage th {
+    background-color: pink;
+}
+/* Dark mode CSS*/
+.dark-mode {
+    background-color: black;
+    .patient-submit-main, .header, .footer-patient-submit
+
+{
+    background-color: black;
+}
+
+.create-patient-req-main, .header-create-patient-req, .admin-info-tags, .pagination a, .width-admin-viewnotes .notes, .view-documents, .name-patient, #custom-text, #healthtype option, #healthprofesional option, .NoOfRefill option {
+    background-color: black;
+}
+
+.width-create-patient-req {
+    background-color: rgba(211,211,211,0.3);
+    color: whitesmoke;
+}
+
+    .width-create-patient-req .form-floating input, .width-admin-viewnotes, .AdditionalNote, #custom-text {
+        color: whitesmoke;
+    }
+
+.symptoms-create-patient, .first-name-create-patient, .last-name-create-patient, .dob-create-patient, .email-create-patient, .contact-create-patient, .street-create-patient, .city-create-patient, .state-create-patient, .zipcode-create-patient, .room-create-patient, .select-file-create-patient, .family-first-name-create-patient, .family-last-name-create-patient, .family-contact-create-patient, .family-email-create-patient, .family-relation-create-patient, .concierge-first-name-create-patient, .concierge-last-name-create-patient, .concierge-contact-create-patient, .concierge-email-create-patient, .concierge-property-create-patient, .concierge-street-create-patient, .concierge-city-create-patient, .concierge-state-create-patient, .concierge-zipcode-create-patient, .business-first-name-create-patient, .business-last-name-create-patient, .business-contact-create-patient, .business-email-create-patient, .business-property-create-patient, .business-case-create-patient, #healthtype, #healthprofesional, .NoOfRefill {
+    background-color: transparent;
+}
+
+.symptoms-create-patient-text, .first-name-create-patient-text, .last-name-create-patient-text, .dob-create-patient-text, .email-create-patient-text, .contact-create-patient-text, .street-create-patient-text, .city-create-patient-text, .state-create-patient-text, .zipcode-create-patient-text, .room-create-patient-text, .select-file-create-patient-text, .family-first-name-create-patient-text, .family-last-name-create-patient-text, .family-contact-create-patient-text, .family-email-create-patient-text, .family-relation-create-patient-text, .concierge-first-name-create-patient-text, .concierge-last-name-create-patient-text, .concierge-contact-create-patient-text, .concierge-email-create-patient-text, .concierge-property-create-patient-text, .concierge-street-create-patient-text, .concierge-city-create-patient-text, .concierge-state-create-patient-text, .concierge-zipcode-create-patient-text, .business-first-name-create-patient-text, .business-last-name-create-patient-text, .business-contact-create-patient-text, .business-email-create-patient-text, .business-property-create-patient-text, .business-case-create-patient-text, #healthtype, #healthprofesional, .NoOfRefill {
+    color: whitesmoke;
+}
+
+h5, h3, h3 span, .tab-dashboard .nav .nav-item .nav-link, .search, .search-inputs label, #region, .color-dots a, .admin-table table thead tr th, .admin-table table tbody tr td, .dashboard-profile-name, .dashboard-profile-name b, .menu-icon-admin, #BackgroundColormobileinnercard {
+    color: whitesmoke;
+}
+
+.heading {
+    color: white;
+}
+
+.patient-site-main, .search, #region, .admin-login {
+    background-color: black;
+}
+
+
+.patient-btn:hover, .family-btn:hover, .concierge-btn:hover, .bussiness-btn:hover {
+    border: 1px solid #616BA8;
+    color: white;
+}
+
+.login-msg, .reset-msg, .signup-msg {
+    color: whitesmoke;
+}
+
+.email, .password, .username, .password1 {
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+.email-text, .password-text, .username-text {
+    color: whitesmoke;
+}
+
+.email:focus, .password:focus, .username-focus, .password1:focus {
+    border: 1.5px solid #01BCE9;
+    background: transparent;
+}
+
+.terms-link, .privacy-link, .vr {
+    color: whitesmoke;
+}
+
+    .terms-link:hover, .privacy-link:hover {
+        background-color: rgba(67, 73, 70, 0.3);
+    }
+
+.tab-dashboard, .main-dashboad .table thead tr th, .main-dashboad .table tbody tr td, .main-viewdocuments .data-table .table thead tr th, .main-viewdocuments .data-table .table tbody tr td, .admin-table table thead tr th, .data-table-admin-viewuploads table thead tr th, .data-table-admin-viewuploads table tbody tr td, .close-data, .data-table-admin-viewuploads, .closecase-btns, .admin-view-documents-main {
+    background-color: black;
+}
+
+    .main-dashboad .table thead tr th, .main-dashboad .table tbody tr td, .main-viewdocuments .data-table .table thead tr th, .main-viewdocuments .data-table .table tbody tr td, .data-table-admin-viewuploads table thead tr th, .data-table-admin-viewuploads table tbody tr td, .close-data .form-floating input, .close-data h2 {
+        color: white;
+    }
+
+}
+
+
+/* Media Queries CSS*/
+@media (max-width: 576px) {
+    .email, .password, .password1, .login-btn, .signup-btn, .login-msg, .signup-msg, .forgot-link, .username, .reset-btn, .reset-msg, .back-to-login-link, .patient-btn, .family-btn, .concierge-btn, .bussiness-btn {
+        width: 100%;
+    }
+
+    .logo {
+        visibility: hidden;
+    }
+
+    .logo-patient-submit {
+        height: 96px;
+        width: 190px;
+    }
+
+    .patient-login-main, .patient-create-account-main, .patient-site-main, .patient-reset-main {
+        background: url(/images/11116016_415-modified.jpg);
+        background-repeat: no-repeat;
+        background-size: 100vw 100vh;
+    }
+
+    .user-icon, .eye-icon {
+        top: 32%;
+        left: 85%;
+    }
+}
+
+@media(min-width:577px) and (max-width:1111px) {
+    .logo {
+        height: 100px;
+        width: 210px;
+    }
+
+    .patient-btn, .family-btn, .concierge-btn, .bussiness-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .symptoms-create-patient-text, .first-name-create-patient-text, .last-name-create-patient-text, .dob-create-patient-text, .email-create-patient-text, .contact-create-patient-text, .street-create-patient-text, .city-create-patient-text, .state-create-patient-text, .zipcode-create-patient-text, .room-create-patient-text, .select-file-create-patient-text, .family-first-name-create-patient-text, .family-last-name-create-patient-text, .family-contact-create-patient-text, .family-email-create-patient-text, .family-relation-create-patient-text {
+        font-size: 12px;
+    }
+
+    .width-create-patient-req {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .menu-icon-admin {
+        display: block;
+        font-size: 20px;
+    }
+
+    .nav {
+        display: none;
+    }
+}
+
+@media(max-width: 880px) {
+    .admin-buttons .btn {
+        width: 10%;
+        height: 30%;
+    }
+
+    .admin-info-tags, .search-inputs {
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 767px) {
+    .doctor-img {
+        display: none;
+    }
+}
+
+@media(min-width: 1200px) and (max-width: 2500px) {
+    .card {
+        width: 16%;
+    }
+}
+
+@media(max-width: 991px) {
+    .adminmobileview {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+        .adminmobileview .card {
+            width: 100%;
+        }
+
+    .admin-table, .partnerspage {
+        display: none;
+    }
+}
+
+@media (max-width: 1199px) {
+    .card {
+        width: 33%;
+        margin-top: 7px;
+    }
+}
+
+@media (max-width: 576px) {
+    .notes {
+        flex: none;
+    }
+
+    .download-btn span {
+        display: none;
+    }
+
+    .mob-icon {
+        display: block;
+    }
+
+    .checkall {
+        display: block;
+    }
+
+    .adminmobileviewuploads, .view-documents-mobile {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-viewuploads, .searchprovider, #healthprofesional {
+        width: 100%;
+    }
+
+    .data-table-admin-viewuploads {
+        display: none !important;
+    }
+}

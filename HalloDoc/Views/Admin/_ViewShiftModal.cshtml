@@ -1,0 +1,89 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ShiftDetailsModel
+<!-- Modal -->
+<div class="modal fade" id="accept" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">View Shift</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action=UpdateShiftDetailData asp-controller="Admin" id="assignform" method="post">
+                    <input type="hidden" asp-for=ShiftDetailData.ShiftDetailId />
+                    <div class="form-floating mb-3 inp">
+                        <select id="Allregion1" class="form-control form-select input-2 view-shift-inp" asp-for=RegionId disabled>
+                            <option value="0">select</option>
+                            @foreach (var item in Model.regions)
+                            {
+                                <option value="@item.RegionId">@item.Name</option>
+                            }
+                        </select>
+                        <label for="Allregion1" class="view-shift-label">Region</label>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3 inp">
+                            <select id="Allphysician1" class="form-control form-select input-2 view-shift-inp" asp-for=Physicianid disabled>
+                                <option value="0">select</option>
+                                @foreach (var item in Model.physicians)
+                                {
+                                    <option value="@item.PhysicianId">@item.FirstName</option>
+                                }
+                            </select>
+                            <label for="Allphysician1" class="view-shift-label">Physician</label>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating mb-3 inp custom-date-input">
+                                <input asp-for=Shiftdate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
+                                <label for="floatingInput-4" class="view-shift-label">Shift Date</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3 inp custom-clock-input">
+                                <input type="time" asp-for=ShiftDetailData.StartTime class="form-control input-1 view-shift-inp" id="floatingInput-4"
+                                       placeholder="Start" disabled>
+                                <label for="floatingInput-4" class="view-shift-label">Start</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3 inp custom-clock-input">
+                                <input type="time" asp-for=ShiftDetailData.EndTime class="form-control input-1 view-shift-inp" id="floatingInput-4"
+                                       placeholder="End" disabled>
+                                <label for="floatingInput-4" class="view-shift-label">End</label>
+                            </div>
+                        </div>
+                        <span id="startTimeSpan" class="text-danger hide">Start Time & End Time Cannot be Same!!!</span>
+                    </div>
+                    <div class="modal-footer">
+                        <a asp-action="UpdateShiftStatus" asp-controller="Admin" asp-route-id="ShiftDetailData.Shiftdetailid"><button type="button" id="cancelbtn" class="btn btn-info text-white">Return</button></a>
+                        <button type="button" id="edit" class="btn btn-info text-white" onclick="EditData()">Edit</button>
+                        <button type="button" id="save" class="btn btn-info text-white" style="display:none">Save</button>
+                        <a asp-action="DeleteShiftDetails" asp-controller="Admin" asp-route-id="ShiftDetailData.Shiftdetailid"><button type="button" id="cancelbtn" class="btn btn-danger text-white" data-bs-dismiss="modal">Delete</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var myModalAssign = new bootstrap.Modal(document.getElementById('accept'));
+        myModalAssign.show();
+    });
+    $('#cancelbtn').click(function (e) {
+        $("#modalpopup").remove();
+        $(".modal-backdrop").remove();
+        location.reload();
+    });
+    function EditData() {
+        document.getElementById("save").style.display = "inline";
+        document.getElementById("edit").style.display = "none";
+        var formelements = document.getElementById("assignform").elements;
+        for (var i = 3; i < formelements.length; i++) {
+            formelements[i].disabled = false;
+        }
+    }
+</script>

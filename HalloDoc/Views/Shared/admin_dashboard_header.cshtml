@@ -1,0 +1,73 @@
+﻿<div class="header d-flex justify-content-between">
+    <button class="btn menu-icon-admin" onclick="toggleMenu()" style="border: none;"><i class="fa-solid fa-bars"></i></button>
+    <div class="logo-img">
+        <img class="img-fluid logo-patient-dashboard-main" src="/images/logo_dark.png" alt="">
+    </div>
+
+    <div class="dark d-flex dashboard-right">
+        <p class="mt-4 p-2 dashboard-profile-name">Welcome <b>@ViewBag.Data</b></p>
+        <a role="button" class="logout-btn mt-4 p-2" asp-controller="Admin" asp-action="logOut">Logout</a>
+        <button class="btn " onclick="darkMode()" style="border: none;"><i class="fa-regular fa-moon dark-icon p-1"></i></button>
+    </div>
+</div>
+
+<div class="tab-dashboard mt-1">
+    <ul class="nav m-2">
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Admin" asp-action="adminDashboard" aria-current="page">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Admin" asp-action="providerLocation">Provider Location</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Admin" asp-action="adminProfile">My Profile</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Providers
+            </a>
+                
+           
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="providerMenu">Provider</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="ProviderSchedulingDayWise">Scheduling</a></li>
+                <li><a class="dropdown-item" href="#">Invoicing</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Admin" asp-action="partnersPage">Partners</a>
+        </li>
+       
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Access
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="adminAccess">Role Access</a></li>
+                <li><a class="dropdown-item" href="#">User Access</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="createAdmin">Create Admin</a></li>
+            </ul>
+        </li>
+        
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Records
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="searchRecords">Search Records</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="emailLogs">Email Logs</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="SMSLogs">SMS Logs</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="patientHistory">Patient Records</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="blockedHistory">Blocked History</a></li>
+            </ul>
+        </li>
+       
+    </ul>
+</div>
+<script>
+    function darkMode() {
+        var element1 = document.querySelector(".full-content");
+
+        element1.classList.toggle("dark-mode");
+    }
+</script>

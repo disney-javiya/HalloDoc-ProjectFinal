@@ -1,0 +1,251 @@
+﻿@model IEnumerable<HalloDoc.DataAccessLayer.DataModels.RequestWiseFile>
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Admin Close Case Page</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between admin-view-documents-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <main>
+
+            <div class="main-viewdocuments d-flex flex-column">
+                <div class="view-documents d-flex flex-column  container">
+                    <div class="d-flex flex-row">
+                        <h3>Close Case</h3>
+                        <a asp-controller="Admin" asp-action="adminDashboard" role="btn" class="back-btn p-1 ms-auto mb-2">Back</a>
+                    </div>
+                    <p>Patient Name</p>
+                    <b class="name-patient">@ViewBag.pname (@ViewBag.num)</b>
+
+                    <a role="button" class="back-btn p-1 ms-auto mb-2">Create Invoice through Quick books</a>
+
+
+                    <div class="data-table-admin-viewuploads">
+                        <table class="table">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Documents</th>
+                                    <th scope="col">Upload Date</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FileName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                                        </td>
+
+                                        <td>
+                                            <a href="@Url.Action("DownloadFile", "Admin", new { fileId = item.RequestWiseFileId})" class="btn p-0">
+                                                <i class="fa-solid fa-cloud-arrow-up m-1 p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row row-cols-1 justify-content-center align-items-center close-data">
+                        <div class="col mb-3">
+                            <h2>Patient Information</h2>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
+                                <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
+                                <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 gy-3 me-auto">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
+                                <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 gy-3 me-auto d-flex flex-row">
+                            <div class="form-floating mb-3 me-2 w-75">
+                                <input type="text" class="form-control contact-create-patient  shadow-none" id="floatingInput" id="phone" placeholder="" disabled>
+                                <label class="contact-create-patient-text" for="floatingInput">Phone Number</label>
+                            </div>
+                            <div class="mb-3 ms-2">
+                                <i role="button" class="fa-solid fa-phone p-3" style="color: #01bce9; border:1px solid #01BCE9"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 gy-3 me-auto">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com" disabled>
+                                <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex justify-content-end mb-2 closecase-btns">
+                        <button type="button" class="btn edit-btn-patient-profile me-2 p-2">Edit</button>
+                        <a role="button" href="@Url.Action("closeCaseAdmin", "Admin", new { requestId =  Context.Request.Query["requestId"]})" class="btn closecase-btn-patient-profile me-2 p-2" style="color: #01bce9; border:1px solid #01bce9">Close Case</a>
+                    </div>
+                    <div class="col d-flex justify-content-end mb-2">
+                        <button type="submit" role="button" class="btn save-btn-patient-profile me-2 p-2" style="display: none;">Save</button>
+                        <a role="button" class="btn cancel-btn-patient-profile me-2 p-2" style="display: none;">Cancel</a>
+
+                    </div>
+
+
+
+
+
+
+
+                    @*This code is for Mobile View*@
+
+
+                    <div class="adminmobileviewuploads">
+
+
+                        @foreach (var item in Model)
+                        {
+                            <div class="card card-viewuploads" role="button" value="">
+                                <div class="card-body d-flex flex-column justify-content-around">
+                                    <div class=" d-flex flex-row ">
+                                        <input class="form-check-input check" type="checkbox" value="@item.RequestWiseFileId" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+
+                                        </label>
+                                        <p class="ms-2" id="">@item.FileName</p>
+                                    </div>
+
+                                    <div class=" d-flex flex-row justify-content-between">
+                                        <p>@item.CreatedDate</p>
+
+                                    </div>
+                                    <div class=" d-flex flex-row justify-content-start p-0">
+                                        <a href="@Url.Action("DownloadFile", "Admin", new { fileId = item.RequestWiseFileId})" class="btn p-0">
+                                            <i class="fa-solid fa-cloud-arrow-up m-1  p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                        </a>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"> </script>
+    <script>
+
+        const editBtn = document.querySelector(".edit-btn-patient-profile");
+        const closeCaseBtn = document.querySelector(".closecase-btn-patient-profile");
+        const saveBtn = document.querySelector(".save-btn-patient-profile");
+        const cancelBtn = document.querySelector(".cancel-btn-patient-profile");
+        const edit = document.querySelector(".email-create-patient");
+        const mobile = document.querySelector(".contact-create-patient")
+        editBtn.addEventListener("click", function () {
+
+            edit.removeAttribute("disabled");
+            mobile.removeAttribute("disabled");
+            editBtn.style.display = "none";
+            closeCaseBtn.style.display = "none";
+            saveBtn.style.display = "inline-block";
+            cancelBtn.style.display = "inline-block";
+        });
+
+        cancelBtn.addEventListener("click", function () {
+
+            edit.setAttribute("disabled", true);
+            mobile.setAttribute("disabled", true);
+            editBtn.style.display = "inline-block";
+            closeCaseBtn.style.display = "inline-block";
+            saveBtn.style.display = "none";
+            cancelBtn.style.display = "none";
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const requestId = urlParams.get('requestId');
+
+
+            $.ajax({
+                url: '/Admin/getPatientInfo',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+
+                    $(".first-name-create-patient").val(data.firstName);
+                    $(".last-name-create-patient").val(data.lastName);
+                    $(".dob-create-patient ").val(data.intDate + "/" + data.strMonth + "/" + data.intYear);
+                    $(".contact-create-patient").val(data.phoneNumber);
+                    $(".email-create-patient").val(data.email);
+
+
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>

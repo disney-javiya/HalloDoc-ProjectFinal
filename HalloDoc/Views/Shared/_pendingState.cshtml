@@ -1,0 +1,590 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
+<div class="admin-table m-2">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Date Of Birth</th>
+                <th scope="col">Requestor</th>
+                <th scope="col">Physician Name</th>
+                <th scope="col">Date Of Service</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Address</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Chat With</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+
+                foreach (var item in Model.result)
+                {
+                    <tr id="BackgroundColor" value="@item.RequestTypeId">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patientName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patientDOB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.requestorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.physicianName)
+                        </td>
+                        <td>
+                           12/10/2024
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patientContact)
+                            @Html.DisplayFor(modelItem => item.requestorContact)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patientAddress)
+                        </td>
+                        <td id="notes" >
+                            <input type="hidden" id="requestidinput4" value="requestId=@item.requestId"/>
+                            <p class="note"></p>
+                              
+                            
+                                
+                        </td>
+                        <td><a class="table-btn p-1" role="button">Provider</a></td>
+                        <td>
+                            <div class="dropdown">
+                                <a role="button" class="table-btn p-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("adminViewCase", "Admin", new { requestId = @item.requestId})">View Case</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("adminViewUploads", "Admin", new { requestId = @item.requestId})">View Uploads</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">View Notes</a></li>
+                                    <li><a class="dropdown-item" id="transfer-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalTransfer" value="@item.requestId">Transfer</a></li>
+                                    <li><a class="dropdown-item" id="clear-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalClear" value="@item.requestId">Clear Case</a></li>
+                                    <li><a class="dropdown-item" id="sendagreement-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalSendAgreement" value="@item.requestId">Send Agreement</a></li>
+                                </ul>
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+            }
+
+
+        </tbody>
+    </table>
+
+
+
+
+
+</div>
+
+
+
+
+<div class="adminmobileview">
+
+    @if (Model != null)
+    {
+
+        foreach (var item in Model.result)
+        {
+            <div class="card" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="BackgroundColormobile" value="@item.RequestTypeId">
+                <div class="card-body d-flex flex-column justify-content-around">
+                    <div class=" d-flex flex-row justify-content-between">
+                        <p>@item.patientName</p>
+                        <p class="ms-auto" id="rname"></p><i class="fa-solid fa-circle ms-1 mt-1" id="circle-color"></i>
+                    </div>
+
+                    <div class=" d-flex flex-row justify-content-between">
+                        <p>@item.patientAddress</p>
+                        <a class="admin-map-btn p-1" role="button">Map Location</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body" id="BackgroundColormobileinnercard" value="@item.RequestTypeId">
+                    <a role="button" class="card-title-legend ms-auto" style="text-decoration:none; color: purple" href="@Url.Action("adminViewCase", "Admin", new { requestId = @item.requestId , state = 1})">
+                        View Case
+                    </a>
+                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of birth: @item.patientDOB</p>
+                    <p> <i class="fa-regular fa-envelope p-2 me-1" style="color: #a0a0a2;"></i>Email: @item.patientEmail</p>
+                    <p> <i class="fa-solid fa-phone  p-2 me-1" style="color: #a0a0a2;"></i>Patient: @item.patientContact</p>
+                    <p> <i class="fa-solid fa-note-sticky p-2 me-1" style="color: #a0a0a2;"></i>Transfer Notes:<input type="hidden" id="requestidinput5" value="requestId=@item.requestId" /><p class="note"></p></p>
+                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of service: -</p>
+                    <p> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #a0a0a2;"></i>Physician: @item.physicianName</p>
+                    <p> <i class="fa-regular fa-user p-2 me-1" style="color: #a0a0a2;"></i>Requestor: @item.requestorName</p>
+                    <div class=" d-flex flex-row ">
+
+                        <a class="admin-mob-button p-2 m-1" role="button" id="sendagreement-option1"  data-bs-toggle="modal" data-bs-target="#myModalSendAgreement" value="@item.requestId">
+                            Send Agreement
+                        </a>
+                        <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">
+                            View Notes
+                        </a>
+                    </div>
+
+                    <div class=" d-flex flex-row ">
+
+                        <a class="admin-mob-button p-2 m-1" role="button" id="transfer-option1" data-bs-toggle="modal" data-bs-target="#myModalTransfer" value="@item.requestId">
+                            Transfer
+                        </a>
+                        <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" href="@Url.Action("adminViewUploads", "Admin", new { requestId = @item.requestId})" role="button">
+                            View Uploads
+                        </a>
+                    </div>
+                    <div class=" d-flex flex-row ">
+
+                        <a class="admin-mob-button p-2 m-1" role="button" id="clear-option1" data-bs-toggle="modal" data-bs-target="#myModalClear" value="@item.requestId">
+                            Clear Case
+                        </a>
+                        <a class="admin-mob-button p-2 m-1" id="email-admin-mob-button" role="button">
+                            Email
+                        </a>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+        }
+    }
+
+</div>
+
+<div aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-3">
+        @if (Model.TotalPages >= 1)
+        {
+            <!-- Previous page -->
+            <li class="page-item @(Model.PreviousPage ? " " : "disabled")">
+                <a class="page-link" href="javascript:void(0)" onclick="changePage(@Model.CurrentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true"><i class="bi bi-caret-left-fill text-info"></i> </span>
+                </a>
+            </li>
+
+            <!-- Page numbers -->
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : " ")">
+                    <a class="page-link" id="plink-@i" href="javascript:void(0)" onclick="changePage(@i)">@i</a>
+                </li>
+            }
+
+            <!-- Next page -->
+            <li class="page-item @(Model.NextPage ? " " : "disabled")">
+                <a class="page-link" href="javascript:void(0)" onclick="changePage(@Model.CurrentPage+1)" aria-label="Next">
+                    <span aria-hidden="true"> <i class="bi bi-caret-right-fill text-info"></i> </span>
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+<!--For Transfer Case-->
+<div class="modal" id="myModalTransfer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="transferCaseForm" action="/Admin/adminTransferCase" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Transfer Request</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                @{
+                    var addedRegion = new List<int>();
+                    var addedPhysician = new List<int>();
+                }
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <p class="m-3">To transfer this request, search and select another Physician.</p>
+
+                    <input type="hidden" id="requestidinput1" name="requestid" />
+
+
+                    <!-- For Region -->
+                    <select name="region" id="region" class="form-select m-2 region" aria-label="Default select example">
+                        <option selected>Search Region</option>
+
+                        @foreach (var item in Model.result)
+                        {
+                            @if (item.Region != null)
+                            {
+                                @foreach (var r in item.Region)
+                                {
+                                    if (!addedRegion.Contains(r.RegionId))
+                                    {
+                                        addedRegion.Add(r.RegionId);
+                                        <option value="@r.RegionId">@r.Name</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+
+                    <!-- For Physician-->
+                    <select name="physician" id="physician" class="form-select m-2" aria-label="Default select example">
+                        <option selected>Select Physician</option>
+
+
+                    </select>
+
+                    <div class="form-floating m-2">
+                        <textarea name="additionalNotesTransfer" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
+                        <label class="symptoms-create-patient-text" for="floatingTextarea">Description</label>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--For Clear Case-->
+<div class="modal" id="myModalClear">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="clearCaseForm" action="/Admin/adminClearCase" method="POST">
+                <!-- Modal Header -->
+                @* <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Transfer Request</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div> *@
+                <input type="hidden" id="requestidinput2" name="requestid" />
+                <!-- Modal body -->
+                <div class="modal-body d-flex flex-column justify-content-between align-items-center" style="color:grey;">
+                    <i class="fa-solid fa-circle-exclamation mt-4" style="color: #f8a804; font-size: 50px;"></i>
+                    <h5 class="mt-2">Confirm for clear case</h5>
+                    <p class="mt-2" style="text-align: center; color: #434946;">Are you sure you want to clear this request? Once clear this request then you are not able to see this request.</p>
+
+
+                    
+
+                    
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn submit-btn-assigncase">Clear</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--For Send Agreement-->
+<div class="modal" id="myModalSendAgreement">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="sendAgreementCaseForm" action="/Admin/adminSendAgreement" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Send Agreement</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <p class="m-3">To Send Agreement please make sure you are updating the correct contact information below for the responsible party.</p>
+
+                    <input type="hidden" id="requestidinput3" name="requestid" />
+
+                 
+                        <div class="form-floating mb-3">
+                            <input name="mobile" type="text" class="form-control b-contact last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="last-name-create-patient-text" for="floatingInput">Phone Number</label>
+                        </div>
+                
+            
+                        <div class="form-floating mb-3">
+                            <input name="email" type="email" class="form-control email email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com">
+                            <label class="email-create-patient-text" for="floatingInput">Email</label>
+                        </div>
+                 
+                    
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Send</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/pagination.js"></script>
+<script>
+    function changePage(page) {
+
+
+        $.ajax({
+            url: "/Admin/adminTableData",
+            method: "POST",
+            data: { "type": type, "regionId": regionId, "patient_name": patient_name, "typeid": typeid, 'pagesize': 3, 'pagenumber': page },
+
+            success: function (data) {
+                $('#tableContainer').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        var requestId = null;
+        $(document).on('click', '#transfer-option', function () {
+            requestId = $(this).attr("value");
+        });
+        $(document).on('click', '#clear-option', function () {
+            requestId = $(this).attr("value");
+        });
+        $(document).on('click', '#transfer-option1', function () {
+            requestId = $(this).attr("value");
+        });
+        $(document).on('click', '#clear-option1', function () {
+            requestId = $(this).attr("value");
+        });
+        $(document).on('click', '#sendagreement-option', function () {
+            requestId = $(this).attr("value");
+            $.ajax({
+                url: '/Admin/adminSendAgreement',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+
+                    $(".b-contact").val(data[0]);
+                    $(".email").val(data[1]);
+
+                }
+            });
+
+        });
+        $(document).on('click', '#sendagreement-option1', function () {
+            requestId = $(this).attr("value");
+
+            $.ajax({
+                url: '/Admin/adminSendAgreement',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+
+                    $(".b-contact").val(data[0]);
+                    $(".email").val(data[1]);
+
+                }
+            });
+
+        });
+        $('#transferCaseForm').submit(function (event) {
+
+            $('#requestidinput1').val(requestId);
+
+
+        });
+        $('#clearCaseForm').submit(function (event) {
+
+            $('#requestidinput2').val(requestId);
+
+
+        });
+        $('#sendAgreementCaseForm').submit(function (event) {
+
+            $('#requestidinput3').val(requestId);
+
+
+        });
+    });
+    </script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('.region').change(function () {
+
+            var regionId = $(this).val();
+
+            $.ajax({
+                url: '/Admin/GetPhysicians',
+                type: 'GET',
+                data: { regionId: regionId },
+                success: function (data) {
+
+
+                    var physicianDropdown = $('#physician');
+                    physicianDropdown.empty();
+                    physicianDropdown.append($('<option></option>').text("Select Physicians"));
+                    $.each(data, function (index, physician) {
+
+                        physicianDropdown.append($('<option></option>').attr('value', physician.physicianId).text(physician.firstName));
+
+                    });
+
+                }
+            });
+        });
+    });
+
+
+</script>
+
+
+<script>
+$(document).ready(function () {
+    var rows = document.querySelectorAll('#BackgroundColor');
+
+    rows.forEach(function (row) {
+        var requestId = row.querySelector('#requestidinput4').value.replace("requestId=", "");
+       
+        $.ajax({
+            url: '/Admin/adminTransferNotes',
+            type: 'GET',
+            data: { requestId: requestId },
+            success: function (data) {
+                $(row).find(".note").text(data);
+               
+            }
+        });
+    });
+});
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var collapses = document.querySelectorAll('.collapse');
+
+        collapses.forEach(function (c) {
+            var requestId = c.querySelector('#requestidinput5').value.replace("requestId=", "");
+
+            $.ajax({
+                url: '/Admin/adminTransferNotes',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+                    $(c).find(".note").text(data);
+
+                }
+            });
+        });
+    });
+
+</script>
+
+@*Script for all cards background, icon color and request type role*@
+<script>
+
+    var cards = document.querySelectorAll('#BackgroundColormobile');
+
+    cards.forEach(function (card) {
+        var val = card.getAttribute("value");
+        var rname = "";
+        var iconcolor;
+        switch (val) {
+            case '1':
+                rname = "Business";
+                iconcolor = "#e63368";
+                break;
+            case '2':
+                rname = "Patient";
+                iconcolor = "#35d016";
+                break;
+            case '3':
+                rname = "Family";
+                iconcolor = "#FFD43B";
+                break;
+            default:
+
+                rname = "Concierge";
+                iconcolor = "#74C0FC";
+        }
+
+        var cbs = card.querySelectorAll('.card-body');
+        cbs.forEach(function (cb) {
+            cb.style.background = "rgba(116, 192, 252, 0.3)";
+            card.querySelector('#rname').innerHTML = rname;
+            card.querySelector('#circle-color').style.color = iconcolor;
+        });
+
+    });
+</script>
+
+@*Script for all inner cards background *@
+<script>
+    var innerCards = document.querySelectorAll('#BackgroundColormobileinnercard');
+
+    innerCards.forEach(function (innerCard) {
+        innerCard.style.background = "rgba(116, 192, 252, 0.3)";
+    });
+</script>
+
+
+
+@*Script for collapse element hide and show*@
+<script>
+    var cards = document.querySelectorAll('.card');
+
+    cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+            var collapseElement = this.nextElementSibling;
+            var isExpanded = collapseElement.classList.contains('show');
+
+            if (!isExpanded) {
+                collapseElement.classList.add('show');
+            } else {
+                collapseElement.classList.remove('show');
+            }
+        });
+    });
+</script>
+
+<script>
+    var rows = document.querySelectorAll('#BackgroundColor');
+
+    rows.forEach(function (row) {
+        var val = row.getAttribute("value");
+        var color;
+        switch (val) {
+            case '1':
+                color = "rgba(230, 51, 104, 0.5)";
+                break;
+            case '2':
+                color = "rgba(53, 208, 22, 0.5)";
+                break;
+            case '3':
+                color = "rgba(255, 212, 59, 0.5)";
+                break;
+            default:
+                color = "rgba(116, 192, 252, 0.5)";
+        }
+
+        var tds = row.querySelectorAll('td');
+        tds.forEach(function (td) {
+            td.style.background = color;
+        });
+    });
+</script>

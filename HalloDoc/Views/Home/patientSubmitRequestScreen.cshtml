@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Patient Submit Request Page</title>
+</head>
+<body>
+
+
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between patient-submit-main full-content">
+        <header>
+            <partial name="Request_header"/>
+        </header>
+
+        <div class="main d-flex justify-content-center align-items-center ">
+            <div class="row row-cols-1 justify-content-center align-items-center width ">
+                <div class="col-md-6 -gx-5  d-flex justify-content-center
+                ">
+                    <h3 class="heading">I am a...</h3>
+                </div>
+                <div class="col-md-6 gx-5 d-flex justify-content-end">
+                   @*  <button class="btn back-btn " asp-controller="Home" asp-action="patientSite">< Back</button> *@
+                    <a class="btn back-btn mt-1" role="button" asp-controller="Home" asp-action="patientSite"> < Back</a>
+                </div>
+                <div class="col-md-12 gy-4">
+                    <div class="d-grid gap-2">
+                        <a class="btn patient-btn w-100" asp-controller="Home" asp-action="createPatientRequest">PATIENT</a>
+                        <a class="btn family-btn w-100" asp-controller="Home" asp-action="familyCreateRequest">FAMILY/FRIEND</a>
+                        <a class="btn concierge-btn w-100" asp-controller="Home" asp-action="conciergePatientRequest">CONCIERGE</a>
+                        <a class="btn bussiness-btn" asp-controller="Home" asp-action="businessPatientRequest">BUSINESS PARTNERS</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <footer class="d-flex footer-patient-submit justify-content-center align-items-baseline">
+            <partial name="Request_footer"/>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/custom.js"></script>
+    <script>
+        const patientButton = document.querySelector('.patient-btn');
+        const familyButton = document.querySelector('.family-btn');
+        const conciergeButton = document.querySelector('.concierge-btn');
+        const businessButton = document.querySelector('.bussiness-btn');
+        patientButton.addEventListener("click", function () {
+            window.location.href = "./create-patient-request.html";
+        });
+        familyButton.addEventListener("click", function () {
+            window.location.href = "./family-create-request.html";
+
+        });
+        conciergeButton.addEventListener("click", function () {
+            window.location.href = "/concierge-patient-request.html";
+        });
+        businessButton.addEventListener("click", function () {
+            window.location.href = "/business-patient-request.html";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿@model List<HalloDoc.DataAccessLayer.DataModels.PhysicianLocation>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <title>Physician Profile Page</title>
+</head>
+<body>
+<div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
+    <header>
+        <partial name="admin_dashboard_header" />
+    </header>
+<div class=" container tab-pane fade show active w-100 w-md-50  px-2 px-md-5 text-center" id="dashboard " role="tabpanel" aria-labelledby="dashboard-tab">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h3 class="ms-2">Provider Location</h3>
+
+        <button onclick="dashboard()" class="btn me-3 border rounded border-info text-info">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+            </svg> Back
+        </button>
+
+    </div>
+    <div class=" border border-5 border-white rounded-3 shadow" id="map" style="height: 60vh"></div>
+</div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Add Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARrk6kY-nnnSpReeWotnQxCAo_MoI4qbU"></script>
+<script>
+    var map = L.map('map');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var providers = @Html.Raw(Json.Serialize(Model));
+
+    var markers = [];
+
+    for (var i = 0; i < providers.length; i++) {
+        var provider = providers[i];
+        var marker = L.marker([provider.latitude, provider.longitude])
+
+                .bindPopup("<h4> " + provider.physicianName + "</h4><p> Address: " + provider.address + "</p>")
+            .addTo(map);
+        markers.push(marker);
+    }
+
+    var group = L.featureGroup(markers).addTo(map);
+    map.fitBounds(group.getBounds());
+</script>
+
+
+</body>
+</html>

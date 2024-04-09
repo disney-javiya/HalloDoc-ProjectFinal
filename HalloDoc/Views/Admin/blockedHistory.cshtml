@@ -1,0 +1,215 @@
+﻿@model List<HalloDoc.DataAccessLayer.DataModels.BlockRequest>
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <title>Provider Menu</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between admin-view-documents-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <main>
+
+            <div class="main-viewdocuments d-flex flex-column">
+                <div class="view-documents d-flex flex-column  container">
+                    <div class="d-flex flex-row">
+                        <h3>Block History</h3>
+
+                    </div>
+                    <form action="/Admin/blockedHistory" method="POST">
+                        <div class="row d-flex justify-content-between">
+                        <div class="col-md-3 gy-3">
+                            <div class="form-floating mb-3">
+                                <input name="patientName"  type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                                <label class="first-name-create-patient-text" for="floatingInput">Name</label>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-3 gy-3">
+                            <div class="form-floating mb-3">
+                                <input name="date" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                                <label class="dob-create-patient-text" for="floatingInput">Date</label>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-3 gy-3">
+                            <div class="form-floating mb-3">
+                                <input name="email" type="email" id="email" class="form-control email-create-patient shadow-none"  mailto:placeholder="name@example.com">
+                                <label class="email-create-patient-text">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 gy-3 ">
+                            <div class="form-floating mb-3">
+                                <input name="phone" class=" form-control contact-create-patient shadow-none info" id="phone" type="tel"/>
+                                <label class="contact-create-patient-text" for="phone"> </label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="d-flex justify-content-end m-2">
+                        <a role="button" class="btn back-btn me-2">Clear</a>
+                        <button role="button" type="submit" class="btn submit-btn-create-patient">Search</button>
+                    </div>
+
+                    </form>
+
+                    <div class="data-table-admin-viewuploads">
+                        <table class="table">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col"> Patient Name</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col">Notes</th>
+                                    <th scope="col">Is Active</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RequestId)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Reason)
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+
+                                            </td>
+                                            <td>
+                                                <a class="providermenu-btn p-1" role="button" href="@Url.Action("unblockPatient", "Admin", new { RequestId = @item.RequestId})">Unblock</a>
+                                               @*  <a class="providermenu-btn p-1" role="button" id="delete-option" value="@item.VendorId" data-bs-toggle="modal" data-bs-target="#myModal">Delete</a> *@
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+
+
+    <!--For Delete-->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteConfirmationForm" asp-controller="Admin" asp-action="adminDeletePartner" method="POST">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="background:#01bce9; color:white;">
+                        <h4 class="modal-title">Delete Confirmation</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="color:grey;">
+
+
+                        <input type="hidden" id="roleinput1" name="VendorId" />
+                        <b> Are you sure you want to delete this Vendor from list?</b>
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn submit-btn-cancelcase">Confirm</button>
+                        <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+    <script>
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+    </script>
+    <script>
+        $(document).on('click', '#delete-option', function () {
+
+            VendorId = $(this).attr("value");
+
+        });
+
+        $('#deleteConfirmationForm').submit(function (event) {
+
+            $('#roleinput1').val(VendorId);
+
+
+        });
+    </script>
+
+</body>
+</html>

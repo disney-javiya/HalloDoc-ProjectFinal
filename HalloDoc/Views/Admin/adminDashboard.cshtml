@@ -1,0 +1,419 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.RequestandRequestClient;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Admin Dashboard Page</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between patient-dashboard-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <main>
+            <div id="toast-container"></div>
+
+            <div class="main-admin-dashboad d-flex flex-column justify-content-between">
+                <div class="row justify-content-between  m-2 ">
+                    <div class="card" role="button" id="new-state" value="1">
+                        <div class="card-body">
+                            <p><i class="fa-solid fa-circle me-1"></i> New</p>
+                            <p id="count_new"> </p>
+                        </div>
+                    </div>
+                    <div class="card" role="button" id="pending-state" value="2">
+                        <div class="card-body">
+                            <p><i class="fa-regular fa-user me-1"></i> Pending</p>
+                            <p id="count_pending"></p>
+                        </div>
+                    </div>
+                    <div class="card" role="button" id="active-state" value="3">
+                        <div class="card-body">
+                            <p><i class="fa-regular fa-circle-check me-1"></i> Active</p>
+                            <p id="count_active"></p>
+                        </div>
+                    </div>
+                    <div class="card" role="button" id="conclude-state" value="4">
+                        <div class="card-body">
+                            <p><i class="fa-regular fa-clock me-1"></i> Conclude</p>
+                            <p id="count_conclude"></p>
+                        </div>
+                    </div>
+                    <div class="card" role="button" id="toclose-state" value="5">
+                        <div class="card-body">
+                            <p><i class="fa-regular fa-user me-1"></i>To Close</p>
+                            <p id="count_toclose"></p>
+                        </div>
+                    </div>
+                    <div class="card" role="button" id="unpaid-state" value="6">
+                        <div class="card-body">
+                            <p><i class="fa-solid fa-dollar-sign me-1"></i>Unpaid</p>
+                            <p id="count_unpaid"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex flex-row  justify-content-between m-2">
+                    <div>
+                        <h3>Patients <span id="requestState"></span></h3>
+                    </div>
+                    <div class="admin-buttons d-flex ">
+                        <a class="btn me-1" href="#" role="button"><i class="fa-regular fa-paper-plane me-1"></i>Send Link</a>
+                        <a class="btn me-1" asp-controller="Admin" asp-action="adminCreateRequest" role="button"><i class="fa-regular fa-pen-to-square me-1"></i>Create Requests</a>
+
+
+
+                        <button type="submit" id="export" class="btn me-1" value="Export"><i class="fa-solid fa-share me-1"></i>Export</button>
+
+
+                        <a class="btn me-1" id="exportall" role="button"><i class="fa-solid fa-share me-1"></i>Export All</a>
+                        <a class="btn me-1" role="button"><i class="fa-regular fa-user me-1"></i>Request DTY Support</a>
+                    </div>
+
+                </div>
+                <div class="d-flex admin-info-tags ">
+                    <div class="search-inputs d-flex m-2">
+                        <div class="col-md-6 form-floating m-1">
+                            <input type="text" class="form-control search shadow-none" id="floatingInput" placeholder="Search Patients">
+                            <label class="" for="floatingInput"><i class="fa-solid fa-magnifying-glass me-1"></i> Search Patients</label>
+                        </div>
+
+                      
+                        <select name="region" id="region" class="form-select m-2" aria-label="Default select example">
+                            <option selected>Select Regions</option>
+
+
+                        </select>
+                       
+                    </div>
+                    <div class="color-dots d-flex flex-row m-2 p-2">
+                        <a class="p-2 me-1 role" role="button" style="text-decoration: none; color: grey; border:1px solid grey;" data-id="all">All</a>
+                        <a role="button" data-id="2" class="role" style="text-decoration:none; color: black;"><i class="fa-solid fa-circle  me-1 p-2" style="color: #35d016;"></i>Patient</a>
+                        <a role="button" data-id="3" class="role" style="text-decoration:none; color: black;"><i class="fa-solid fa-circle role me-1 p-2" style="color: #FFD43B;"></i>Family/Friend</a>
+                        <a role="button" data-id="1" class="role" style="text-decoration:none; color: black;"><i class="fa-solid fa-circle role me-1 p-2" style="color: #e63368;"></i>Business</a>
+                        <a role="button" data-id="4" class="role" style="text-decoration:none; color: black;"><i class="fa-solid fa-circle role me-1 p-2" style="color: #74C0FC;"></i>Conciege</a>
+                        <a role="button" data-id="5" class="role" style="text-decoration:none; color: black;"><i class="fa-solid fa-circle role me-1 p-2" style="color: #B197FC;"></i>VIP</a>
+
+                    </div>
+
+                </div>
+                <div id="tableContainer">
+                </div>
+            </div>
+
+
+       
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"> </script>
+
+    <script>
+        $(document).ready(function () {
+           
+
+                $.ajax({
+                    url: '/Admin/getAllRegions',
+                    type: 'GET',
+                   
+                    success: function (data) {
+                    var regionDropdown = $('#region');
+                    regionDropdown.empty();
+                    regionDropdown.append($('<option></option>').text("Select Regions"));
+                    $.each(data, function (index, region) {                
+                        regionDropdown.append($('<option></option>').attr('value', region.regionId).text(region.name));
+                    });
+                    }
+                });
+
+
+        });
+
+    </script>
+
+    <script>
+        var regionId;
+        var patient_name;
+        var type;
+        var typeid;
+        var requestState = "";
+        var pagenumber;
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#new-state').trigger('click');
+            }, 1);
+          
+            $('.card').click(function () {
+                type = $(this).attr("value");
+
+                fetchData();
+            });
+            $('#region').change(function () {
+
+                regionId = $('#region').val();
+
+                fetchData();
+            });
+            $('.search').change(function () {
+                patient_name = $('.search').val();
+
+                fetchData();
+            });
+            $('.role').click(function () {
+                typeid = $(this).attr("data-id");
+
+                fetchData();
+            });
+
+            function fetchData() {
+                
+                $.ajax({
+                    url: "/Admin/adminTableData",
+                    method: "POST",
+                    data: { "type": type, "regionId": regionId, "patient_name": patient_name, "typeid": typeid, 'pagesize': 3, 'pagenumber': pagenumber },
+
+                    success: function (data) {
+                        $('#tableContainer').html(data);
+                    },
+                    error: function () {
+
+                    }
+                });
+
+
+                switch (type) {
+                    case "1":
+                        requestState = "(New)";
+
+                        break;
+                    case "2":
+                        requestState = "(Pending)";
+                        break;
+                    case "3":
+                        requestState = "(Active)";
+                        break;
+                    case "4":
+                        requestState = "(Conclude)";
+                        break;
+                    case "5":
+                        requestState = "(To Close)";
+                        break;
+                    case "6":
+                        requestState = "(Unpaid)";
+                        break;
+                    default:
+                        requestState = "";
+                        break;
+                }
+                $('#requestState').text(requestState);
+
+
+            }
+
+            $.ajax({
+                url: "/Admin/getCountNumber",
+                method: "GET",
+
+                success: function (data) {
+                    $('#count_new').html(data[0]);
+                    $('#count_pending').html(data[1]);
+                    $('#count_active').html(data[2]);
+                    $('#count_conclude').html(data[3]);
+                    $('#count_toclose').html(data[4]);
+                    $('#count_unpaid').html(data[5]);
+
+                },
+                error: function () {
+
+                }
+            });
+
+        });
+    </script>
+    <script>
+
+
+        $(document).ready(function () {
+            var type;
+
+            $('.card').click(function () {
+                type = $(this).attr("value");
+
+            });
+
+            $("#exportall").click(function () {
+                $.ajax({
+                    url: "/Admin/ExportAll",
+                    method: "POST",
+                    data: { "type": type },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (data) {
+                        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'data.xlsx';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+
+
+    </script>
+    <script>
+
+
+        $(document).ready(function () {
+            var regionId;
+            var patient_name;
+            var type;
+            var typeid;
+            $('.card').click(function () {
+                type = $(this).attr("value");
+
+
+            });
+            $('#region').change(function () {
+
+                regionId = $('#region').val();
+
+            });
+            $('.search').change(function () {
+                patient_name = $('.search').val();
+
+            });
+            $('.role').click(function () {
+                typeid = $(this).attr("data-id");
+
+
+            });
+
+
+            $("#export").click(function () {
+                $.ajax({
+                    url: "/Admin/Export",
+                    method: "POST",
+                    data: { "type": type, "regionId": regionId, "patient_name": patient_name, "typeid": typeid },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (data) {
+                        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'data.xlsx';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+        });
+
+
+    </script>
+   
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @if (ViewBag.LoginSuccess != null && ViewBag.LoginSuccess ||
+    ViewBag.CancelNote != null && ViewBag.CancelNote ||
+    TempData["CancelNote"] != null && (bool)TempData["CancelNote"] == true ||
+    TempData["AssignNote"] != null && (bool)TempData["AssignNote"] == true ||
+    TempData["BlockNote"] != null && (bool)TempData["BlockNote"] == true ||
+    TempData["ClearCase"] != null && (bool)TempData["ClearCase"] == true)
+    {
+        string message = "";
+
+
+        @if (ViewBag.LoginSuccess != null && ViewBag.LoginSuccess)
+        {
+            message = "Admin logged in successfully!";
+        }
+        else if (ViewBag.CancelNote != null && ViewBag.CancelNote)
+        {
+            message = "Request Cancelled successfully!";
+        }
+        else if (TempData["CancelNote"] != null && (bool)TempData["CancelNote"] == true)
+        {
+            message = "Request Cancelled successfully!";
+        }
+        else if (TempData["AssignNote"] != null && (bool)TempData["AssignNote"] == true)
+        {
+            message = "Request Assigned successfully!";
+        }
+        else if (TempData["BlockNote"] != null && (bool)TempData["BlockNote"] == true)
+        {
+            message = "Request Blocked successfully!";
+        }
+        else if (TempData["ClearCase"] != null && (bool)TempData["ClearCase"] == true)
+        {
+            message = "Request Cleared successfully!";
+        }
+
+
+        <script>
+            $(document).ready(function () {
+
+
+                var toastHTML = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">' +
+
+                    '<div class="toast-body bg-success text-white">' + '@message' + '</div>' +
+                    '</div>';
+
+
+                $('#toast-container').append(toastHTML);
+
+                $('.toast').toast('show');
+            });
+        </script>
+    }
+
+
+
+</body>
+</html>

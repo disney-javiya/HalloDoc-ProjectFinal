@@ -1,0 +1,22 @@
+﻿<div class="header d-flex justify-content-between">
+    <div class="logo-img">
+        <img class="img-fluid logo-patient-dashboard-main" src="/images/logo_dark.png" alt="">
+    </div>
+
+    <div class="dark d-flex dashboard-right">
+        <!-- <i class="fa-solid fa-bars menu-bar p-3 m-2" onclick="openNav()"></i> -->
+        <p class="mt-4 p-2 dashboard-profile-name">Welcome @ViewBag.Data</p>
+        <a role="button" class="logout-btn mt-4 p-2" asp-controller="Home" asp-action="logOut">Logout</a>
+        <button class="btn " onclick="darkMode()" style="border: none;"><i class="fa-regular fa-moon dark-icon p-1"></i></button>
+    </div>
+</div>
+<div class="tab-dashboard mt-1">
+    <ul class="nav m-2">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="patientDashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Home" asp-action="patientProfile">Profile</a>
+        </li>
+    </ul>
+</div>

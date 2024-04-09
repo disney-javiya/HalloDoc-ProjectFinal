@@ -1,0 +1,314 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.createPatientRequest;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <title>Create Patient Request</title>
+</head>
+
+<body>
+
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
+        <header>
+            <partial name="admin_dashboard_header" />
+        </header>
+        <form method="post" >
+            <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+                <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+                    <div class="col  d-flex justify-content-between ">
+                        <h3>Encounter Form</h3>
+                        <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="adminDashboard"> < Back</a>
+
+                    </div>
+                    <div class="col">
+                        <h3 style="color:#01bce9; text-align:center;"><b>Medical Report-Confidential</b></h3>
+                    </div>
+
+                    
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input  type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input  type="text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+                          
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 gy-3">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea"></textarea>
+                            <label class="symptoms-create-patient-text" for="floatingTextarea">Location</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input  type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="dob-create-patient-text" for="floatingInput">Date</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 gy-3 ">
+                        <div class="form-floating mb-3">
+
+                            <input class=" form-control contact-create-patient shadow-none" id="phone" type="tel" />
+                            <label class="contact-create-patient-text" for="phone"> </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input  type="email" id="email" class="form-control email-create-patient shadow-none" id="floatingInput" mailto:placeholder="name@example.com">
+                            <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">History of Present Illness or Injury</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Medical History</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Medications</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Allergies</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Temp</label>
+
+                        </div>
+                    </div>
+                     <div class="col-md-4 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">HR</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">RR</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Blood Pressure(S)</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Blood Pressure(D)</label>
+
+                        </div>
+                    </div>
+                       
+                 
+                    <div class="col-md-4 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">O2</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Pain</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Heent</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">CV</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Chest</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">ABD</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Extr</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Skin</label>
+
+                        </div>
+                    </div>
+                     <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Neuro</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Other</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Diagnosis</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Treatment Plan</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Medications Dispensed</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Procedures</label>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 gy-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                            <label class="street-create-patient-text" for="floatingInput">Followup</label>
+
+                        </div>
+                    </div>
+                   
+
+                    
+                    <div class="col d-flex justify-content-end mb-2">
+                        <button class="btn submit-btn-create-patient me-2">Save Changes</button>
+                        <button class="me-2 p-2" style="color: white; background:purple; border:none; border-radius:5px;">Finalize</button>
+                        <button class="btn cancel-btn-create-patient ms-1">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+        <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
+            <partial name="admin_dashboard_footer" />
+        </footer>
+    </div>
+    <script src="/js/custom.js"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+    </script>
+
+
+
+
+</body>
+
+</html>

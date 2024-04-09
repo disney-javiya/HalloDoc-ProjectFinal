@@ -1,0 +1,183 @@
+﻿@model IEnumerable<HalloDoc.DataAccessLayer.DataModels.RequestWiseFile>
+@using Microsoft.AspNetCore.Http;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>View Documents Page</title>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between view-documents-main full-content">
+        <header>
+            <partial name="dashboard_header" />
+        </header>
+        <main>
+
+            <div class="main-viewdocuments d-flex flex-column">
+                <div class="view-documents d-flex flex-column  container">
+                    <div class="d-flex flex-row" >
+                        <h3>Documents</h3>
+                        <a asp-controller="Home" asp-action="patientDashboard" role="btn" class="back-btn p-1 ms-auto mb-2">Back</a>
+                    </div>
+                    <p>Patient Name</p>
+                    <b class="name-patient">@ViewBag.pname (@ViewBag.num)</b>
+                    <p>Check here for any files that you or the doctors of your subsequents requestors have attached for you to review.</p>
+                    <form method="post" enctype="multipart/form-data" action="@Url.Action("UploadFiles", "Home", new { requestId =  Context.Request.Query["requestId"]})">
+                        <input type="file" name="files" id="real-file" hidden="hidden" multiple />
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="text" id="custom-text" aria-label="readonly input example" value="Select File" readonly>
+                            <button class="btn btn-info" type="button" id="custom-button">
+                                <i class="bi bi-cloud-arrow-up"></i> Upload
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="download d-flex flex-row">
+                        <h3>Documents</h3>
+                        <button id="downloadAllBtn" class="download-btn p-1 ms-auto mb-2">Download All</button>
+                    </div>
+
+                    <div class="data-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkAll">
+                                            <label class="form-check-label" for="">
+                                              
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <th scope="col">Uploader</th>
+                                    <th scope="col">Upload Date</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input check" type="checkbox" value="@item.RequestWiseFileId" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FileName)
+                                        </td>
+                                        <td>
+                                            @if(item.AdminId == null)
+                                            {
+                                                @Html.DisplayFor(modelItem => item.RequestId)
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => item.AdminId)
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("DownloadFile", "Home", new { fileId = item.RequestWiseFileId })" class="btn upload-btn-create-patient">
+                                                <i class="fa-solid fa-cloud-arrow-up me-2" style="color: #ffffff;"></i>
+                                              
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="d-flex justify-content-center align-items-baseline">
+            <partial name="dashboard_footer" />
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/custom.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("downloadAllBtn").addEventListener("click", function () {
+                var checkedFiles = document.querySelectorAll(".check:checked");
+
+                var fileIds = [];
+                var requestId = @Model.FirstOrDefault()?.RequestId ?? null;
+                checkedFiles.forEach(function (file) {
+
+                    fileIds.push(file.value);
+                    
+                });
+               
+                var url = "@Url.Action("DownloadFiles", "Home")";
+                if (fileIds.length > 0) {
+                   
+                    url += "?fileIds=" + fileIds.join(",");
+                } else if (requestId != null) {
+                    url += "?requestId=" + requestId;
+                }
+                window.location.href = url;
+            });
+        });
+    </script>
+    <script>
+        let file = document.getElementById("real-file");
+        const customBtn = document.getElementById("custom-button");
+        const customTxt = document.getElementById("custom-text");
+
+        customBtn.addEventListener("click", function () {
+            file.click();
+        });
+
+        file.addEventListener("change", function () {
+            var i;
+            var filename = "";
+            for (i = 0; i < file.files.length; i++) {
+                filename = filename + " " + file.files[i].name;
+            }
+            if (file.files.length) {
+                customTxt.setAttribute("value", filename);
+                // Automatically submit the form when files are selected
+                this.closest('form').submit();
+            } else {
+                customTxt.setAttribute("value", "Select File");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var checkAll = document.getElementById("checkAll");
+            if (checkAll) {
+                checkAll.addEventListener("click", function () {
+                    var checkboxes = document.querySelectorAll(".check");
+                    checkboxes.forEach(function (checkbox) {
+                        checkbox.checked = checkAll.checked;
+                    });
+                });
+            }
+        });
+
+
+
+    </script>
+  
+
+
+</body>
+</html>
