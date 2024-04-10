@@ -26,3 +26,17 @@ C:\Users\pce88\Downloads\HalloDoc-MVC-changes\HalloDoc-MVC-changes\HalloDoc.Data
 C:\Users\pce88\Downloads\HalloDoc-MVC-changes\HalloDoc-MVC-changes\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.pdb
 C:\Users\pce88\Downloads\HalloDoc-MVC-changes\HalloDoc-MVC-changes\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.genruntimeconfig.cache
 C:\Users\pce88\Downloads\HalloDoc-MVC-changes\HalloDoc-MVC-changes\HalloDoc.DataAccessLayer\obj\Debug\net7.0\ref\HalloDoc.DataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\bin\Debug\net7.0\HalloDoc.DataAccessLayer.deps.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\bin\Debug\net7.0\HalloDoc.DataAccessLayer.runtimeconfig.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\bin\Debug\net7.0\HalloDoc.DataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\bin\Debug\net7.0\HalloDoc.DataAccessLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.csproj.AssemblyReference.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.AssemblyInfoInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.AssemblyInfo.cs
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.csproj.CoreCompileInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\refint\HalloDoc.DataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\HalloDoc.DataAccessLayer.genruntimeconfig.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc.DataAccessLayer\obj\Debug\net7.0\ref\HalloDoc.DataAccessLayer.dll

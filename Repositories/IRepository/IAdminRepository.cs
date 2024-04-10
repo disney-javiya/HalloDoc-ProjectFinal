@@ -1,6 +1,7 @@
 ﻿using HalloDoc.DataAccessLayer.DataModels;
 using HalloDoc.DataAccessLayer.DataModels.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
@@ -140,8 +141,21 @@ namespace Repository.IRepository
         public List<Smslog> SMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate);
 
         public List<ShiftDetailsModel> getshiftDetail();
-        //public ShiftDetailsModel getViewShiftData(int id, int regid);
-        //public Shift getShiftByID(int shiftid);
-        //public List<Physician> getPhysicianListByregion(int regid);
+        public ShiftDetailsModel getViewShiftData(int id);
+        public Shift getShiftByID(int shiftid);
+        public List<Physician> getPhysicianListByregion(int regid);
+        public ShiftDetail getShiftDetailByShiftDetailId(int id);
+        public void UpdateShiftDetailData(ShiftDetailsModel model, string email);
+        public void DeleteShiftDetails(int id, string email);
+
+
+        public void UpdateShiftDetailTable(ShiftDetail sd);
+        public void UpdateShiftDetailsStatus(int id);
+        public Admin getAdminTableDataByEmail(string? email);
+        public ShiftDetailsModel getReviewShiftData(int reg);
+        public void ApproveShift(string[] selectedShifts);
+        public void DeleteShift(string[] selectedShifts);
+        public ShiftDetailsModel SchedulingMonth(int monthNum)
+        ;
     }
 }

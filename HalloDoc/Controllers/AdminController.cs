@@ -27,8 +27,7 @@ using Twilio.Http;
 using System.Reflection;
 using System.Configuration.Provider;
 using System.Web.Helpers;
-
-
+using System.Globalization;
 
 namespace HalloDoc.Controllers
 {
@@ -1261,7 +1260,7 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.insertShift(s, checktoggle, dayList, ViewBag.Data);
 
-            return RedirectToAction("adminScheduling");
+            return RedirectToAction("providerSchedulingDayWise");
         }
         [CustomeAuthorize("Admin")]
         public IActionResult providerLocation()
@@ -1440,10 +1439,71 @@ namespace HalloDoc.Controllers
 
             return model;
         }
-        //public IActionResult _ViewShiftModal(int id, int regid)
-        //{
-        //    return View(_adminRepository.getViewShiftData(id, regid));
-        //}
+        public IActionResult _ViewShiftModal()
+        {
+            return View();
+        }
+        public IActionResult _AddShiftModal()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult _ViewShiftModal(int id)
+        {
+            ShiftDetailsModel res =_adminRepository.getViewShiftData(id);
+            return View(res);
+        }
+        [HttpPost]
+        public IActionResult UpdateShiftDetailData(ShiftDetailsModel model)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _adminRepository.UpdateShiftDetailData(model,ViewBag.Data);
+            return RedirectToAction(nameof(ProviderSchedulingDayWise));
+        }
+        public IActionResult DeleteShiftDetails(int id)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _adminRepository.DeleteShiftDetails(id, ViewBag.Data);
+;
+            return RedirectToAction(nameof(ProviderSchedulingDayWise));
+        }
+        public IActionResult ApproveShift(string[] selectedShifts)
+        {
+            _adminRepository.ApproveShift(selectedShifts);
+            return RedirectToAction("ShiftForReview");
+        }
+        public IActionResult DeleteShift(string[] selectedShifts)
+        {
+            _adminRepository.DeleteShift(selectedShifts);
+            return RedirectToAction("ShiftForReview");
+        }
+        public IActionResult UpdateShiftStatus(int id)
+        {
+            _adminRepository.UpdateShiftDetailsStatus(id)
+;
+            return RedirectToAction(nameof(ProviderSchedulingDayWise));
+        }
+      
+        public IActionResult ShiftForReview(int reg = 0)
+        {
+
+            return View(_adminRepository.getReviewShiftData(reg));
+        }
+
+        public void SchedulingMonth(string month)
+        {
+            int monthNum = DateTime.ParseExact(month, "MMMM", CultureInfo.CurrentCulture).Month;
+
+            _adminRepository.SchedulingMonth(monthNum);
+
+        }
+
+
+
+
+
+
+
         public IActionResult logOut()
         {
 

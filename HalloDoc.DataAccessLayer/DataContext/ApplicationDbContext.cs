@@ -212,6 +212,8 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("Physician_CreatedBy_fkey");
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PhysicianModifiedByNavigations).HasConstraintName("Physician_ModifiedBy_fkey");
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Physicians).HasConstraintName("Physician_RegionId_fkey");
         });
 
         modelBuilder.Entity<PhysicianLocation>(entity =>

@@ -402,8 +402,8 @@ namespace Repository
         {
             return _context.Regions.ToList();
         }
-        public List<ShiftDetailsModel> getshiftDetail()        {            var data = from sd in _context.ShiftDetails                       join                       s in _context.Shifts on sd.ShiftId equals s.ShiftId                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId                       join reg in _context.Regions on sd.RegionId equals reg.RegionId                       select new ShiftDetailsModel                       {                           PhysicianName = phy.FirstName + " " + phy.LastName,                           Physicianid = phy.PhysicianId,                           RegionName = reg.Name,                           Status = sd.Status,                           Starttime = sd.StartTime,                           Endtime = sd.EndTime,                           Shiftdate =DateOnly.FromDateTime(sd.ShiftDate),
-                                      Shiftdetailid = sd.ShiftDetailId,                       };            return data.ToList();        }
+        public List<ShiftDetailsModel> getshiftDetail()        {            var data = from sd in _context.ShiftDetails                       join                       s in _context.Shifts on sd.ShiftId equals s.ShiftId                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId                       join reg in _context.Regions on sd.RegionId equals reg.RegionId where sd.IsDeleted == new BitArray(new bool[] {false})                       select new ShiftDetailsModel                       {                           PhysicianName = phy.FirstName + " " + phy.LastName,                           Physicianid = phy.PhysicianId,                           RegionName = reg.Name,                           Status = sd.Status,                           Starttime = sd.StartTime,                           Endtime = sd.EndTime,                           Shiftdate =DateOnly.FromDateTime(sd.ShiftDate),
+                                                       Shiftdetailid = sd.ShiftDetailId,                       };            return data.ToList();        }
 
         public List<RequestandRequestClient> getFilterByRegions(IEnumerable<RequestandRequestClient> r, int regionId)
         {
@@ -1836,7 +1836,7 @@ namespace Repository
                     shiftdetail1.RegionId = s.RegionId;
                     shiftdetail1.StartTime = s.StartTime;
                     shiftdetail1.EndTime = s.EndTime;
-                    shiftdetail1.IsDeleted = new BitArray(new bool[] { true });
+                    shiftdetail1.IsDeleted = new BitArray(new bool[] { false });
 
 
 
@@ -2259,24 +2259,89 @@ namespace Repository
 
             return res;
         }
-        //public ShiftDetail getShiftDetailByShiftDetailId(int id)
-        //{
-        //    return _context.ShiftDetails.FirstOrDefault(e => e.ShiftDetailId == id && e.IsDeleted != new BitArray(1, true));
-        //}
-        //public void UpdateShiftDetail(ShiftDetail sd)
-        //{
-        //    _context.ShiftDetails.Update(sd);
-        //    _context.SaveChanges();
-        //}
-        //public Shift getShiftByID(int shiftid)        //{        //    return _context.Shifts.FirstOrDefault(e => e.ShiftId == shiftid);        //}
-        //public List<Physician> getPhysicianListByregion(int regid)        //{        //    return _context.Physicians.Where(m => m.RegionId == regid && m.IsDeleted == null).ToList();        //}
+        public ShiftDetail getShiftDetailByShiftDetailId(int id)
+        {
+            return _context.ShiftDetails.FirstOrDefault(e => e.ShiftDetailId == id && e.IsDeleted != new BitArray(1, true));
+        }
+       
+        public Shift getShiftByID(int shiftid)        {            return _context.Shifts.FirstOrDefault(e => e.ShiftId == shiftid);        }
+        public List<Physician> getPhysicianListByregion(int regid)        {            return _context.Physicians.Where(m => m.RegionId == regid && m.IsDeleted == null).ToList();        }
 
-        //public ShiftDetailsModel getViewShiftData(int id, int regid)        //{        //    ShiftDetailsModel model = new ShiftDetailsModel();        //    ShiftDetail sd = getShiftDetailByShiftDetailId(id);
-                    //    Shift s = getShiftByID(sd.ShiftId);        //    if (regid != 0)        //    {        //        model.RegionId = regid;        //        model.physicians = getPhysicianListByregion(regid);        //    }        //    else        //    {        //        model.RegionId = (int)sd.RegionId;        //        model.physicians = GetAllPhysicians();        //    }        //    DateOnly date = DateOnly.Parse(sd.ShiftDate.ToString("yyyy-MM-dd"));        //    model.regions = getAllRegions();        //    model.Shiftdate = date;        //    model.Physicianid = s.PhysicianId;        //    model.shiftData = s;        //    model.ShiftDetailData = sd;        //    return model;        //}
+        public ShiftDetailsModel getViewShiftData(int id)        {            ShiftDetailsModel model = new ShiftDetailsModel();            ShiftDetail sd = getShiftDetailByShiftDetailId(id);
+
+            Shift s = getShiftByID(sd.ShiftId);            model.RegionId = (int)sd.RegionId;
+            model.physicians = GetAllPhysicians();
 
 
-      
+            DateOnly date = DateOnly.Parse(sd.ShiftDate.ToString("yyyy-MM-dd"));            model.regions = getAllRegions();            model.Shiftdate = date;            model.Physicianid = s.PhysicianId;            model.shiftData = s;            model.ShiftDetailData = sd;            return model;        }
 
 
+        public void UpdateShiftDetailData(ShiftDetailsModel model, string email)
+        {
+
+            Admin admin = getAdminTableDataByEmail(email)
+;
+            ShiftDetail sd = getShiftDetailByShiftDetailId(model.ShiftDetailData.ShiftDetailId);
+            sd.ModifiedBy = admin.AspNetUserId.ToString();
+            sd.StartTime = model.ShiftDetailData.StartTime;
+            sd.EndTime = model.ShiftDetailData.EndTime;
+            sd.ShiftDate = model.ShiftDetailData.ShiftDate;
+            sd.ModifiedDate = DateTime.Now;
+            _context.SaveChanges();
+        }
+        public void DeleteShiftDetails(int id, string email)
+        {
+            Admin admin = getAdminTableDataByEmail(email);
+            ShiftDetail sd = getShiftDetailByShiftDetailId(id);
+            sd.ModifiedBy = admin.AspNetUserId.ToString();
+            sd.IsDeleted = new BitArray(1, true);
+            sd.ModifiedDate = DateTime.Now;
+            UpdateShiftDetailTable(sd);
+        }
+
+        public void UpdateShiftDetailTable(ShiftDetail sd)        {            _context.ShiftDetails.Update(sd);            _context.SaveChanges();        }
+        public void UpdateShiftDetailsStatus(int id)
+        {
+            ShiftDetail sd = getShiftDetailByShiftDetailId(id)
+;
+            if (sd.Status == 0)
+            {
+                sd.Status = 1;
+            }
+            else
+            {
+                sd.Status = 0;
+            }
+            UpdateShiftDetailTable(sd);
+        }
+        public ShiftDetailsModel getReviewShiftData(int reg)
+        {
+            return new ShiftDetailsModel
+            {
+                regions = getAllRegions(),
+                shiftdetail = getShiftDetailByRegion(reg),
+                RegionId = reg
+            };
+
+        }
+        public List<ShiftDetail> getShiftDetailByRegion(int reg)        {
+            if (reg != 0)
+                return _context.ShiftDetails.Where(e => e.Status == 0 && e.IsDeleted == new BitArray(1, false) && e.RegionId == reg).Include(e => e.Shift).ThenInclude(e => e.Physician).ThenInclude(e => e.Region).ToList();
+            else
+                return _context.ShiftDetails.Where(e => e.Status == 0 && e.IsDeleted == new BitArray(1, false)).Include(e => e.Shift).ThenInclude(e => e.Physician).ThenInclude(e => e.Region).ToList();        }
+        public Admin getAdminTableDataByEmail(string? email)        {            return _context.Admins.FirstOrDefault(a => a.Email == email);        }
+        public void ApproveShift(string[] selectedShifts)        {            var shifts = selectedShifts[0].Split(',');            foreach (var shift in shifts)            {                ShiftDetail shiftdetail = getShiftDetailByShiftDetailId(int.Parse(shift));                shiftdetail.Status = 1;                UpdateShiftDetailTable(shiftdetail);            }        }
+        public void DeleteShift(string[] selectedShifts)        {            var shifts = selectedShifts[0].Split(',');            foreach (var shift in shifts)
+            {                ShiftDetail shiftdetail = getShiftDetailByShiftDetailId(int.Parse(shift));                shiftdetail.IsDeleted = new BitArray(1, true);                UpdateShiftDetailTable(shiftdetail);            }        }
+        public ShiftDetailsModel SchedulingMonth(int monthNum)
+        {
+            return new ShiftDetailsModel
+            {
+                regions = getAllRegions(),
+                shiftdetail = _context.ShiftDetails.Where(e => e.Status == 0 && e.IsDeleted == new BitArray(1, false) && e.ShiftDate.Month == monthNum).Include(e => e.Shift).ThenInclude(e => e.Physician).ThenInclude(e => e.Region).ToList(),
+              
+                  
+            };
+        }
     }
 }

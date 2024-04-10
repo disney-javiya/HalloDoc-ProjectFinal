@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="~/css/Scheduling.css" />
 <script src="~/js/daypilot-all.min.js"></script>
 
-<link rel="stylesheet" href="~/css/Scheduling.css" />
 <script src="~/js/daypilot-all.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,9 +50,9 @@
 
                     <div>
                         <button class="btn btn-info text-white me-2">Providers On Call</button>
-                        <button class="btn btn-info text-white me-2">Shifts for Review</button>
+                                <a class="btn btn-info text-white me-2" asp-controller="Admin" asp-action="ShiftForReview">Shifts for Review</a>
                       @*   <button class="btn btn-info text-white me-1" onclick="ModalofShift()">Add New Shift</button> *@
-                                <a role="button" id="create-shift" data-bs-toggle="modal" data-bs-target="#modalShift" style="height:fit-content; border:none;" class="create-provider-btn  p-1  mb-3">Add New Shift</a>
+                                <a role="button" id="create-shift" data-bs-toggle="modal" data-bs-target="#modalShift"  class="btn btn-info text-white me-2">Add New Shift</a>
                     </div>
 
                 </div>
@@ -96,7 +95,6 @@
 </div>
 <div id="modalpopup">
 </div>
-
 
     <!--For create shift-->
     <div class="modal" id="modalShift">
@@ -181,6 +179,11 @@
         </div>
     </div>
 
+
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
@@ -188,6 +191,51 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Admin/getAllRegions',
+                type: 'GET',
+                success: function (data) {
+
+                    var regionDropdown = $('.region');
+                    regionDropdown.empty();
+                    regionDropdown.append($('<option></option>').text("Select Region"));
+                    $.each(data, function (index, RegionId) {
+                        regionDropdown.append($('<option></option>').attr('value', RegionId.regionId).text(RegionId.name));
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.region').change(function () {
+                var regionId = $(this).val();
+
+                $.ajax({
+                    url: '/Admin/GetPhysicians',
+                    type: 'GET',
+                    data: { regionId: regionId },
+                    success: function (data) {
+
+                        var physicianDropdown = $('#physician');
+                        physicianDropdown.empty();
+                        physicianDropdown.append($('<option></option>').text("Select Physicians"));
+                        $.each(data, function (index, PhysicianId) {
+                            physicianDropdown.append($('<option></option>').attr('value', PhysicianId.physicianId).text(PhysicianId.firstName + "  " + PhysicianId.lastName));
+                        });
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+
+
 <script>
     function ModalofShift() {
         console.log("dfdf");
@@ -240,14 +288,28 @@
         timeRangeSelectedHandling: "Disabled",
         eventMoveHandling: "Disabled",
         eventResizeHandling: "Update",
-        onEventResized: (args) => {
-            args.control.message("Event resized: " + args.e.text());
-        },
-        eventDeleteHandling: "Update",
-        onEventDeleted: (args) => {
-            args.control.message("Event deleted: " + args.e.text());
-        },
-        eventClickHandling: "Disabled",
+        
+        eventClickHandling: "Enabled",
+            onEventClicked: (args) => {
+
+                $.ajax({
+                    url: "/Admin/_ViewShiftModal",
+                    data: { 'id': args.e.data.id },
+                    type: "GET",
+                    dataType: "html",
+                    success: function (data) {
+
+
+                        $("#modalpopup").html(data);
+
+                    },
+                    error: function () {
+                        alert("No Projects Found");
+                        $("#tableContent").html('An error has occurred');
+                    }
+                });
+
+            },
         eventHoverHandling: "Bubble",
         bubble: new DayPilot.Bubble({
             onLoad: (args) => {

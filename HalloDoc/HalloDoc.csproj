@@ -5,6 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Admin\_AddShiftModal.cshtml" />
+    <Content Remove="Views\Shared\_ViewShiftModal.cshtml" />
+  </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.2" />

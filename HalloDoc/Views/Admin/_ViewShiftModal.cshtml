@@ -1,5 +1,16 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ShiftDetailsModel
+@{
+    Layout = null;
+}
 <!-- Modal -->
+<script>
+    $(document).ready(function () {
+        var myModalAssign = new bootstrap.Modal(document.getElementById('accept'));
+        myModalAssign.show();
+    });
+
+
+    </script>
 <div class="modal fade" id="accept" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -35,7 +46,7 @@
 
                         <div class="col-12">
                             <div class="form-floating mb-3 inp custom-date-input">
-                                <input asp-for=Shiftdate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
+                                <input asp-for=ShiftDetailData.ShiftDate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
                                 <label for="floatingInput-4" class="view-shift-label">Shift Date</label>
                             </div>
                         </div>
@@ -58,21 +69,25 @@
                         <span id="startTimeSpan" class="text-danger hide">Start Time & End Time Cannot be Same!!!</span>
                     </div>
                     <div class="modal-footer">
-                        <a asp-action="UpdateShiftStatus" asp-controller="Admin" asp-route-id="ShiftDetailData.Shiftdetailid"><button type="button" id="cancelbtn" class="btn btn-info text-white">Return</button></a>
+                        <a href=" @Url.Action("UpdateShiftStatus", "Admin", new { id = Model.ShiftDetailData.ShiftDetailId})" @* asp-action="UpdateShiftStatus" asp-controller="Admin" asp-route-id="ShiftDetailData.ShiftDetailId" *@><button type="button" id="" class="btn btn-info text-white">Return</button></a>
                         <button type="button" id="edit" class="btn btn-info text-white" onclick="EditData()">Edit</button>
-                        <button type="button" id="save" class="btn btn-info text-white" style="display:none">Save</button>
-                        <a asp-action="DeleteShiftDetails" asp-controller="Admin" asp-route-id="ShiftDetailData.Shiftdetailid"><button type="button" id="cancelbtn" class="btn btn-danger text-white" data-bs-dismiss="modal">Delete</button></a>
+                        <button type="submit" id="save" class="btn btn-info text-white" style="display:none">Save</button>
+                        <a href=" @Url.Action("DeleteShiftDetails", "Admin", new { id = Model.ShiftDetailData.ShiftDetailId})" @* asp-action="DeleteShiftDetails" asp-controller="Admin" asp-route-id="ShiftDetailData.ShiftDetailId" *@><button type="button" id="cancelbtn" class="btn btn-danger text-white" data-bs-dismiss="modal">Delete</button></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
 <script>
-    $(document).ready(function () {
-        var myModalAssign = new bootstrap.Modal(document.getElementById('accept'));
-        myModalAssign.show();
-    });
+
     $('#cancelbtn').click(function (e) {
         $("#modalpopup").remove();
         $(".modal-backdrop").remove();
