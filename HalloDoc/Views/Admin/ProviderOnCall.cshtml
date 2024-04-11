@@ -1,0 +1,87 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ShiftDetailsModel
+@{
+    Layout = "_AdminHeader";
+    bool flag = false;
+    bool flag1 = false;
+}
+<div class="container ">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="d-flex justify-content-between mt-3">
+                <h4 class="mt-3">MDs On Call</h4>
+                <a class="text-start text-info text-decoration-none " asp-action="ProviderSchedulingDayWise" asp-controller="Admin">
+                    <button class="btn btn-white  text-info border-info rounded ">
+                        <i class="fa-solid  fa-less-than"></i> Back
+                    </button>
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-between my-3">
+            <div class="col-md-4 col-sm-12 p-0 mb-3">
+                <select class="form-select form-select-lg" id="Regions">
+                    <option selected><i class="fa fa-search text-muted position-absolute" style="padding-top:10px; padding-left:10px;"></i>All Regions</option>
+                </select>
+            </div>
+            <div class="col-sm-12 col-md-6 text-end">
+                <a asp-action="ProviderSchedulingDayWise" asp-controller="Admin"><button class="btn btn-info text-white me-1">Calender View</button></a>
+                <a asp-action="ShiftForReview" asp-controller="Admin"><button class="btn btn-info text-white">Shifts for Review</button></a>
+            </div>
+        </div>
+        <div class="container bg-white shadow-lg rounded-2">
+            <div class="row">
+
+                <div class="h5 my-4">MD's On Call</div>
+                @foreach (var i in Model.physicians)
+                {
+                    foreach (var s in i.Shifts)
+                    {
+
+                        if (s.ShiftDetails.Count() != 0)
+                        {
+                            flag = true;
+                        }
+
+                    }
+                    if (flag)
+                    {
+                        var str = i.Photo != null ? "/AdminFiles/" + i.PhysicianId + "/" + "Photo.jpg" : "/AdminFiles/" + "user.png";
+                        <div class="col-sm-12 col-md-4 mb-3 ">
+                            <img src=@str style="height : 50px;width : 50px" />
+                            <span>@i.FirstName  @i.LastName</span>
+                        </div>
+                    }
+                    flag = false;
+                }
+
+                <div class="h5 my-4">Physician Off Duty</div>
+                @foreach (var i in Model.physicians)
+                {
+                    if (i.Shifts.Count() == 0)
+                        flag1 = true;
+
+                    foreach (var s in i.Shifts)
+                    {
+                        if (s.ShiftDetails.Count() != 0)
+                        {
+                            flag1 = false;
+                            break;
+                        }
+                        else flag1 = true;
+
+                    }
+                    if (flag1)
+                    {
+                        var str = i.Photo != null ? "/AdminFiles/" + i.PhysicianId + "/" + "Photo.jpg" : "/AdminFiles/" + "user.png";
+                        <div class="col-sm-12 col-md-4 mb-3">
+                            <img src=@str style="height : 50px;width : 50px" />
+                            <span>@i.FirstName  @i.LastName</span>
+                        </div>
+                    }
+                    flag1 = false;
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+

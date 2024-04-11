@@ -1,10 +1,9 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.RequestClient
-@using Microsoft.AspNetCore.Http;
 
 @{
-    Layout = null;
+    Layout = "_AdminHeader";
 }
-
+@* 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
     <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between  admin-dashboard-main full-content">
         <header>
             <partial name="admin_dashboard_header" />
-        </header>
+        </header> *@
         <main>
             <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
 
@@ -126,7 +125,7 @@
             </div>
         </main>
 
-        <footer class="d-flex justify-content-end align-items-baseline ">
+@*         <footer class="d-flex justify-content-end align-items-baseline ">
             <partial name="admin_dashboard_footer" />
         </footer>
     </div>
@@ -137,7 +136,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> *@
 
     <script>
         const phoneInputField = document.querySelector("#phone");
@@ -165,5 +164,5 @@
             cancelBtn.style.display = "none";
         }
     </script>
-</body>
-</html>
+@* </body>
+</html> *@

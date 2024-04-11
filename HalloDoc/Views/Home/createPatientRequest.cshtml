@@ -1,9 +1,9 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.patientInfo;
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
+@* <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,7 +27,7 @@
     <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
         <header>
             <partial name="Request_header" />
-        </header>
+        </header> *@
             <form method="post" asp-controller="Home" asp-action="createPatientRequest" enctype="multipart/form-data">
         <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
             <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
@@ -83,8 +83,7 @@
                     </div>
                     <div class="col-md-6 gy-3 ">
                         <div class="form-floating mb-3">
-                            <!-- <input type="tel" class="form-control contact-create-patient shadow-none" id="floatingContact" placeholder="">
-                            <label class="contact-create-patient-text" for="floatingContact">Phone Number</label> -->
+                          
                             <input asp-for="PhoneNumber" class=" form-control contact-create-patient shadow-none" id="phone" type="tel"  />
                             <label class="contact-create-patient-text" for="phone"> </label>
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
@@ -223,11 +222,11 @@
         </div>
 
         </form>
-        <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
+@*         <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
             <partial name="Request_footer" />
         </footer>
     </div>
-    <script src="/js/custom.js"></script>
+    <script src="/js/custom.js"></script> *@
     <script>
 
         let file = document.getElementById("real-file");
@@ -333,6 +332,7 @@
         });
     </script>
 
-</body>
+@* </body>
 
 </html>
+ *@

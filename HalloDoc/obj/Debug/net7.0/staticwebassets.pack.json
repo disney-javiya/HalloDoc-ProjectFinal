@@ -5,12 +5,68 @@
       "PackagePath": "staticwebassets\\HalloDoc.bundle.scp.css"
     },
     {
-      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\10\\Agreement",
-      "PackagePath": "staticwebassets\\AdminFiles\\10"
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\0\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\0\\Photo.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\0\\Photo.png",
+      "PackagePath": "staticwebassets\\AdminFiles\\0\\Photo.png"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\10\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\10\\Photo.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\11116016_415-modified.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\11116016_415-modified.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\17\\Signature",
+      "PackagePath": "staticwebassets\\AdminFiles\\17"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\19\\Agreement.txt",
       "PackagePath": "staticwebassets\\AdminFiles\\19\\Agreement.txt"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\19\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\19\\Photo.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\19\\Signature.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\19\\Signature.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\1\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\1\\Photo.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\20\\Signature.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\20\\Signature.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\23\\Signature.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\23\\Signature.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\24\\Signature.png",
+      "PackagePath": "staticwebassets\\AdminFiles\\24\\Signature.png"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\4\\Agreement.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\4\\Agreement.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\5\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\5\\Photo.jpg"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\6\\Signature.png",
+      "PackagePath": "staticwebassets\\AdminFiles\\6\\Signature.png"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\CreateAdmin.png",
+      "PackagePath": "staticwebassets\\AdminFiles\\CreateAdmin.png"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\Fig56. Patient site 1.png",

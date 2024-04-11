@@ -1042,10 +1042,10 @@ namespace HalloDoc.Controllers
 
         [CustomeAuthorize("Admin")]
         [HttpPost]
-        public IActionResult physicianUpdateBusiness(int physicianId, Physician p, IFormFile[] files)
+        public IActionResult physicianUpdateBusiness(int physicianId, Physician p, IFormFile[] files, IFormFile? photo, IFormFile? signature)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            _adminRepository.physicianUpdateBusiness(ViewBag.Data, physicianId, p, files);
+            _adminRepository.physicianUpdateBusiness(ViewBag.Data, physicianId, p, files, photo, signature);
 
 
 
@@ -1500,8 +1500,16 @@ namespace HalloDoc.Controllers
 
 
 
-
-
+        public IActionResult ProviderOnCall(int reg = 0)
+        {
+            ShiftDetailsModel s = _adminRepository.getProviderOnCall(reg);
+            return View(s);
+        }
+        public IActionResult userAccess()
+        {
+            List<AspNetUser> a = _adminRepository.userAccess();
+            return View(a);
+        }
 
 
         public IActionResult logOut()

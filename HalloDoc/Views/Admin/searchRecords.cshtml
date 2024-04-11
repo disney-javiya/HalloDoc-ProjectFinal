@@ -1,10 +1,10 @@
 ﻿@model List<HalloDoc.DataAccessLayer.DataModels.ViewModels.searchRecords> 
-@using Microsoft.AspNetCore.Http;
+
 
 @{
-    Layout = null;
+    Layout = "_AdminHeader";
 }
-<!DOCTYPE html>
+@* <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
     <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between admin-view-documents-main full-content">
         <header>
             <partial name="admin_dashboard_header" />
-        </header>
+        </header> *@
         <main>
 
             <div class="main-viewdocuments d-flex flex-column">
@@ -216,7 +216,7 @@
                 </div>
             </div>
         </main>
-
+@* 
         <footer class="d-flex justify-content-center align-items-baseline">
             <partial name="admin_dashboard_footer" />
         </footer>
@@ -230,7 +230,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> *@
 
 
     <script>
@@ -267,6 +267,6 @@
             });
         });
     </script> *@
-
+@* 
 </body>
-</html>
+</html> *@

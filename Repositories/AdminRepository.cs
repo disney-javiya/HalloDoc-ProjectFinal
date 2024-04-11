@@ -25,6 +25,7 @@ using DocumentFormat.OpenXml.ExtendedProperties;
 using Twilio.TwiML.Voice;
 
 
+
 namespace Repository
 {
     public class AdminRepository : IAdminRepository
@@ -1100,12 +1101,16 @@ namespace Repository
                 physician.CreatedDate = DateTime.Now;
                 int roleid = int.Parse(role);
                 physician.RoleId = roleid;
-       
+                _context.Physicians.Add(physician);
+                _context.SaveChanges();
                 if (photo != null && photo.Length > 0)
                 {
 
-                    string fileName = System.IO.Path.GetFileName(photo.FileName);
-                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
+                    string fileName = "Photo" + System.IO.Path.GetExtension(photo?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physician.PhysicianId}");
+
+
+
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
 
@@ -1115,15 +1120,19 @@ namespace Repository
                     {
                         photo.CopyTo(stream);
                     }
+
+
                     physician.Photo = photo.FileName;
+
                 }
-                _context.Physicians.Add(physician);
+               
                 _context.SaveChanges();
                 physicianUpdateUpload(email, physician.PhysicianId, agreementDoc, backgroundDoc, hippaDoc, disclosureDoc, licenseDoc);
 
-              
-               
+
+
             }
+
             if (region != null)
             {
                
@@ -1277,7 +1286,7 @@ namespace Repository
 
         }
 
-        public void physicianUpdateBusiness(string email, int physicianId, Physician p, IFormFile[] files)
+        public void physicianUpdateBusiness(string email, int physicianId, Physician p, IFormFile[] files, IFormFile? photo, IFormFile? signature)
         {
             var physician = _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
 
@@ -1289,37 +1298,101 @@ namespace Repository
                 var aid = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
                 physician.ModifiedBy = aid;
                 physician.ModifiedDate = DateTime.Now;
-                foreach (var file in files)
+                //foreach (var file in files)
+                //{
+                //    if (file != null && file.Length > 0)
+                //    {
+                //        string fileName = "Photo" + System.IO.Path.GetExtension(file?.FileName);
+                //        string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
+
+                //        if (!Directory.Exists(path))
+                //            Directory.CreateDirectory(path);
+
+                //        string filePath = System.IO.Path.Combine(path, fileName);
+
+                //        using (var stream = new FileStream(filePath, FileMode.Create))
+                //        {
+                //            file.CopyTo(stream);
+                //        }
+                //    }
+                //}
+
+                if (photo != null && photo.Length > 0)
                 {
-                    if (file != null && file.Length > 0)
+
+                    string fileName = "Photo" + System.IO.Path.GetExtension(photo?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
+
+
+
+                    if (Directory.Exists(path))
                     {
-                        string fileName = System.IO.Path.GetFileName(file.FileName);
-                        string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
-
-                        if (!Directory.Exists(path))
-                            Directory.CreateDirectory(path);
-
-                        string filePath = System.IO.Path.Combine(path, fileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        foreach (string filePath2 in Directory.GetFiles(path))
                         {
-                            file.CopyTo(stream);
+                            string fileName2 = System.IO.Path.GetFileName(filePath2);
+
+                            if (fileName2.Contains("Photo"))
+                            {
+
+                                File.Delete(filePath2);
+                              
+                            }
                         }
+                    }
+
+
+                    Directory.CreateDirectory(path);
+                    string filePath = System.IO.Path.Combine(path, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        photo.CopyTo(stream);
                     }
+
+                    physician.Photo = photo.FileName;
+                    _context.SaveChanges();
                 }
-                physician.Photo = files[0].FileName;
-                physician.Signature = files[1].FileName;
+                if (signature != null && signature.Length > 0)
+                {
 
-                _context.SaveChanges();
+                    string fileName = "Signature" + System.IO.Path.GetExtension(signature?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
 
 
 
+                    if (Directory.Exists(path))
+                    {
+                        foreach (string filePath1 in Directory.GetFiles(path))
+                        {
+                            string fileName1 = System.IO.Path.GetFileName(filePath1);
+
+                            if (fileName1.Contains("Signature"))
+                            {
+
+                                File.Delete(filePath1);
+
+                            }
+                        }
+                    }
+
+
+                    Directory.CreateDirectory(path);
+                    string filePath = System.IO.Path.Combine(path, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        signature.CopyTo(stream);
+                    }
+
+                    physician.Signature = signature.FileName;
+                    _context.SaveChanges();
+                }
             }
-
-
-
-
-
+                //physician.Photo = files[0].FileName;
+                //physician.Signature = files[1].FileName;
+               
+               
+                _context.SaveChanges();
 
         }
 
@@ -2333,6 +2406,18 @@ namespace Repository
         public void ApproveShift(string[] selectedShifts)        {            var shifts = selectedShifts[0].Split(',');            foreach (var shift in shifts)            {                ShiftDetail shiftdetail = getShiftDetailByShiftDetailId(int.Parse(shift));                shiftdetail.Status = 1;                UpdateShiftDetailTable(shiftdetail);            }        }
         public void DeleteShift(string[] selectedShifts)        {            var shifts = selectedShifts[0].Split(',');            foreach (var shift in shifts)
             {                ShiftDetail shiftdetail = getShiftDetailByShiftDetailId(int.Parse(shift));                shiftdetail.IsDeleted = new BitArray(1, true);                UpdateShiftDetailTable(shiftdetail);            }        }
+
+ 
+
+
+        public List<Physician> getPhysicianOnCallList(int reg)        {            var time = TimeOnly.FromDateTime(DateTime.Now);            if (reg != 0)                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();            else                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();        }
+
+
+
+
+
+
+
         public ShiftDetailsModel SchedulingMonth(int monthNum)
         {
             return new ShiftDetailsModel
@@ -2343,5 +2428,14 @@ namespace Repository
                   
             };
         }
+
+        public ShiftDetailsModel getProviderOnCall(int reg)        {            return new ShiftDetailsModel            {                regions = getAllRegions(),                physicians = getPhysicianOnCallList(reg).ToList()            };        }
+
+        public List<AspNetUser> userAccess()        {          List<string> asprole =   _context.AspNetUserRoles.Where(x=>x.RoleId == "e526da0c-e8e0-41aa-a610-ec76bcde6dd7" || x.RoleId == "c50adcd5-b764-49dd-9eb6-9d42430f5d6e").Select(u=>u.UserId).ToList();            List<AspNetUser> asp = new List<AspNetUser>();            foreach(string s in asprole)
+            {
+               AspNetUser res = _context.AspNetUsers.Where(x => x.Id == s).Include(e => e.Users.Select(u=>u.Status)).First();
+                asp.Add(res);
+            }            return asp;        }
+
     }
 }

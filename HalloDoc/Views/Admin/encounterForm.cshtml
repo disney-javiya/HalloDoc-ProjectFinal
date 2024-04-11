@@ -1,8 +1,8 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.createPatientRequest;
 @{
-    Layout = null;
+    Layout = "_AdminHeader";
 }
-
+@* 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +27,7 @@
     <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
         <header>
             <partial name="admin_dashboard_header" />
-        </header>
+        </header> *@
         <form method="post" >
             <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
                 <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
@@ -281,7 +281,7 @@
             </div>
 
         </form>
-        <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
+@*         <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
             <partial name="admin_dashboard_footer" />
         </footer>
     </div>
@@ -295,7 +295,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> *@
 
     <script>
         const phoneInputField = document.querySelector("#phone");
@@ -308,7 +308,8 @@
 
 
 
-
+@* 
 </body>
 
 </html>
+ *@

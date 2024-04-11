@@ -95,7 +95,7 @@ namespace Repository.IRepository
         public void physicianUpdateAccount(string email, int physicianId, Physician p, string uncheckedCheckboxes);
         public void physicianUpdateBilling(string email, int physicianId, Physician p);
 
-        public void physicianUpdateBusiness(string email, int physicianId, Physician p, IFormFile[] files);
+        public void physicianUpdateBusiness(string email, int physicianId, Physician p, IFormFile[] files, IFormFile? photo, IFormFile? signature);
 
         public void physicianUpdateUpload(string email, int physicianId, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc);
         public List<Role> GetPhysiciansRoles();
@@ -155,7 +155,12 @@ namespace Repository.IRepository
         public ShiftDetailsModel getReviewShiftData(int reg);
         public void ApproveShift(string[] selectedShifts);
         public void DeleteShift(string[] selectedShifts);
-        public ShiftDetailsModel SchedulingMonth(int monthNum)
-        ;
+        public ShiftDetailsModel SchedulingMonth(int monthNum);
+
+        public ShiftDetailsModel getProviderOnCall(int reg);
+
+        public List<Physician> getPhysicianOnCallList(int reg);
+
+        public List<AspNetUser> userAccess();
     }
 }
