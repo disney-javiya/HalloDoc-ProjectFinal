@@ -23,6 +23,8 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
         public DateTime requestedDate { get; set; }
 
+        public DateTime? acceptedDate { get; set; }
+
         [StringLength(23)]
         public string? patientContact { get; set; }
         [StringLength(23)]

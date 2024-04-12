@@ -17,6 +17,7 @@ namespace Repository.IRepository
     {
         AspNetUser ValidateUser(string email, string password);
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type);
+        public string getRoleName(AspNetUser asp);
         public AspNetUser GetUserByEmail(string email);
         public RequestClient getPatientInfo(int requestId);
         public int GetUserByRequestId(string Id);

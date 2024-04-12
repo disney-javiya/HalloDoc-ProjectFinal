@@ -48,6 +48,14 @@ namespace Repository
             return _context.AspNetUsers.Where(x => x.Email == email && x.PasswordHash == passwordhash).FirstOrDefault();
         }
 
+        public string getRoleName(AspNetUser asp)
+        {
+            string rolename = "";
+           string roleid = _context.AspNetUserRoles.Where(x => x.UserId == asp.Id).Select(x => x.RoleId).FirstOrDefault();
+           rolename = _context.AspNetRoles.Where(x => x.Id == roleid).Select(x => x.Name).FirstOrDefault();
+            return rolename;
+        }
+
         public AspNetUser GetUserByEmail(string email)
         {
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
@@ -86,6 +94,7 @@ namespace Repository
             {
                 v.RequestId = res.RequestId;
                 v.AdminNote = res.AdminNotes;
+                v.PhysicianNote = res.PhysicianNotes;
                 _context.SaveChanges();
             }
             foreach (var row in res1)
@@ -109,6 +118,14 @@ namespace Repository
                     {
                         var physicianusername = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
                         v.TransferNote = physicianusername + "tranfered to" + row.AdminId + ":" + row.Notes;
+                    }
+                }
+                else if(row.Status == 1)
+                {
+                    if (row.TransToPhysicianId == null)
+                    {
+                        var physicianusername = _context.Physicians.Where(x => x.PhysicianId == row.PhysicianId).Select(u => u.FirstName).FirstOrDefault();
+                        v.TransferNote = v.TransferNote + physicianusername + "tranfered Again" + ":" + row.Notes;
                     }
                 }
                 else if (row.Status == 7)
@@ -211,27 +228,39 @@ namespace Repository
 
         public void adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email)
         {
-            RequestStatusLog rs = new RequestStatusLog();
+            //RequestStatusLog rs = new RequestStatusLog();
             Request r = new Request();
+            RequestNote rn = new RequestNote();
             int reqId = int.Parse(requestId);
-
+            
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
             if (res != null && physician != "Select Physician" && region != "Select Region")
             {
-                res.Status = 2;
+                
                 res.PhysicianId = int.Parse(physician);
 
                 _context.SaveChanges();
-                rs.RequestId = reqId;
-                rs.Status = 2;
-                var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
-                var id = _context.Admins.Where(x => x.AspNetUserId == aspId).Select(u => u.AdminId).FirstOrDefault();
-                rs.AdminId = id;
-                rs.TransToPhysicianId = int.Parse(physician);
-                rs.Notes = additionalNotesAssign;
-                rs.CreatedDate = DateTime.Now;
+
+                rn.RequestId = reqId;
+                rn.AdminNotes = additionalNotesAssign;
+                var aspUsername = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
+
+                rn.CreatedBy = aspUsername;
+                rn.CreatedDate = DateTime.Now;
+
+
+                //rs.RequestId = reqId;
+                //rs.Status = 2;
+                //var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
+                //var id = _context.Admins.Where(x => x.AspNetUserId == aspId).Select(u => u.AdminId).FirstOrDefault();
+                //rs.AdminId = id;
+                //rs.TransToPhysicianId = int.Parse(physician);
+                //rs.Notes = additionalNotesAssign;
+                //rs.CreatedDate = DateTime.Now;
             }
-            _context.RequestStatusLogs.Add(rs);
+            //_context.RequestStatusLogs.Add(rs);
+            //_context.SaveChanges();
+            _context.RequestNotes.Add(rn);
             _context.SaveChanges();
         }
 
@@ -1061,6 +1090,7 @@ namespace Repository
         public void createPhysicianAccount(Physician p, IFormFile photo, string password, string role, List<int> region, string email, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc)
         {
             AspNetUser asp = new AspNetUser();
+            AspNetUserRole aspNetUserRole = new AspNetUserRole();
             Physician physician = new Physician();
             if (p != null)
             {
@@ -1075,6 +1105,11 @@ namespace Repository
                 asp.CreatedDate = DateTime.Now;
 
                 _context.AspNetUsers.Add(asp);
+                _context.SaveChanges();
+
+                aspNetUserRole.RoleId = "c50adcd5-b764-49dd-9eb6-9d42430f5d6e";
+                aspNetUserRole.UserId = asp.Id;
+                _context.AspNetUserRoles.Add(aspNetUserRole);
                 _context.SaveChanges();
 
                 physician.AspNetUserId = asp.Id;
@@ -1748,6 +1783,7 @@ namespace Repository
         public void createAdmin(Admin a, string password, List<int> region, string role, string email)
         {
             AspNetUser asp = new AspNetUser();
+            AspNetUserRole aspNetUserRole = new AspNetUserRole();
             Admin admin = new Admin();
             if (a != null)
             {
@@ -1759,6 +1795,11 @@ namespace Repository
                 asp.PhoneNumber = a.Mobile;
                 asp.CreatedDate = DateTime.Now;
                 _context.AspNetUsers.Add(asp);
+                _context.SaveChanges();
+
+                aspNetUserRole.RoleId = "e526da0c-e8e0-41aa-a610-ec76bcde6dd7";
+                aspNetUserRole.UserId = asp.Id;
+                _context.AspNetUserRoles.Add(aspNetUserRole);
                 _context.SaveChanges();
 
 
@@ -2418,7 +2459,7 @@ namespace Repository
 
 
 
-        public ShiftDetailsModel SchedulingMonth(int monthNum)
+        public ShiftDetailsModel SchedulingMonth(int monthNum) 
         {
             return new ShiftDetailsModel
             {

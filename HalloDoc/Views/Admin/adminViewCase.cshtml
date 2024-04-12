@@ -53,13 +53,13 @@
                             <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
                         </div>
                     </div>
-
-                    <div class="col-md-6 me-auto">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input asp-for="IntDate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
-                            <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+                            <input value="@Model.IntDate/@Model.StrMonth/@Model.IntYear" type="text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
+                            <label class="last-name-create-patient-text" for="floatingInput">Date Of Birth</label>
                         </div>
                     </div>
+            
                     <div class="col-md-6 gy-3 d-flex flex-row">
                         <div class="form-floating mb-3 me-2 w-75">
                             <input asp-for="PhoneNumber" class=" form-control contact-create-patient shadow-none" id="phone" type="tel" name="phone" disabled />

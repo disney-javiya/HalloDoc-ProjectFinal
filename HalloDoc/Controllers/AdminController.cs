@@ -70,25 +70,33 @@ namespace HalloDoc.Controllers
                 Id = data.Id
             };
 
-            var jwttoken = _authenticate.GenerateJwtToken(loginuser, "Admin");
+            string rolename = _adminRepository.getRoleName(loginuser);
+
+            var jwttoken = _authenticate.GenerateJwtToken(loginuser, rolename);
             Response.Cookies.Append("jwt", jwttoken);
             ViewBag.LoginSuccess = true;
-            // Set session key only when user credentials are validated successfully
+            
             HttpContext.Session.SetString("key", user.Email);
             ViewBag.Data = HttpContext.Session.GetString("key");
 
-            List<Region> r = new List<Region>();
-            r = _adminRepository.getAllRegions();
+            if(rolename == "Admin")
+            {
+                return View("adminDashboard");
+            }
+            if(rolename == "Physician")
+            {
+               
+                return RedirectToAction("providerDashboard", "Provider");
+            }
 
-            return View("adminDashboard");
+            return View();
         }
 
         [CustomeAuthorize("Admin")]
         public IActionResult adminDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //List<Region> r = new List<Region>();
-            //r = _adminRepository.getAllRegions();
+           
             return View();
         }
         public List<int> getCountNumber()

@@ -1,0 +1,288 @@
+﻿@model IEnumerable<HalloDoc.DataAccessLayer.DataModels.RequestWiseFile>
+
+
+@{
+    Layout = "_ProviderHeader";
+}
+
+
+<main>
+
+    <div class="main-viewdocuments d-flex flex-column">
+        <div class="view-documents d-flex flex-column  container">
+            <div class="d-flex flex-row">
+                <h3>Documents</h3>
+                <a asp-controller="Provider" asp-action="providerDashboard" role="btn" class="back-btn p-1 ms-auto mb-2">Back</a>
+            </div>
+            <p>Patient Name</p>
+            <b class="name-patient">@ViewBag.pname (@ViewBag.num)</b>
+            <p>Check here to review and add files that you or the Client/Member has attached to the Request.</p>
+            <form method="post" enctype="multipart/form-data" action="@Url.Action("UploadFiles", "Provider", new { requestId =  Context.Request.Query["requestId"]})">
+                <input type="file" name="files" id="real-file" hidden="hidden" multiple />
+                <div class="input-group mb-3">
+                    <input class="form-control" type="text" id="custom-text" aria-label="readonly input example" value="Select File" readonly>
+                    <button class="btn btn-info" type="button" id="custom-button">
+                        <i class="bi bi-cloud-arrow-up"></i> Upload
+                    </button>
+                </div>
+            </form>
+
+            <div class="download d-flex flex-row">
+                <input class="form-check-input checkall m-1" type="checkbox" value="">
+                <label class="form-check-label" for="">
+
+                </label>
+                <h3>Documents</h3>
+                <button id="downloadAllBtn" class="download-btn p-1 ms-auto mb-2"> <i class="fa-solid fa-cloud-arrow-down mob-icon" style="color: #01bce9;"></i><span>Download All</span> </button>
+                <button id="deleteAllBtn" class="download-btn ms-2 p-1 mb-2"><i class="fa-solid fa-trash mob-icon" style="color: #01bce9;"></i> <span>Delete All</span></button>
+                <button id="SendMail" class="download-btn p-1 ms-2 mb-2"><i class="fa-regular fa-envelope mob-icon" style="color: #01bce9;"></i> <span>Send Mail</span></button>
+
+
+
+            </div>
+
+            <div class="data-table-admin-viewuploads">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="checkAll">
+                                    <label class="form-check-label" for="">
+
+                                    </label>
+                                </div>
+                            </th>
+                            <th scope="col">Documents</th>
+                            <th scope="col">Upload Date</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input check" type="checkbox" value="@item.RequestWiseFileId" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FileName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("DownloadFile", "Provider", new { fileId = item.RequestWiseFileId})" class="btn p-0">
+                                        <i class="fa-solid fa-cloud-arrow-up m-1 p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                    </a>
+                                    <a href="@Url.Action("DeleteFile", "Provider", new { fileId = item.RequestWiseFileId , requestId =  Context.Request.Query["requestId"]}) " class="btn  p-0">
+                                        <i class="fa-solid fa-trash m-1 p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+
+
+
+            @*This code is for Mobile View*@
+
+
+            <div class="adminmobileviewuploads">
+
+
+                @foreach (var item in Model)
+                {
+                    <div class="card card-viewuploads" role="button" value="">
+                        <div class="card-body d-flex flex-column justify-content-around">
+                            <div class=" d-flex flex-row ">
+                                <input class="form-check-input check" type="checkbox" value="@item.RequestWiseFileId" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+
+                                </label>
+                                <p class="ms-2" id="">@item.FileName</p>
+                            </div>
+
+                            <div class=" d-flex flex-row justify-content-between">
+                                <p>@item.CreatedDate</p>
+
+                            </div>
+                            <div class=" d-flex flex-row justify-content-start p-0">
+                                <a href="@Url.Action("DownloadFile", "Provider", new { fileId = item.RequestWiseFileId})" class="btn p-0">
+                                    <i class="fa-solid fa-cloud-arrow-up m-1  p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                </a>
+                                <a href="@Url.Action("DeleteFile", "Provider", new { fileId = item.RequestWiseFileId , requestId =  Context.Request.Query["requestId"]}) " class="btn p-0">
+                                    <i class="fa-solid fa-trash m-1 p-2" style="color: #01bce9; border: 1px solid #01bce9; border-radius: 2px;"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("downloadAllBtn").addEventListener("click", function () {
+
+            var checkedFiles = document.querySelectorAll(".check:checked");
+
+            var fileIds = [];
+            var requestId = @Model.FirstOrDefault()?.RequestId ?? null;
+            checkedFiles.forEach(function (file) {
+
+                fileIds.push(file.value);
+
+            });
+
+            var url = "@Url.Action("DownloadFiles", "Provider")";
+            if (fileIds.length > 0) {
+
+                url += "?fileIds=" + fileIds.join(",");
+
+            } else {
+
+                url += "?requestId=" + requestId;
+
+            }
+            window.location.href = url;
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("deleteAllBtn").addEventListener("click", function () {
+            var checkedFiles = document.querySelectorAll(".check:checked");
+
+            var fileIds = [];
+            var requestId = @Model.FirstOrDefault()?.RequestId ?? null;
+            checkedFiles.forEach(function (file) {
+
+                fileIds.push(file.value);
+
+            });
+
+            var url = "@Url.Action("DeleteFiles", "Provider")";
+            if (fileIds.length > 0) {
+
+                url += "?fileIds=" + fileIds.join(",");
+
+            } else {
+
+                url += "?requestId=" + requestId;
+
+            }
+            window.location.href = url;
+        });
+    });
+</script>
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("SendMail").addEventListener("click", function () {
+            var checkedFiles = document.querySelectorAll(".check:checked");
+
+            var fileIds = [];
+            var requestId = @Model.FirstOrDefault()?.RequestId ?? null;
+            checkedFiles.forEach(function (file) {
+
+                fileIds.push(file.value);
+
+            });
+
+            var url = "@Url.Action("SendEmailDocument", "Provider")";
+
+            if (fileIds.length > 0) {
+
+                url += "?fileIds=" + fileIds.join(",");
+
+            }
+            if (fileIds.length > 0 && requestId != null) {
+                url += "&requestId=" + requestId;
+            } else if (requestId != null) {
+                url += "?requestId=" + requestId;
+            }
+
+            window.location.href = url;
+        });
+    });
+
+</script>
+
+
+
+<script>
+    let file = document.getElementById("real-file");
+    const customBtn = document.getElementById("custom-button");
+    const customTxt = document.getElementById("custom-text");
+
+    customBtn.addEventListener("click", function () {
+        file.click();
+    });
+
+    file.addEventListener("change", function () {
+        var i;
+        var filename = "";
+        for (i = 0; i < file.files.length; i++) {
+            filename = filename + " " + file.files[i].name;
+        }
+        if (file.files.length) {
+            customTxt.setAttribute("value", filename);
+
+            this.closest('form').submit();
+        } else {
+            customTxt.setAttribute("value", "Select File");
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var checkAll = document.getElementById("checkAll");
+        var checkboxes = document.querySelectorAll(".check");
+        if (checkAll) {
+            checkAll.addEventListener("click", function () {
+
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = checkAll.checked;
+                });
+            });
+        }
+
+
+    });
+
+
+
+</script>

@@ -53,6 +53,10 @@
       "PackagePath": "staticwebassets\\AdminFiles\\24\\Signature.png"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\25\\Photo.jpg",
+      "PackagePath": "staticwebassets\\AdminFiles\\25\\Photo.jpg"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\4\\Agreement.jpg",
       "PackagePath": "staticwebassets\\AdminFiles\\4\\Agreement.jpg"
     },
@@ -177,6 +181,10 @@
       "PackagePath": "staticwebassets\\Files\\Updated-Training-Plan-20March24.pdf"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\changes.txt",
+      "PackagePath": "staticwebassets\\Files\\changes.txt"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\data (2).xlsx",
       "PackagePath": "staticwebassets\\Files\\data (2).xlsx"
     },
@@ -231,6 +239,10 @@
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\patient-request-desktop-light.png",
       "PackagePath": "staticwebassets\\Files\\patient-request-desktop-light.png"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\patient-site-desktop-light.png",
+      "PackagePath": "staticwebassets\\Files\\patient-site-desktop-light.png"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\postgresql-1.png",

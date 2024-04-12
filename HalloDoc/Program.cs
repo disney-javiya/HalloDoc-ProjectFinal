@@ -17,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
-
+builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
 
 var app = builder.Build();
 

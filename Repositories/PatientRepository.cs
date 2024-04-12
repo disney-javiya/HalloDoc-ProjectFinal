@@ -81,6 +81,12 @@ namespace Repository
                 _context.AspNetUsers.Add(asp);
                 _context.SaveChanges();
 
+                AspNetUserRole aspNetUserRole = new AspNetUserRole();
+                aspNetUserRole.RoleId = "849bb751-a73e-494e-86d5-6c6dbcc407e9";
+                aspNetUserRole.UserId = asp.Id;
+                _context.AspNetUserRoles.Add(aspNetUserRole);
+                _context.SaveChanges();
+
             }
 
 
