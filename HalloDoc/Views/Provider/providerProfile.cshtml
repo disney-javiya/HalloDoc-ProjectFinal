@@ -1,0 +1,397 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.Physician;
+@{
+    Layout = "_ProviderHeader";
+}
+
+
+<form method="post" class="row row-cols-1 " action="@Url.Action("createPhysicianAccount", "Admin")" enctype="multipart/form-data">
+    <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+        <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+            <div class="col  d-flex justify-content-between ">
+                <h3>My Profile</h3>
+                <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="providerMenu"> < Back</a>
+
+            </div>
+            <a class="btn back-btn m-2 w-25 ms-auto" role="button">Request To Admin</a>
+            <div class="col">
+                <h5>Account Information</h5>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control ainfo first-name-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
+                    <label class="first-name-create-patient-text" for="floatingInput">Username</label>
+
+                </div>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" id="password" class="form-control  password-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="password-create-patient-text" for="floatingInput">Password</label>
+
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end m-2">
+                <a class="btn back-btn m-2 w-25 ms-auto" role="button" id="reset">Reset Password</a>
+                </div>
+            
+            <div class="col">
+                <h5>Physician Information</h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none e1" id="floatingInput" placeholder="">
+                    <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="LastName" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="">
+                    <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" type="email" class="form-control email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com">
+                    <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 gy-3 ">
+                <div class="form-floating mb-3">
+
+                    <input asp-for="Mobile" class=" form-control contact-create-patient shadow-none e1" id="phone" type="tel" />
+                    <label class="contact-create-patient-text" for="phone"> </label>
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="MedicalLicense" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="">
+                    <label class="last-name-create-patient-text" for="floatingInput">Medical License #</label>
+                    <span asp-validation-for="MedicalLicense" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Npinumber" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="">
+                    <label class="last-name-create-patient-text" for="floatingInput">NPI Number</label>
+                    <span asp-validation-for="Npinumber" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 d-flex flex-row">
+                <div id="checkbox-container" class="col-md-6 gy-3 ">
+                    <input type="hidden" id="uncheckedCheckboxesInput" name="checkedcheckbox" />
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="col">
+                <h5>Mailing & Billing Information</h5>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Address1" type="text" class="form-control street-create-patient  shadow-none info" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Address 1</label>
+                    <span asp-validation-for="Address1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Address2" type="text" class="form-control street-create-patient  shadow-none info" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Address 2</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="City" type="text" class="form-control city-create-patient shadow-none info" id="floatingInput" placeholder="">
+                    <label class="city-create-patient-text" for="floatingInput">City</label>
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control state-create-patient shadow-none info" id="floatingInput" placeholder="">
+                    <label class="state-create-patient-text" for="floatingInput">State</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Zip" type="text" class="form-control zipcode-create-patient shadow-none info" id="floatingInput" placeholder="">
+                    <label class="zipcode-create-patient-text" for="floatingInput">Zipcode</label>
+                    <span asp-validation-for="Zip" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 gy-3 ">
+                <div class="form-floating mb-3">
+                    <input asp-for="AltPhone" class=" form-control contact-create-patient shadow-none info" id="phone1" type="tel" />
+                    <label class="contact-create-patient-text" for="phone1"> </label>
+                    <span asp-validation-for="AltPhone" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <div class="col">
+                <h5>Provider Profile</h5>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="BusinessName" type="text" class="form-control binfo first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="first-name-create-patient-text" for="floatingInput">Business Name</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="BusinessWebsite" type="text" class="form-control binfo first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="first-name-create-patient-text" for="floatingInput">Business Website</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3 me-auto">
+                <input type="file" name="photo" id="real-file" hidden="hidden" />
+                <div class="input-group mb-3">
+                    <input class="form-control binfo" type="text" id="custom-text" aria-label="readonly input example" value="Select Photo" readonly>
+                    <button class="btn btn-info" type="button" id="custom-button">
+                        <i class="bi bi-cloud-arrow-up"></i> Upload
+                    </button>
+                </div>
+            </div>
+
+          
+
+
+
+
+
+
+
+            <hr>
+
+            <div class="d-flex flex-column justify-content-between">
+                <div class="form-check mb-3 d-flex flex-row">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Independent Contractor Agreement
+                    </label>
+
+
+                    <input type="file" name="agreementDoc" id="real-file2" hidden="hidden" />
+                    <div class="input-group mb-3">
+                        <input class="form-control binfo" type="text" id="custom-text2" aria-label="readonly input example" value="Select Agreement" readonly disabled>
+                        <button class="btn btn-info" type="button" id="custom-button2">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-check mb-3">
+
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Background Check
+                    </label>
+
+                    <input type="file" name="backgroundDoc" id="real-file3" hidden="hidden" />
+                    <div class="input-group mb-3">
+                        <input class="form-control binfo" type="text" id="custom-text3" aria-label="readonly input example" value="Select backgroundDoc" readonly disabled>
+                        <button class="btn btn-info" type="button" id="custom-button3">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload
+                        </button>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        HIPAA Compliance
+                    </label>
+
+                    <input type="file" name="hippaDoc" id="real-file4" hidden="hidden" />
+                    <div class="input-group mb-3">
+                        <input class="form-control binfo" type="text" id="custom-text4" aria-label="readonly input example" value="Select hippaDoc" readonly disabled>
+                        <button class="btn btn-info" type="button" id="custom-button4">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload
+                        </button>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Non-disclosure Agreement
+                    </label>
+
+                    <input type="file" name="disclosureDoc" id="real-file5" hidden="hidden" />
+                    <div class="input-group mb-3">
+                        <input class="form-control binfo" type="text" id="custom-text5" aria-label="readonly input example" value="Select disclosureDoc" readonly disabled>
+                        <button class="btn btn-info" type="button" id="custom-button5">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload
+                        </button>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        License Document
+                    </label>
+                    <input type="file" name="licenseDoc" id="real-file6" hidden="hidden" />
+                    <div class="input-group mb-3">
+                        <input class="form-control binfo" type="text" id="custom-text6" aria-label="readonly input example" value="Select licenseDoc" readonly disabled>
+                        <button class="btn btn-info" type="button" id="custom-button6">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <button role="button" style="height:fit-content; border:none;" type="submit" class="create-provider-btn w-25 p-1 ms-auto mb-3">Create Account</button>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+</script>
+
+
+
+
+<script>
+    const phoneInputField1 = document.querySelector("#phone1");
+    const phoneInput1 = window.intlTelInput(phoneInputField1, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+</script>
+
+<script>
+    function setupFileInput(fileInputId, customButtonId, customTextId) {
+        let fileInput = document.getElementById(fileInputId);
+        const customButton = document.getElementById(customButtonId);
+        const customText = document.getElementById(customTextId);
+
+        customButton.addEventListener("click", function () {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function () {
+            var filename = "";
+            for (var i = 0; i < fileInput.files.length; i++) {
+                filename = filename + " " + fileInput.files[i].name;
+            }
+            if (fileInput.files.length) {
+                customText.setAttribute("value", filename);
+                // this.closest('form').submit();
+            } else {
+                customText.setAttribute("value", "Select File");
+            }
+        });
+    }
+
+    setupFileInput("real-file", "custom-button", "custom-text");
+
+    setupFileInput("real-file2", "custom-button2", "custom-text2");
+    setupFileInput("real-file3", "custom-button3", "custom-text3");
+    setupFileInput("real-file4", "custom-button4", "custom-text4");
+    setupFileInput("real-file5", "custom-button5", "custom-text5");
+    setupFileInput("real-file6", "custom-button6", "custom-text6");
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/GetPhysiciansRoles',
+            type: 'GET',
+
+            success: function (data) {
+
+                var roleDropdown = $('#role');
+                roleDropdown.empty();
+                roleDropdown.append($('<option></option>').text("Select Roles"));
+                $.each(data, function (index, role) {
+
+                    roleDropdown.append($('<option></option>').attr('value', role.roleId).text(role.name));
+                });
+            }
+        });
+
+
+
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            method: 'GET',
+
+            success: function (data) {
+
+                $.each(data, function (index, region) {
+
+                    var checkbox = $('<input>').attr({
+                        type: 'checkbox',
+                        name: 'region',
+                        class: 'box',
+                        value: region.regionId
+                    });
+
+                    var label = $('<label>').text(region.name);
+
+                    var container = $('#checkbox-container');
+                    container.append(checkbox).append(" ").append(label).append('<br>');
+                });
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching regions:", xhr.status, xhr.statusText);
+                console.error("Response body:", xhr.responseText);
+                alert("Failed to fetch regions. Please try again later.");
+            }
+
+        });
+    });
+</script>
+@* </body>
+</html> *@

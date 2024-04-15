@@ -596,16 +596,29 @@ namespace HalloDoc.Controllers
 
 
         /*-----------------------------------Review Agreement--------------------------------------------------*/
-        [CustomeAuthorize("Patient")]
+       
         public IActionResult reviewAgreement()
         {
             return View();
         }
 
       
-        public IActionResult reviewAgreementPost(int requestId)
+        public IActionResult reviewAgreementPost(string requestId, string adminId, string physicianId)
         {
-            _patientRepository.agreementApproved(requestId);
+            int req = int.Parse(requestId);
+            int aid =0;
+            int pid=0;
+            if (adminId != null)
+            {
+                 aid = int.Parse(adminId);
+                pid = 0;
+            }
+            if(physicianId != null)
+            {
+                 pid = int.Parse(physicianId);
+                aid = 0;
+            }
+            _patientRepository.agreementApproved(req, aid, pid);
             return View("Index");
         }
 

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace HalloDoc.DataAccessLayer.DataModels;
@@ -131,7 +130,6 @@ public partial class Physician
 
     [ForeignKey("RegionId")]
     [InverseProperty("Physicians")]
-    [JsonIgnore]
     public virtual Region? Region { get; set; }
 
     [InverseProperty("Physician")]

@@ -233,12 +233,20 @@
       "PackagePath": "staticwebassets\\Files\\login-desktop-light.png"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\login-mobile-dark.png",
+      "PackagePath": "staticwebassets\\Files\\login-mobile-dark.png"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\login-mobile-light.png",
       "PackagePath": "staticwebassets\\Files\\login-mobile-light.png"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\patient-request-desktop-light.png",
       "PackagePath": "staticwebassets\\Files\\patient-request-desktop-light.png"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\patient-site-desktop-dark.png",
+      "PackagePath": "staticwebassets\\Files\\patient-site-desktop-dark.png"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\patient-site-desktop-light.png",

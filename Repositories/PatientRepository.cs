@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net.Http;
 using System.Web.Mvc;
 using System.Web.Helpers;
+using System.Security.Policy;
+using DocumentFormat.OpenXml.InkML;
 
 namespace Repository
 {
@@ -46,23 +48,57 @@ namespace Repository
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
 
-        public void agreementApproved(int requestId)
+        public void agreementApproved(int requestId, int? adminId, int? physicianId)
         {
 
             RequestStatusLog rs = new RequestStatusLog();
             Request r = new Request();
-            var res =  _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+
+            
+      
+
+            var res =  _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault(); 
+            var requeststatuslog = _context.RequestStatusLogs.Where(x=>x.RequestId == requestId && x.Status == 4).FirstOrDefault();
            if(res != null)
            {
                 res.Status = 4;
                
                 _context.SaveChanges();
-                rs.RequestId = requestId;
-                rs.Status = 4;  
-                rs.CreatedDate = DateTime.Now;
-            }       
-            _context.RequestStatusLogs.Add(rs);
-            _context.SaveChanges();
+                
+               
+                if (requeststatuslog == null)
+                {
+                    rs.RequestId = requestId;
+                    rs.Status = 4;
+                    if (adminId != 0)
+                    {
+                        rs.AdminId = adminId;
+                    }
+                    if (physicianId != 0)
+                    {
+                        rs.PhysicianId = physicianId;
+                    }
+                    rs.CreatedDate = DateTime.Now;
+                    _context.RequestStatusLogs.Add(rs);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    requeststatuslog.RequestId = requestId;
+                    requeststatuslog.Status = 4;
+                    if (adminId != 0)
+                    {
+                        requeststatuslog.AdminId = adminId;
+                    }
+                    if (physicianId != 0)
+                    {
+                        requeststatuslog.PhysicianId = physicianId;
+                    }
+                    requeststatuslog.CreatedDate = DateTime.Now;
+                    _context.SaveChanges();
+                }
+           }       
+           
         }
 
 

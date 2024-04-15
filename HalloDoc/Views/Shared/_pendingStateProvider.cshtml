@@ -201,6 +201,49 @@
 
 
 
+<!--For Send Agreement-->
+<div class="modal" id="myModalSendAgreement">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="sendAgreementCaseForm" action="/Provider/providerSendAgreement" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Send Agreement</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <p class="m-3">To Send Agreement please make sure you are updating the correct contact information below for the responsible party.</p>
+
+                    <input type="hidden" id="requestidinput3" name="requestid" />
+
+
+                    <div class="form-floating mb-3">
+                        <input name="mobile" type="text" class="form-control b-contact last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="last-name-create-patient-text" for="floatingInput">Phone Number</label>
+                    </div>
+
+
+                    <div class="form-floating mb-3">
+                        <input name="email" type="email" class="form-control email email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com">
+                        <label class="email-create-patient-text" for="floatingInput">Email</label>
+                    </div>
+
+
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Send</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 

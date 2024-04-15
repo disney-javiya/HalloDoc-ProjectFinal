@@ -17,10 +17,12 @@ namespace Repository.IRepository
     {
 
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type, string email);
+        public AspNetUser GetUserByEmail(string email);
         public List<RequestandRequestClient> getFilterByName(IEnumerable<RequestandRequestClient> r, string patient_name);
         public List<RequestandRequestClient> getByRequesttypeId(IEnumerable<RequestandRequestClient> r, int requesttypeId);
+        public Physician getProviderInfo(string email);
         public List<RequestandRequestClient> getFilterByrequestTypeAndName(IEnumerable<RequestandRequestClient> r, int requesttypeId, string patient_name);
-        public void providerAccept(  int requestId, string email);
+        public void providerAccept(int requestId, string email);
         public RequestClient getPatientInfo(int requestId);
         public string getConfirmationNumber(int requestId);
 
@@ -41,5 +43,12 @@ namespace Repository.IRepository
         public List<string> GetSelectedFiles(List<int> ids);
         public List<string> GetAllFiles(int requestId);
         public void insertEmailLog(string? emailTemplate, string? subjectName, string? emailId, int? requestId, string sessionemail, string? filePath);
+        public List<string> adminSendAgreementGet(string requestId);
+        public List<HealthProfessionalType> GetAllHealthProfessionalType();
+        public List<HealthProfessional> GetAllHealthProfessional();
+        public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId);
+        public HealthProfessional GetProfessionInfo(int vendorId);
+        public void sendOrderDetails(int requestId, sendOrder s, string email);
+
     }
 }

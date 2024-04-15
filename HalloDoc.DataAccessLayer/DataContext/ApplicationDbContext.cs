@@ -36,6 +36,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<EmailLog> EmailLogs { get; set; }
 
+    public virtual DbSet<EncounterForm> EncounterForms { get; set; }
+
     public virtual DbSet<HealthProfessional> HealthProfessionals { get; set; }
 
     public virtual DbSet<HealthProfessionalType> HealthProfessionalTypes { get; set; }
@@ -172,6 +174,18 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.EmailLogId).HasName("EmailLog_pkey");
 
             entity.Property(e => e.EmailLogId).UseIdentityAlwaysColumn();
+        });
+
+        modelBuilder.Entity<EncounterForm>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("EncounterForm_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('encounterform_id_seq'::regclass)");
+            entity.Property(e => e.IsFinalized).HasDefaultValueSql("'0'::\"bit\"");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.EncounterForms)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_encounter_request");
         });
 
         modelBuilder.Entity<HealthProfessional>(entity =>
@@ -423,6 +437,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.AspNetUser).WithMany(p => p.Users).HasConstraintName("User_AspNetUserId_fkey");
         });
+        modelBuilder.HasSequence("encounterform_id_seq");
 
         OnModelCreatingPartial(modelBuilder);
     }

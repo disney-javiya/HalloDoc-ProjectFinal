@@ -40,6 +40,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         [StringLength(50)]
         public string? physicianName { get; set; }
 
+        public short? CallType { get; set; }
         public int? PhysicianId { get; set; }
         public IEnumerable<CaseTag> CaseTag { get; set; }
 

@@ -58,15 +58,15 @@ namespace Repository
 
             if (type == 1)
             {
-                query = query.Where(req => req.Status == 1 && req.acceptedDate == null && req.PhysicianId == phyId);
+                query = query.Where(req => req.Status == 1 &&  req.PhysicianId == phyId);
             }
             else if (type == 2)
             {
-                query = query.Where(req => req.Status == 2 && req.acceptedDate != null && req.PhysicianId == phyId);
+                query = query.Where(req => req.Status == 2  && req.PhysicianId == phyId);
             }
             else if (type == 3)
             {
-                query = query.Where(req => req.Status == 4 || req.Status == 5);
+                query = query.Where(req => (req.Status == 4 || req.Status == 5 ) && req.PhysicianId == phyId );
             }
             else if (type == 4)
             {
@@ -77,7 +77,15 @@ namespace Repository
 
             return query.ToList();
         }
+        public AspNetUser GetUserByEmail(string email)
+        {
+            return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
+        }
 
+        public Physician getProviderInfo(string email)
+        {
+            return _context.Physicians.Where(x => x.Email == email).FirstOrDefault();
+        }
         public List<RequestandRequestClient> getFilterByName(IEnumerable<RequestandRequestClient> r, string patient_name)
         {
             List<RequestandRequestClient> s = new List<RequestandRequestClient>();
@@ -422,5 +430,52 @@ namespace Repository
             _context.EmailLogs.Add(emailLog);
             _context.SaveChanges();
         }
+
+        public List<string> adminSendAgreementGet(string requestId)
+        {
+            List<string> res = new List<string>();
+            int reqId = int.Parse(requestId);
+            string mob = _context.RequestClients.Where(x => x.RequestId == reqId).Select(x => x.PhoneNumber).FirstOrDefault();
+            res.Add(mob);
+            string mail = _context.RequestClients.Where(x => x.RequestId == reqId).Select(x => x.Email).FirstOrDefault();
+            res.Add(mail);
+            return res;
+        }
+
+        public List<HealthProfessionalType> GetAllHealthProfessionalType()
+        {
+            return _context.HealthProfessionalTypes.ToList();
+        }
+        public List<HealthProfessional> GetAllHealthProfessional()
+        {
+            return _context.HealthProfessionals.ToList();
+        }
+        public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId)
+        {
+            return _context.HealthProfessionals.Where(x => x.Profession == healthprofessionalId).ToList();
+        }
+        public HealthProfessional GetProfessionInfo(int vendorId)
+        {
+            return _context.HealthProfessionals.Where(x => x.VendorId == vendorId).FirstOrDefault();
+        }
+        public void sendOrderDetails(int requestId, sendOrder s, string email)
+        {
+            OrderDetail o = new OrderDetail();
+            var htype = s.type;
+            o.VendorId = s.hname;
+            o.RequestId = requestId;
+            o.FaxNumber = s.FaxNumber;
+            o.Email = s.Email;
+            o.BusinessContact = s.BusinessContact;
+            o.Prescription = s.Prescription;
+            o.NoOfRefill = s.NoOfRefill;
+            o.CreatedDate = DateTime.Now;
+            var name = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
+            o.CreatedBy = name;
+            _context.OrderDetails.Add(o);
+            _context.SaveChanges();
+        }
+
+       
     }
 }

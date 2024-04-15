@@ -26,7 +26,7 @@
 
         <p>To provide the best medical service, we cannot determine the cost right away. If you agree to our service, so we will provide care and follow-up until all care is completed. So with this points, if you like us to provide care to you click on "Agree" and we'll get started immediately, if you do not agree simply click "Cancel". </p>
         <div class="d-flex flex-row justify-content-evenly">
-            <a role="button" href="@Url.Action("reviewAgreementPost", "Home", new { requestId =  Context.Request.Query["requestId"]})" id="review-agree" class="p-3">I Agree</a>
+            <a role="button" href="@Url.Action("reviewAgreementPost", "Home", new { requestId =  Context.Request.Query["requestId"] , adminId =  Context.Request.Query["adminId"],  physicianId =  Context.Request.Query["physicianId"]} )" id="review-agree" class="p-3">I Agree</a>
             <a role="button" id="review-cancel" class="p-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Cancel
             </a>

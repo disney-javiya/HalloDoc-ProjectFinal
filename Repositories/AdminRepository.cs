@@ -2477,6 +2477,37 @@ namespace Repository
                AspNetUser res = _context.AspNetUsers.Where(x => x.Id == s).Include(e => e.Users.Select(u=>u.Status)).First();
                 asp.Add(res);
             }            return asp;        }
+        public List<int> getPhysicianNotification()
+        {
+            return _context.PhysicianNotifications.Where(x => x.IsNotificationStopped == new BitArray(new bool[] { true })).Select(u => u.PhysicianId).ToList();
+        }
+
+        //public void updatePhysicianNotification(List<int> phy_ids)
+        //{
+        //    List<int> old_ids = getPhysicianNotification();
+        //    foreach (int id in phy_ids)
+        //    {
+        //        if (!old_ids.Contains(id))
+        //        {
+        //            PhysicianNotification pn = new PhysicianNotification();
+        //            pn.PhysicianId = id;
+        //            pn.IsNotificationStopped = new BitArray(new bool[] { true });
+        //            _context.PhysicianNotifications.Add(pn);
+        //            _context.SaveChanges();
+        //        }
+        //    }
+
+        //    foreach (int id in old_ids)
+        //    {
+        //        if (!phy_ids.Contains(id))
+        //        {
+        //            PhysicianNotification row = _context.PhysicianNotifications.Where(x => x.PhysicianId == id).First();
+        //            _context.PhysicianNotifications.Remove(row);
+        //            _context.SaveChanges();
+        //        }
+        //    }
+        //}
+        
 
     }
 }

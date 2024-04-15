@@ -390,5 +390,113 @@ namespace HalloDoc.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        public List<string> providerSendAgreement(string requestId)
+        {
+            List<string> res = new List<string>();
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            res = _providerRepository.adminSendAgreementGet(requestId);
+            return res;
+
+        }
+
+        [HttpPost]
+        public IActionResult providerSendAgreement(string requestId, string email, string mobile)
+        {
+
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            AspNetUser aspNetUser = _providerRepository.GetUserByEmail(email);
+            Physician physician = _providerRepository.getProviderInfo(ViewBag.Data);
+            if (aspNetUser == null)
+            {
+                ModelState.AddModelError("Email", "Email does not exist");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
+
+                string senderPassword = "Disney@20";
+                int req = int.Parse(requestId);
+                string agreementLink = $"{Request.Scheme}://{Request.Host}/Home/reviewAgreement?requestId={req}&physicianId={physician.PhysicianId}";
+
+                SmtpClient client = new SmtpClient("smtp.office365.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(senderEmail, senderPassword),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false
+                };
+
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail, "HalloDoc"),
+                    Subject = "Review the Agreement",
+                    IsBodyHtml = true,
+                    Body = $"Please review the agreement by clicking the following link. Further treatment will be carried out only after you agreee to the conditions.: <a href='{agreementLink}'>{agreementLink}</a>"
+                };
+
+                //mailMessage.To.Add(email);
+                mailMessage.To.Add("pateldisney20@gmail.com");
+                client.SendMailAsync(mailMessage);
+
+                TempData["isSentAgreement"] = true;
+                //sendSMS(requestId, mobile);
+                _providerRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), int.Parse(requestId), ViewBag.Data, null);
+                return RedirectToAction("providerDashboard");
+            }
+
+
+        }
+
+
+        [HttpGet]
+
+        public IActionResult sendOrder()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            sendOrder s = new sendOrder();
+            s.HealthProfessionalType = _providerRepository.GetAllHealthProfessionalType();
+            s.HealthProfessional = _providerRepository.GetAllHealthProfessional();
+            return View(s);
+        }
+        [HttpGet]
+        public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId)
+        {
+            var res = _providerRepository.GetHealthProfessional(healthprofessionalId);
+            return res;
+        }
+        public List<HealthProfessional> GetAllHealthProfessional()
+        {
+            var res = _providerRepository.GetAllHealthProfessional();
+            return res;
+        }
+        public List<HealthProfessionalType> GetAllHealthProfessionalType()
+        {
+            var res = _providerRepository.GetAllHealthProfessionalType();
+            return res;
+        }
+        [HttpGet]
+        public HealthProfessional GetProfessionInfo(int vendorId)
+        {
+            var res = _providerRepository.GetProfessionInfo(vendorId);
+            return res;
+        }
+        [HttpPost]
+       
+        public IActionResult sendOrder(int requestId, sendOrder s)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _providerRepository.sendOrderDetails(requestId, s, ViewBag.Data);
+            return RedirectToAction("sendOrder", new { requestId = requestId });
+        }
+
+        public IActionResult providerProfile()
+        {
+            return View();
+        }
     }
 }

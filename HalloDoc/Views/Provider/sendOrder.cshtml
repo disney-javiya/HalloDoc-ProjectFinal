@@ -1,0 +1,152 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.sendOrder
+
+
+@{
+    Layout = "_ProviderHeader";
+}
+
+<main>
+    <form method="post" id="sendOrderForm" action="@Url.Action("sendOrder", "Provider", new { requestId =  Context.Request.Query["requestId"]})">
+        <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+
+            <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+
+                <div class="d-flex flex-row justify-content-between mb-3">
+                    <h3>Send Order</h3>
+                    <a class="btn back-btn mt-1" asp-controller="Provider" asp-action="providerDashboard">< Back</a>
+                </div>
+
+                <div class="col-md-6">
+
+                    <select asp-for="type" name="type" class="form-select p-3 mb-3" id="healthtype" aria-label="Default select example">
+                        <option selected>HealthProfession Type</option>
+                        @if (Model != null)
+                        {
+                            @foreach (var cs in Model.HealthProfessionalType)
+                            {
+                                <option value="@cs.HealthProfessionalId">@cs.ProfessionName</option>
+                            }
+                        }
+
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6">
+                    <select asp-for="hname" name="hname" id="healthprofesional" class="form-select mb-3 p-3" aria-label="Default select example">
+                        <option selected>Select HealthProfessional</option>
+
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 ">
+                    <div class="form-floating mb-3">
+                        <input asp-for="BusinessContact" type="text" class="form-control b-contact last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="last-name-create-patient-text" for="floatingInput">Business Contact</label>
+                        <span asp-validation-for="BusinessContact" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 gy-3 ">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" type="email" class="form-control email email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com">
+                        <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6  me-auto">
+                    <div class="form-floating mb-3">
+                        <input asp-for="FaxNumber" type="text" class="form-control faxnumber last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="last-name-create-patient-text" for="floatingInput">Fax Number</label>
+                        <span asp-validation-for="FaxNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 gy-3">
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Prescription" class="form-control symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea"></textarea>
+                        <label class="symptoms-create-patient-text" for="floatingTextarea">Prescription or Order Details</label>
+
+                        <span asp-validation-for="Prescription" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 me-auto">
+                    <select asp-for="NoOfRefill" class="form-select NoOfRefill p-3 mb-3" aria-label="Default select example">
+                        <option selected>Number of Refill</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+
+                </div>
+
+
+                <div class="col d-flex justify-content-end mb-2">
+                    <button type="submit" class="btn submit-btn-create-patient me-2">Submit</button>
+                    <button class="btn ms-1" style="border: 1px solid #01bce9; color: #01bce9;">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</main>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#healthtype').change(function () {
+
+            var HealthProfessionalId = $('#healthtype').val();
+
+            $.ajax({
+                url: '/Admin/GetHealthProfessional',
+                type: 'GET',
+                data: { HealthProfessionalId: HealthProfessionalId },
+                success: function (data) {
+
+                    var healthprofesionalDropdown = $('#healthprofesional');
+                    healthprofesionalDropdown.empty();
+                    healthprofesionalDropdown.append($('<option></option>').text("Select Professionals"));
+                    $.each(data, function (index, healthprofesional) {
+
+                        healthprofesionalDropdown.append($('<option></option>').attr('value', healthprofesional.vendorId).text(healthprofesional.vendorName));
+
+                    });
+
+                }
+            });
+        });
+    });
+
+
+</script>
+<script>
+    $(document).ready(function () {
+
+        $('#healthprofesional').change(function () {
+
+            var vendorId = $('#healthprofesional').val();
+
+            $.ajax({
+                url: '/Admin/GetProfessionInfo',
+                type: 'GET',
+                data: { vendorId: vendorId },
+                success: function (data) {
+
+                    $(".b-contact").val(data.businessContact);
+                    $(".email").val(data.email);
+                    $(".faxnumber").val(data.faxNumber);
+
+
+                }
+            });
+        });
+    });
+
+
+</script>

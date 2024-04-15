@@ -24,7 +24,7 @@ namespace Repository.IRepository
         public string CreateConciergeRequest(patientInfo RequestData);
         public string CreateBusinessRequest(patientInfo RequestData);
         public List<Request> GetbyEmail(string email);
-        public void agreementApproved(int requestId);
+        public void agreementApproved(int requestId, int? adminId, int? physicianId);
         public List<RequestWiseFile> GetDocumentsByRequestId(int requestId);
         public void UploadFiles(int requestId, List<IFormFile> files);
 

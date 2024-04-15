@@ -163,5 +163,7 @@ namespace Repository.IRepository
         public List<Physician> getPhysicianOnCallList(int reg);
 
         public List<AspNetUser> userAccess();
+        public List<int> getPhysicianNotification();
+        //public void updatePhysicianNotification(List<int> phy_ids);
     }
 }
