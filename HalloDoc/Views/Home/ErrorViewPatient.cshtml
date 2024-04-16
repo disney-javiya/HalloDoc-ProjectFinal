@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+
+
+
+<!-- Include Toastr CSS and JavaScript -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script>
+    // Check if TempData contains a toast message
+    var toastMessage = '@TempData["ToastMessage"]';
+    if (toastMessage !== '') {
+        // Display Toastr message
+        toastr.success(toastMessage, 'Success');
+    }
+</script>

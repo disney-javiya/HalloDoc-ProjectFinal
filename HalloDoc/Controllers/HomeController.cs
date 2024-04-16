@@ -18,6 +18,7 @@ using HalloDoc.AuthMiddleware;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Repository;
+using Twilio.TwiML.Messaging;
 
 namespace HalloDoc.Controllers
 {
@@ -60,8 +61,14 @@ namespace HalloDoc.Controllers
 
             if (data == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid email or password.");
-                return View(user);
+
+                TempData["Error"] = true;
+
+
+
+                return View("Index", user);
+
+
             }
             AspNetUser loginuser = new()
             {
@@ -79,19 +86,20 @@ namespace HalloDoc.Controllers
 
 
         /*-----------------------------------Forgot Password--------------------------------------------------*/
+       
         public IActionResult Forgotpassword()
         {
             return View();
         }
-
+       
         [HttpPost]
         public IActionResult Reset(PatientLoginVM obj)
         {
             AspNetUser aspNetUser = _patientRepository.GetUserByEmail(obj.Email);
             if (aspNetUser == null)
             {
-                ModelState.AddModelError("Email", "Email does not exist");
-                return RedirectToAction("Index", obj);
+               
+                return RedirectToAction("Forgotpassword");
             }
             else
             {

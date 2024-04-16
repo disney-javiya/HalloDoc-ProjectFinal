@@ -11,24 +11,24 @@ public partial class HealthProfessional
 {
     [Key]
     public int VendorId { get; set; }
-
+    [Required]
     [StringLength(100)]
     public string VendorName { get; set; } = null!;
-
+    [Required]
     public int? Profession { get; set; }
-
+    [Required]
     [StringLength(50)]
     public string FaxNumber { get; set; } = null!;
-
+    [Required]
     [StringLength(150)]
     public string? Address { get; set; }
-
+    [Required]
     [StringLength(100)]
     public string? City { get; set; }
-
+    [Required]
     [StringLength(50)]
     public string? State { get; set; }
-
+    [Required]
     [StringLength(50)]
     public string? Zip { get; set; }
 
@@ -39,7 +39,7 @@ public partial class HealthProfessional
 
     [Column(TypeName = "timestamp without time zone")]
     public DateTime? ModifiedDate { get; set; }
-
+    [Required]
     [StringLength(100)]
     public string? PhoneNumber { get; set; }
 
@@ -49,10 +49,10 @@ public partial class HealthProfessional
     [Column("IP")]
     [StringLength(20)]
     public string? Ip { get; set; }
-
+    [Required]
     [StringLength(50)]
     public string? Email { get; set; }
-
+    [Required]
     [StringLength(100)]
     public string? BusinessContact { get; set; }
 

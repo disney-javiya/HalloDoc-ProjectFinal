@@ -1,10 +1,10 @@
-﻿@using System.Text.Json
+﻿ @using System.Text.Json
 @using System.Text.Json.Serialization
 @model HalloDoc.DataAccessLayer.DataModels.ViewModels.ShiftDetailsModel
 @{
     Layout = "_AdminHeader";
 }
-
+<link rel="stylesheet" href="~/css/Scheduling.css" />
 <script src="~/js/daypilot-all.min.js"></script>
 @* <!DOCTYPE html>
 <html lang="en">
@@ -260,7 +260,7 @@
         
     const resourcess = @Html.Raw(listJson);
     const eventss = @Html.Raw(eventsJson);
-    console.log(eventss);
+   
 
     const picker = new DayPilot.DatePicker({
         target: 'start',
@@ -336,7 +336,7 @@
             console.log(resourcess['$values']);
   
             for (let i = 0; i < resourcess['$values'].length; ++i) {
-                    let path = resourcess['$values'][i].Photo == null ? "/AdminFiles/user.png" : "/AdminFiles/user.png"  /* `/AdminFiles/${resourcess['$values'][i].PhysicianId}/${resourcess['$values'][i].Photo}.jpg` */;
+                let path = resourcess['$values'][i].Photo == null ? "/AdminFiles/user.png" : "/AdminFiles/user.png"; /* `/AdminFiles/${resourcess['$values'][i].PhysicianId}/${resourcess['$values'][i].Photo}.jpg` */
                 let obj = {
                     html: `<div class='coverage-flex'><div class='coverage-inner-flex'><img style='width:15px;height:15px;' src='${path}' class='coverage-img' /><span>${resourcess['$values'][i].LastName.charAt(0).toUpperCase() + resourcess['$values'][i].LastName.slice(1) + ", " + resourcess['$values'][i].FirstName.charAt(0).toUpperCase() + "."}</span></div></div>`,
                     id: resourcess['$values'][i].PhysicianId
@@ -368,7 +368,7 @@
             const colors = ["#3c78d8", "#6aa84f", "#f1c232", "#cc0000"];
             return colors[i % 4];
         },
-        init() {
+        init() { 
             this.addEventHandlers();
             this.loadData();
         },

@@ -37,9 +37,9 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
         [StringLength(100)]
         public string? CreatedBy { get; set; }
-
+        [Required]
         public int? hname { get; set; }
-     
+        [Required]
         public int? type { get; set; }
         public IEnumerable<HealthProfessionalType> HealthProfessionalType { get; set; }
         public IEnumerable<HealthProfessional> HealthProfessional { get; set; }

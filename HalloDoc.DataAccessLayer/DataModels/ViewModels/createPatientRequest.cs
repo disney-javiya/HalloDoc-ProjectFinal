@@ -28,10 +28,12 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
             [Required]
             [StringLength(50)]
             public string Email { get; set; } = null!;
-            
-            [StringLength(20)]
-            public string? Mobile { get; set; }
             [Required]
+            [StringLength(20)]
+        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
+        ErrorMessage = "Phone is required and must be properly formatted.")]
+        public string? Mobile { get; set; }
+        [Required]
             [StringLength(100)]
             public string? Street { get; set; }
             [Required]

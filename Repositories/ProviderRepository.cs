@@ -71,9 +71,12 @@ namespace Repository
             else if (type == 4)
             {
 
-                query = query.Where(req => req.Status == 6);
+                query = query.Where(req => req.Status == 6 && req.PhysicianId == phyId);
             }
-
+            else
+            {
+                return query.ToList();
+            }
 
             return query.ToList();
         }
@@ -476,6 +479,43 @@ namespace Repository
             _context.SaveChanges();
         }
 
-       
+       public void providerEncounterCase(int requestId, string calltype, string email)
+       {
+            var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+            RequestStatusLog rs = new RequestStatusLog();
+            if(res != null && calltype != null)
+            {
+                if(calltype == "housecall")
+                {
+                    res.Status = 5;
+                    res.CallType = 1;
+                    res.ModifiedDate = DateTime.Now;
+                    _context.SaveChanges();
+
+                    rs.RequestId = requestId;
+                    rs.Status = 5;
+                    rs.PhysicianId = res.PhysicianId;
+                    rs.CreatedDate = DateTime.Now;
+                    _context.RequestStatusLogs.Add(rs);
+                    _context.SaveChanges();
+                }
+
+                if (calltype == "consult")
+                {
+                    res.Status = 6;
+                    res.CallType = 2;
+                    res.ModifiedDate = DateTime.Now;
+                    _context.SaveChanges();
+
+                    rs.RequestId = requestId;
+                    rs.Status = 6;
+                    rs.PhysicianId = res.PhysicianId;
+                    rs.CreatedDate = DateTime.Now;
+                    _context.RequestStatusLogs.Add(rs);
+                    _context.SaveChanges();
+                }
+            }
+
+       }
     }
 }

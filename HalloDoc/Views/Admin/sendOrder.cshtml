@@ -1,8 +1,6 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.sendOrder
 
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-}
+
 @{
     Layout = "_AdminHeader";
 }
@@ -46,7 +44,7 @@
 
 
                             </select>
-
+                    <span asp-validation-for="type" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6">
@@ -55,7 +53,7 @@
 
 
                             </select>
-
+                    <span asp-validation-for="hname" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6 ">

@@ -604,8 +604,11 @@ namespace Repository
       
             User data = new User();
             var d = _context.AspNetUsers.FirstOrDefault(x => x.Email == RequestData.Email);
+            if(d!= null)
+            {
+                data.AspNetUserId = d.Id;
+            }
           
-            data.AspNetUserId = d.Id;
             
          
             

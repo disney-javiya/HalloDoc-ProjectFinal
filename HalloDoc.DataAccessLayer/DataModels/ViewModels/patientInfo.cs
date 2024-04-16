@@ -13,37 +13,39 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
     {
         [StringLength(250)]
         public string Symptoms { get; set; } = null!;
-        [Required]
+        [Required(ErrorMessage = "Date of Birth is required")]
         public DateOnly DateOfBirth { get; set; }
-        [Required]
+        [Required(ErrorMessage = "First Name is required")]
         [StringLength(100)]
         public string FirstName { get; set; } = null!;
-        [Required]
+        [Required(ErrorMessage = "Last Name is required")]
         [StringLength(100)]
         public string? LastName { get; set; }
 
         [Column(TypeName = "character varying")]
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         public string? PasswordHash { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Email is required")]
         [StringLength(50)]
         public string Email { get; set; } = null!;
-
+        [Required]
         [StringLength(20)]
         public string? Mobile { get; set; }
-
+        [Required(ErrorMessage = "Phone Number is required")]
         [StringLength(23)]
-        public string? PhoneNumber { get; set; } = null;
-        [Required]
+        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
+        ErrorMessage = "Phone is required and must be properly formatted.")]
+        public string? PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Street is required")]
         [StringLength(100)]
         public string? Street { get; set; }
-        [Required]
+        [Required(ErrorMessage = "City is required")]
         [StringLength(100)]
         public string? City { get; set; }
-        [Required]
+        [Required(ErrorMessage = "State is required")]
         [StringLength(100)]
         public string? State { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Zipcode is required")]
         [StringLength(10)]
         public string? ZipCode { get; set; }
 
@@ -51,16 +53,18 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public IFormFile[]? MultipleFiles { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Family First Name is required")]
         [StringLength(100)]
         public string? FamilyFirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Family Last Name is required")]
         [StringLength(100)]
         public string? FamilyLastName { get; set; }
-
+        [Required(ErrorMessage = "Family Phone Number is required")]
         [StringLength(23)]
-        public string? FamilyPhoneNumber { get; set; } = null;
-        [Required]
+        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
+        ErrorMessage = "Phone is required and must be properly formatted.")]
+        public string? FamilyPhoneNumber { get; set; }
+        [Required(ErrorMessage = "Family Email is required")]
         [StringLength(50)]
         public string? FamilyEmail { get; set; }
         [Required]
@@ -72,48 +76,53 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Concierge First Name is required")]
         [StringLength(100)]
         public string? ConciergeFirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge Last Name is required")]
         [StringLength(100)]
         public string? ConciergeLastName { get; set; }
-
+        [Required(ErrorMessage = "Concierge Phone Number is required")]
         [StringLength(23)]
-        public string? ConciergePhoneNumber { get; set; } = null;
-        [Required]
+        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
+        ErrorMessage = "Phone is required and must be properly formatted.")]
+        public string? ConciergePhoneNumber { get; set; }
+        [Required(ErrorMessage = "Concierge Email is required")]
         [StringLength(50)]
         public string? ConciergeEmail { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge Property Name is required")]
         [StringLength(100)]
         public string? ConciergePropertyName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge Street is required")]
         [StringLength(100)]
         public string? ConciergeStreet { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge City is required")]
         [StringLength(100)]
         public string? ConciergeCity { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge State is required")]
         [StringLength(100)]
         public string? ConciergeState { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Concierge Zipcode is required")]
         [StringLength(10)]
         public string? ConciergeZipCode { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Business First Name is required")]
         [StringLength(100)]
         public string? BusinessFirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Business last Name is required")]
         [StringLength(100)]
         public string? BusinessLastName { get; set; }
 
+        [Required(ErrorMessage = "Business Phone number is required")]
         [StringLength(23)]
-        public string? BusinessPhoneNumber { get; set; } = null;
-        [Required]
+        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
+        ErrorMessage = "Phone is required and must be properly formatted.")]
+        public string? BusinessPhoneNumber { get; set; }
+        [Required(ErrorMessage = "Business Email is required")]
         [StringLength(50)]
         public string? BusinessEmail { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Business Property Name is required")]
         [StringLength(100)]
         public string? BusinessPropertyName { get; set; }
 

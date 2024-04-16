@@ -91,7 +91,10 @@ namespace HalloDoc.Controllers
 
             return View();
         }
-
+        public IActionResult adminForgotpassword()
+        {
+            return View();
+        }
         public IActionResult adminDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1101,70 +1104,75 @@ namespace HalloDoc.Controllers
         {
             int pid = int.Parse(physicianId);
             var physician = _adminRepository.getPhysicianDetails(pid);
-            if (ctype == "1" || ctype == "3")
+            if(ctype != null && messagebody !=null)
             {
-
-
-                string accountSid = "AC5c509d7da59a0b33e1b8e928c6a1b6b9";
-                string authToken = "b1193502b178351e8f7709e095524ca9";
-
-                TwilioClient.Init(accountSid, authToken);
-                var messageOptions = new CreateMessageOptions(
-                 new PhoneNumber("+916353121783"));
-                messageOptions.From = new PhoneNumber("+15642161066");
-                messageOptions.Body = messagebody;
-
-                var message = MessageResource.Create(messageOptions);
-                Console.WriteLine(message.Body);
-                _adminRepository.insertSMSLog(messageOptions.Body, physician.Mobile, null, ViewBag.Data);
-            }
-            if (ctype == "2" || ctype == "3")
-            {
-                string email = physician.Email;
-
-
-
-                if (physician == null)
+                if (ctype == "1" || ctype == "3")
                 {
-                    ModelState.AddModelError("Email", "Email does not exist");
-                    return RedirectToAction("Index");
+
+
+                    string accountSid = "AC5c509d7da59a0b33e1b8e928c6a1b6b9";
+                    string authToken = "b1193502b178351e8f7709e095524ca9";
+
+                    TwilioClient.Init(accountSid, authToken);
+                    var messageOptions = new CreateMessageOptions(
+                     new PhoneNumber("+916353121783"));
+                    messageOptions.From = new PhoneNumber("+15642161066");
+                    messageOptions.Body = messagebody;
+
+                    var message = MessageResource.Create(messageOptions);
+                    Console.WriteLine(message.Body);
+                    _adminRepository.insertSMSLog(messageOptions.Body, physician.Mobile, null, ViewBag.Data);
                 }
-                else
+                if (ctype == "2" || ctype == "3")
                 {
-                    string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
-
-                    string senderPassword = "Disney@20";
+                    string email = physician.Email;
 
 
-                    SmtpClient client = new SmtpClient("smtp.office365.com")
+
+                    if (physician == null)
                     {
-                        Port = 587,
-                        Credentials = new NetworkCredential(senderEmail, senderPassword),
-                        EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false
-                    };
-
-                    MailMessage mailMessage = new MailMessage
+                        ModelState.AddModelError("Email", "Email does not exist");
+                        return RedirectToAction("Index");
+                    }
+                    else
                     {
-                        From = new MailAddress(senderEmail, "HalloDoc"),
-                        Subject = "HalloDoc Admin",
-                        IsBodyHtml = true,
-                        Body = $"This message is for {physician.FirstName} from admin of HalloDoc! {messagebody}"
-                    };
+                        string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
 
-                    mailMessage.To.Add(email);
+                        string senderPassword = "Disney@20";
 
-                    client.SendMailAsync(mailMessage);
 
-                    ViewBag.Data = HttpContext.Session.GetString("key");
-                    
-                    _adminRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(),null,ViewBag.Data,null);
-                 
+                        SmtpClient client = new SmtpClient("smtp.office365.com")
+                        {
+                            Port = 587,
+                            Credentials = new NetworkCredential(senderEmail, senderPassword),
+                            EnableSsl = true,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false
+                        };
+
+                        MailMessage mailMessage = new MailMessage
+                        {
+                            From = new MailAddress(senderEmail, "HalloDoc"),
+                            Subject = "HalloDoc Admin",
+                            IsBodyHtml = true,
+                            Body = $"This message is for {physician.FirstName} from admin of HalloDoc! {messagebody}"
+                        };
+
+                        //mailMessage.To.Add(email);
+                        mailMessage.To.Add("pateldisney20@gmail.com");
+
+                        client.SendMailAsync(mailMessage);
+
+                        ViewBag.Data = HttpContext.Session.GetString("key");
+
+                        _adminRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), null, ViewBag.Data, null);
+
+                    }
+
+
                 }
-
-
             }
+           
             return RedirectToAction("providerMenu");
         }
 

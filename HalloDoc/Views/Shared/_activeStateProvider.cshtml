@@ -29,8 +29,17 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.patientAddress)
                         </td>
+
                         <td>
-                            @Html.DisplayFor(modelItem => item.CallType)
+                            @if(item.Status == 5)
+                            {
+                                <a class="btn btn-primary p-1" role="button">House Call</a>
+                            }
+                            else
+                            {
+                                
+                            }
+                           
                         </td>
                         
                         <td>
@@ -46,8 +55,11 @@
                                     <li><a class="dropdown-item" href="@Url.Action("providerViewCase", "Provider", new { requestId = @item.requestId})">View Case</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("providerViewUploads", "Provider", new { requestId = @item.requestId})">View Uploads</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("providerViewNotes", "Provider", new { requestId = @item.requestId})">View Notes</a></li>
-
-                                    <li><a class="dropdown-item" id="encounter-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounter" value="@item.requestId">Encounter Form</a></li>
+                                    @if(item.Status == 4)
+                                    {
+                                        <li><a class="dropdown-item" id="encounter-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounter" value="@item.requestId">Encounter Form</a></li>
+                                    }
+                                 
                                   
                                     <li><a class="dropdown-item" href="@Url.Action("sendOrder", "Provider", new { requestId = @item.requestId})">Orders</a></li>
                                     
@@ -195,10 +207,10 @@
 
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn  me-3" style="border: 1px solid #01bce9">
-                            <input type="radio" name="options" id="option1"> Housecall
+                            <input type="radio" value="housecall" name="calltype" id="option1"> Housecall
                         </label>
                         <label class="btn ms-3" style="border: 1px solid #01bce9">
-                            <input type="radio" name="options" id="option2"> Consult
+                            <input type="radio" value="consult" name="calltype" id="option2"> Consult
                         </label>
                        
                     </div>
@@ -222,6 +234,21 @@
 
 
 <script src="/js/pagination.js"></script>
+
+<script>
+    var requestId = null;
+
+    $(document).on('click', '#encounter-option', function () {
+
+        requestId = $(this).attr("value");
+    });
+    $('#encounterCaseForm').submit(function (event) {
+
+        $('#requestidinput1').val(requestId);
+
+
+    });
+</script>
 <script>
     function changePage(page) {
 

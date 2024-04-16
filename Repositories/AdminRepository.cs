@@ -186,7 +186,7 @@ namespace Repository
             int reqId = int.Parse(requestId);
             //int CaseTagid = int.Parse(reason);
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
-            if (reqId != null)
+            if (reqId != null && reason != "Reason for Cancellation")
             {
                 res.Status = 3;
                 //var caseName = _context.CaseTags.Where(x => x.CaseTagId == CaseTagid).Select(u => u.Name).ToString();
@@ -200,9 +200,10 @@ namespace Repository
                 rs.AdminId = id;
                 rs.Notes = additionalNotes;
                 rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
             }
-            _context.RequestStatusLogs.Add(rs);
-            _context.SaveChanges();
+         
         }
 
         public string getName(string requestId)
@@ -257,11 +258,12 @@ namespace Repository
                 //rs.TransToPhysicianId = int.Parse(physician);
                 //rs.Notes = additionalNotesAssign;
                 //rs.CreatedDate = DateTime.Now;
+                _context.RequestNotes.Add(rn);
+                _context.SaveChanges();
             }
             //_context.RequestStatusLogs.Add(rs);
             //_context.SaveChanges();
-            _context.RequestNotes.Add(rn);
-            _context.SaveChanges();
+           
         }
 
         public void adminBlockNote(string requestId, string additionalNotesBlock, string email)
@@ -273,7 +275,7 @@ namespace Repository
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
             string patient_email = _context.RequestClients.Where(x=>x.RequestId == reqId).Select(u=>u.Email).FirstOrDefault();
             
-            if (res != null)
+            if (res != null && additionalNotesBlock!= null)
             {
                 rs.RequestId = reqId;
                 res.Status = 11;
@@ -308,7 +310,7 @@ namespace Repository
             Request r = new Request();
             int reqId = int.Parse(requestId);
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
-            if (res != null)
+            if (res != null && physician!="Select Physician")
             {
                 res.Status = 2;
                 res.PhysicianId = int.Parse(physician);
@@ -322,9 +324,10 @@ namespace Repository
                 rs.TransToPhysicianId = int.Parse(physician);
                 rs.Notes = additionalNotesTransfer;
                 rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
             }
-            _context.RequestStatusLogs.Add(rs);
-            _context.SaveChanges();
+           
         }
 
 
@@ -335,7 +338,7 @@ namespace Repository
             int reqId = int.Parse(requestId);
 
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
-            if (res != null)
+            if (res != null && additionalNotesPatient!=null)
             {
                 res.Status = 7;
                 _context.SaveChanges();
@@ -343,9 +346,10 @@ namespace Repository
                 rs.Status = 7;
                 rs.Notes = additionalNotesPatient;
                 rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
             }
-            _context.RequestStatusLogs.Add(rs);
-            _context.SaveChanges();
+           
         }
 
 
@@ -714,20 +718,24 @@ namespace Repository
         }
         public void sendOrderDetails(int requestId, sendOrder s, string email)
         {
-            OrderDetail o = new OrderDetail();
-            var htype = s.type;
-            o.VendorId = s.hname;
-            o.RequestId = requestId;
-            o.FaxNumber = s.FaxNumber;
-            o.Email = s.Email;
-            o.BusinessContact = s.BusinessContact;
-            o.Prescription = s.Prescription;
-            o.NoOfRefill = s.NoOfRefill;
-            o.CreatedDate = DateTime.Now;
-            var name = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
-            o.CreatedBy = name;
-            _context.OrderDetails.Add(o);
-            _context.SaveChanges();
+            if(s != null && s.type !=null)
+            {
+                OrderDetail o = new OrderDetail();
+                var htype = s.type;
+                o.VendorId = s.hname;
+                o.RequestId = requestId;
+                o.FaxNumber = s.FaxNumber;
+                o.Email = s.Email;
+                o.BusinessContact = s.BusinessContact;
+                o.Prescription = s.Prescription;
+                o.NoOfRefill = s.NoOfRefill;
+                o.CreatedDate = DateTime.Now;
+                var name = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
+                o.CreatedBy = name;
+                _context.OrderDetails.Add(o);
+                _context.SaveChanges();
+            }
+           
         }
         public List<HealthProfessionalType> GetAllHealthProfessionalType()
         {
@@ -809,9 +817,10 @@ namespace Repository
                 var id = _context.Admins.Where(x => x.AspNetUserId == aspId).Select(u => u.AdminId).FirstOrDefault();
                 rs.AdminId = id;
                 rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
             }
-            _context.RequestStatusLogs.Add(rs);
-            _context.SaveChanges();
+            
         }
         public string adminTransferNotes(string requestId, string email)
         {

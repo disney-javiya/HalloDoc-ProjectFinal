@@ -49,6 +49,7 @@ namespace Repository.IRepository
         public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId);
         public HealthProfessional GetProfessionInfo(int vendorId);
         public void sendOrderDetails(int requestId, sendOrder s, string email);
+        public void providerEncounterCase(int requestId, string calltype, string email);
 
     }
 }

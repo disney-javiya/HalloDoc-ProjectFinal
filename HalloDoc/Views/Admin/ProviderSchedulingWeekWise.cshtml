@@ -330,7 +330,7 @@
             const resources = [{ html: "<b>Coverage</b>", id: "R0" }];
             console.log(resourcess['$values']);
                 for (let i = 0; i < resourcess['$values'].length; ++i) {
-                let path = resourcess['$values'][i].Photo == null ? "/PhysicianDoc/user (1).jpg" : `/PhysicianDoc/${resourcess['$values'][i].PhysicianId}/${resourcess['$values'][i].Photo}`;
+                let path = resourcess['$values'][i].Photo == null ? "/AdminFiles/user.png" : `/PhysicianDoc/${resourcess['$values'][i].PhysicianId}/${resourcess['$values'][i].Photo}`;
                 let obj = {
                     html: `<div class='coverage-flex'><div class='coverage-inner-flex'><img style='width:15px;height:15px;' src='${path}' class='coverage-img' /><span>${resourcess['$values'][i].FirstName.charAt(0).toUpperCase() + resourcess['$values'][i].FirstName.slice(1) + ", " + resourcess['$values'][i].LastName.charAt(0).toUpperCase() + "."}</span></div></div>`,
                     id: resourcess['$values'][i].PhysicianId

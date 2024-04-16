@@ -9,6 +9,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 {
     public class PatientLoginVM
     {
+        [Required(ErrorMessage = "Email is required")]
         [StringLength(256)]
         public string? Email { get; set; }
 

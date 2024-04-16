@@ -494,6 +494,13 @@ namespace HalloDoc.Controllers
             return RedirectToAction("sendOrder", new { requestId = requestId });
         }
 
+        public IActionResult providerEncounterCase(string calltype, int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _providerRepository.providerEncounterCase(requestId, calltype, ViewBag.Data);
+            return View("providerDashboard");
+        }
+
         public IActionResult providerProfile()
         {
             return View();
