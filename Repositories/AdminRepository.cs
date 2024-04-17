@@ -390,7 +390,7 @@ namespace Repository
                              requestedDate = x.Request.CreatedDate,
                              patientContact = x.Client.PhoneNumber,
                              requestorContact = x.Request.PhoneNumber,
-
+                             CompletedByPhysician = x.Request.CompletedByPhysician,
                              patientAddress = x.Client.Address,
                              patientCity = x.Client.City,
                              physicianName = _context.Physicians.Where(u => u.PhysicianId == x.Request.PhysicianId).Select(u => u.FirstName).FirstOrDefault(),

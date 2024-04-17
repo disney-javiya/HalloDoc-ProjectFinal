@@ -37,7 +37,7 @@ namespace HalloDoc.Controllers
         private readonly IAdminRepository _adminRepository;
         private readonly IAuthenticateRepository _authenticate;
 
-
+        string rolename;
 
         public AdminController(ILogger<AdminController> logger, IAdminRepository adminRepository, IAuthenticateRepository authenticate)
         {
@@ -79,13 +79,13 @@ namespace HalloDoc.Controllers
             HttpContext.Session.SetString("key", user.Email);
             ViewBag.Data = HttpContext.Session.GetString("key");
 
-            if(rolename == "Admin")
+            if (rolename == "Admin")
             {
                 return View("adminDashboard");
             }
-            if(rolename == "Physician")
+            if (rolename == "Physician")
             {
-               
+
                 return RedirectToAction("providerDashboard", "Provider");
             }
 
@@ -95,6 +95,7 @@ namespace HalloDoc.Controllers
         {
             return View();
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult adminDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -329,7 +330,8 @@ namespace HalloDoc.Controllers
 
 
 
-     
+
+        [CustomeAuthorize("Admin")]
         public IActionResult adminViewCase(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -344,7 +346,7 @@ namespace HalloDoc.Controllers
             return View(requestClient);
 
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public IActionResult adminViewNotes(int requestId)
         {
@@ -355,7 +357,7 @@ namespace HalloDoc.Controllers
             return View(res);
 
         }
-       
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminViewNotes(int requestId, viewNotes v)
         {
@@ -364,7 +366,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminViewNotes", new { requestId = requestId });
 
         }
-      
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public string adminCancelNote(string requestId)
         {
@@ -373,7 +375,7 @@ namespace HalloDoc.Controllers
             return pname;
 
         }
-     
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminCancelNote(string requestId, string reason, string additionalNotes)
         {
@@ -403,7 +405,7 @@ namespace HalloDoc.Controllers
 
         }
 
-     
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public string adminBlockNote(string requestId)
         {
@@ -412,7 +414,7 @@ namespace HalloDoc.Controllers
             return pname;
 
         }
-   
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminBlockNote(string requestId, string additionalNotesBlock)
         {
@@ -422,7 +424,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminDashboard");
 
         }
-   
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminTransferCase(string requestId, string physician, string additionalNotesTransfer)
         {
@@ -433,7 +435,7 @@ namespace HalloDoc.Controllers
         }
 
 
-       
+        [CustomeAuthorize("Admin")]
         public IActionResult adminViewUploads(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -529,7 +531,7 @@ namespace HalloDoc.Controllers
             return File(zipMemoryStream, "application/zip", "DownloadedFiles.zip");
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult DeleteFiles(string fileIds, int? requestId)
         {
             IEnumerable<RequestWiseFile> files;
@@ -642,7 +644,7 @@ namespace HalloDoc.Controllers
         }
 
         [HttpGet]
-       
+        [CustomeAuthorize("Admin")]
         public IActionResult sendOrder()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -652,6 +654,7 @@ namespace HalloDoc.Controllers
             return View(s);
         }
         [HttpGet]
+        [CustomeAuthorize("Admin")]
         public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId)
         {
             var res = _adminRepository.GetHealthProfessional(healthprofessionalId);
@@ -674,7 +677,7 @@ namespace HalloDoc.Controllers
             return res;
         }
         [HttpPost]
-     
+        [CustomeAuthorize("Admin")]
         public IActionResult sendOrder(int requestId, sendOrder s)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -682,6 +685,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("sendOrder", new { requestId = requestId });
         }
         [HttpPost]
+        [CustomeAuthorize("Admin")]
         public IActionResult adminClearCase(string requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -692,6 +696,7 @@ namespace HalloDoc.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize("Admin")]
         public List<string> adminSendAgreement(string requestId)
         {
             List<string> res = new List<string>();
@@ -702,6 +707,7 @@ namespace HalloDoc.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize("Admin")]
         public IActionResult adminSendAgreement(string requestId, string email, string mobile)
         {
 
@@ -771,7 +777,7 @@ namespace HalloDoc.Controllers
 
         }
 
-       
+        [CustomeAuthorize("Admin")]
         public IActionResult closeCase(int requestId)
         {
             var document = _adminRepository.GetDocumentsByRequestId(requestId);
@@ -786,7 +792,7 @@ namespace HalloDoc.Controllers
             return View(document);
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult closeCaseAdmin(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -794,6 +800,7 @@ namespace HalloDoc.Controllers
             _adminRepository.closeCaseAdmin(requestId, ViewBag.Data);
             return RedirectToAction("adminDashboard");
         }
+
         public RequestClient getPatientInfo(int requestId)
         {
             RequestClient r = new RequestClient();
@@ -801,7 +808,7 @@ namespace HalloDoc.Controllers
             return r;
         }
 
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult patientCancelNote(string requestId, string additionalNotesPatient)
         {
@@ -811,7 +818,7 @@ namespace HalloDoc.Controllers
 
         }
 
-
+        [CustomeAuthorize("Admin")]
         public string adminTransferNotes(string requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -820,7 +827,7 @@ namespace HalloDoc.Controllers
             return res;
 
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public IActionResult adminProfile()
         {
@@ -830,7 +837,7 @@ namespace HalloDoc.Controllers
             return View(a);
 
         }
-      
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfileUpdatePassword(string password)
         {
@@ -840,7 +847,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminProfile");
 
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfileUpdateStatus(Admin a)
         {
@@ -850,7 +857,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminProfile");
 
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfile(Admin a, string? uncheckedCheckboxes)
         {
@@ -861,7 +868,7 @@ namespace HalloDoc.Controllers
 
         }
 
-  
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfileBilling(Admin a)
         {
@@ -871,8 +878,8 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminProfile");
 
         }
-     
 
+        [CustomeAuthorize("Admin")]
         public IActionResult adminCreateRequest()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -884,7 +891,7 @@ namespace HalloDoc.Controllers
             return View();
 
         }
-   
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminCreateRequest(createAdminRequest RequestData)
         {
@@ -944,7 +951,7 @@ namespace HalloDoc.Controllers
             return null;
         }
 
-        //[CustomeAuthorize("Admin")]
+        [CustomeAuthorize("Admin")]
         public IActionResult encounterForm()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -961,7 +968,7 @@ namespace HalloDoc.Controllers
             return res;
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult providerMenu()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -970,13 +977,14 @@ namespace HalloDoc.Controllers
 
             return View(res);
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult createPhysicianAccount()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
 
             return View();
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult createPhysicianAccount(Physician p, IFormFile photo, string password, string role, List<int> region, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc)
         {
@@ -985,7 +993,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("providerMenu");
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult editPhysicianAccount(int physicianId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -993,6 +1001,7 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.getPhysicianDetails(physicianId);
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public List<Region> getPhysicianRegions(int physicianId)
         {
@@ -1001,7 +1010,7 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.getPhysicianRegions(physicianId);
             return res;
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult physicianUpdateStatus(int physicianId, Physician p)
         {
@@ -1013,7 +1022,7 @@ namespace HalloDoc.Controllers
         }
 
 
-  
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult physicianUpdatePassword(int physicianId, string password)
         {
@@ -1023,8 +1032,8 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminProfile", new { physicianId = physicianId });
 
         }
+        [CustomeAuthorize("Admin")]
 
-        
         [HttpPost]
         public IActionResult physicianUpdateAccount(int physicianId, Physician p, string uncheckedCheckboxes)
         {
@@ -1035,7 +1044,7 @@ namespace HalloDoc.Controllers
 
         }
 
-       
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult physicianUpdateBilling(int physicianId, Physician p)
         {
@@ -1047,7 +1056,7 @@ namespace HalloDoc.Controllers
         }
 
 
-       
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult physicianUpdateBusiness(int physicianId, Physician p, IFormFile[] files, IFormFile? photo, IFormFile? signature)
         {
@@ -1062,7 +1071,7 @@ namespace HalloDoc.Controllers
 
 
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult physicianUpdateUpload(int physicianId, Physician p, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc)
         {
@@ -1077,6 +1086,7 @@ namespace HalloDoc.Controllers
 
 
         }
+
         [HttpGet]
         public List<Role> GetPhysiciansRoles()
         {
@@ -1084,7 +1094,7 @@ namespace HalloDoc.Controllers
             return res;
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult deletePhysicianAccount(int physicianId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1099,7 +1109,7 @@ namespace HalloDoc.Controllers
 
         }
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult contactProvider(string physicianId, string ctype, string messagebody)
         {
             int pid = int.Parse(physicianId);
@@ -1175,7 +1185,7 @@ namespace HalloDoc.Controllers
            
             return RedirectToAction("providerMenu");
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult adminAccess()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1184,7 +1194,7 @@ namespace HalloDoc.Controllers
 
             return View(res);
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult createRole()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1192,7 +1202,7 @@ namespace HalloDoc.Controllers
 
             return View();
         }
-     
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult createRole(createRole r, List<string> menu)
         {
@@ -1215,21 +1225,21 @@ namespace HalloDoc.Controllers
             menu = _adminRepository.menuByAccountTypeRoleId(accountType, roleId);
             return menu;
         }
-
+        [CustomeAuthorize("Admin")]
         public ActionResult adminDeleteRole(int roleId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.adminDeleteRole(roleId, ViewBag.Data);
             return RedirectToAction("adminAccess");
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public IActionResult editRole(int roleId)
         {
             Role r = _adminRepository.getRoleData(roleId);
             return View(r);
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult editRole(Role r, List<int> menu, int roleId)
         {
@@ -1239,18 +1249,20 @@ namespace HalloDoc.Controllers
 
             return RedirectToAction("adminAccess");
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult createAdmin()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public List<Role> GetAdminsRoles()
         {
             List<Role> res = _adminRepository.GetAdminsRoles();
             return res;
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult createAdmin(Admin a, string password, List<int> region, string role)
         {
@@ -1258,13 +1270,13 @@ namespace HalloDoc.Controllers
             _adminRepository.createAdmin(a, password, region, role, ViewBag.Data);
             return RedirectToAction("adminDashboard");
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult adminScheduling()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-   
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult insertShift(shiftViewModel s, string checktoggle, int[] dayList)
         {
@@ -1274,14 +1286,14 @@ namespace HalloDoc.Controllers
 
             return RedirectToAction("providerSchedulingDayWise");
         }
-     
+        [CustomeAuthorize("Admin")]
         public IActionResult providerLocation()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             List<PhysicianLocation> res = _adminRepository.getAllPhysicianLocation();
             return View(res);
         }
-     
+        [CustomeAuthorize("Admin")]
         public IActionResult partnersPage()
         {
 
@@ -1289,13 +1301,13 @@ namespace HalloDoc.Controllers
             List<HealthProfessional> res = _adminRepository.GetHealthProfessionals();
             return View(res);
         }
-      
+        [CustomeAuthorize("Admin")]
         public IActionResult addBusiness()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-      
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult addBusiness(HealthProfessional h)
         {
@@ -1303,7 +1315,7 @@ namespace HalloDoc.Controllers
             _adminRepository.addHealthProfessional(h);
             return View("addBusiness");
         }
-        
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public IActionResult editBusiness(int VendorId)
         {
@@ -1311,7 +1323,7 @@ namespace HalloDoc.Controllers
            HealthProfessional h = _adminRepository.GetProfessionInfo(VendorId);
             return View(h);
         }
-   
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult editBusinessPost(int VendorId, HealthProfessional h)
         {
@@ -1319,14 +1331,14 @@ namespace HalloDoc.Controllers
              _adminRepository.editBusinessPost(VendorId,h);
             return RedirectToAction("partnersPage");
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult adminDeletePartner(int VendorId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.adminDeletePartner(VendorId, ViewBag.Data);
             return RedirectToAction("partnersPage");
         }
-    
+        [CustomeAuthorize("Admin")]
         [HttpGet]
         public IActionResult blockedHistory()
         {
@@ -1334,6 +1346,7 @@ namespace HalloDoc.Controllers
             List<BlockRequest> res = _adminRepository.GetAllBlockRequests();
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
     
         public IActionResult blockedHistory(string patientName, DateOnly date, string email, string phone)
@@ -1342,13 +1355,14 @@ namespace HalloDoc.Controllers
             List<BlockRequest> res = _adminRepository.filterBlockedHistory(patientName, date, email, phone);
             return View(res);
         }
- 
+        [CustomeAuthorize("Admin")]
         public IActionResult unblockPatient(int RequestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.unblockPatient(RequestId, ViewBag.Data);
             return RedirectToAction("blockedHistory");
         }
+        [CustomeAuthorize("Admin")]
         [HttpGet]
  
         public IActionResult patientHistory()
@@ -1357,6 +1371,7 @@ namespace HalloDoc.Controllers
             List<User> res = _adminRepository.patientHistory();
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
 
         public IActionResult patientHistory(string patientFirstName, string patientLastName, string email, string phone)
@@ -1365,14 +1380,14 @@ namespace HalloDoc.Controllers
             List<User> res = _adminRepository.filterPatientHistory(patientFirstName, patientLastName, email, phone);
             return View(res);
         }
-      
+        [CustomeAuthorize("Admin")]
         public IActionResult explorePatientHistory(int UserId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             var res = _adminRepository.explorePatientHistory(UserId);
             return View(res);
         }
-
+        [CustomeAuthorize("Admin")]
         [HttpGet]
  
         public IActionResult searchRecords()
@@ -1381,7 +1396,7 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.searchRecords(ViewBag.Data);
             return View(res);
         }
-        
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult searchRecords(int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone)
         {
@@ -1389,6 +1404,7 @@ namespace HalloDoc.Controllers
             List<searchRecords> res = _adminRepository.filterSearchRecords(ViewBag.Data, requestStatus, patientName, requestType, fromDate, toDate, providerName, email, phone);
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpGet]
    
         public IActionResult emailLogs()
@@ -1397,6 +1413,7 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.emailLogs();
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
        
         public IActionResult emailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate)
@@ -1405,13 +1422,14 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.emailLogs(role, recieverName, email, createdDate, sentDate);
             return View(res);
         }
-   
+        [CustomeAuthorize("Admin")]
         public IActionResult SMSLogs()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             var res = _adminRepository.SMSLogs();
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
   
         public IActionResult SMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate)
@@ -1420,7 +1438,7 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.SMSLogs(role, recieverName, mobile, createdDate, sentDate);
             return View(res);
         }
-     
+        [CustomeAuthorize("Admin")]
         public IActionResult ProviderSchedulingDayWise()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1428,20 +1446,21 @@ namespace HalloDoc.Controllers
             return View(model);
         }
 
-     
+        [CustomeAuthorize("Admin")]
         public IActionResult ProviderSchedulingWeekWise()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ShiftDetailsModel model = getSchedulingData();
             return View(model);
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult ProviderSchedulingMonthWise()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ShiftDetailsModel model = getSchedulingData();
             return View(model);
         }
+
         public ShiftDetailsModel getSchedulingData()
         {
             ShiftDetailsModel model = new();
@@ -1465,6 +1484,7 @@ namespace HalloDoc.Controllers
             ShiftDetailsModel res =_adminRepository.getViewShiftData(id);
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult UpdateShiftDetailData(ShiftDetailsModel model)
         {
@@ -1472,6 +1492,7 @@ namespace HalloDoc.Controllers
             _adminRepository.UpdateShiftDetailData(model,ViewBag.Data);
             return RedirectToAction(nameof(ProviderSchedulingDayWise));
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult DeleteShiftDetails(int id)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1479,29 +1500,32 @@ namespace HalloDoc.Controllers
 ;
             return RedirectToAction(nameof(ProviderSchedulingDayWise));
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult ApproveShift(string[] selectedShifts)
         {
             _adminRepository.ApproveShift(selectedShifts);
             return RedirectToAction("ShiftForReview");
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult DeleteShift(string[] selectedShifts)
         {
             _adminRepository.DeleteShift(selectedShifts);
             return RedirectToAction("ShiftForReview");
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult UpdateShiftStatus(int id)
         {
             _adminRepository.UpdateShiftDetailsStatus(id)
 ;
             return RedirectToAction(nameof(ProviderSchedulingDayWise));
         }
-      
+        [CustomeAuthorize("Admin")]
         public IActionResult ShiftForReview(int reg = 0)
         {
 
             return View(_adminRepository.getReviewShiftData(reg));
         }
-
+        [CustomeAuthorize("Admin")]
         public void SchedulingMonth(string month)
         {
             int monthNum = DateTime.ParseExact(month, "MMMM", CultureInfo.CurrentCulture).Month;
@@ -1511,17 +1535,19 @@ namespace HalloDoc.Controllers
         }
 
 
-
+        [CustomeAuthorize("Admin")]
         public IActionResult ProviderOnCall(int reg = 0)
         {
             ShiftDetailsModel s = _adminRepository.getProviderOnCall(reg);
             return View(s);
         }
+        [CustomeAuthorize("Admin")]
         public IActionResult userAccess()
         {
             List<AspNetUser> a = _adminRepository.userAccess();
             return View(a);
         }
+        [CustomeAuthorize("Admin")]
         public List<int> getPhysicianNotification()
         {
             List<int> phy_ids = new List<int>();
@@ -1544,3 +1570,15 @@ namespace HalloDoc.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

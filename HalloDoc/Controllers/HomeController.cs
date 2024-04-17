@@ -77,7 +77,7 @@ namespace HalloDoc.Controllers
                 Id = data.Id
             };
 
-            var jwttoken = _authenticate.GenerateJwtToken(loginuser,"Patient");
+            var jwttoken = _authenticate.GenerateJwtToken(loginuser, "Patient");
             Response.Cookies.Append("jwt", jwttoken);
             HttpContext.Session.SetString("key", user.Email);
            

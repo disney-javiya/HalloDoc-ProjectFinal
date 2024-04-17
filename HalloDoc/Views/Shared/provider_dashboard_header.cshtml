@@ -6,7 +6,7 @@
 
     <div class="dark d-flex dashboard-right">
         <p class="mt-4 p-2 dashboard-profile-name">Welcome <b>@ViewBag.Data</b></p>
-        <a role="button" class="logout-btn mt-4 p-2" asp-controller="Admin" asp-action="logOut">Logout</a>
+        <a role="button" class="logout-btn mt-4 p-2" asp-controller="Provider" asp-action="logOut">Logout</a>
         <button class="btn " onclick="darkMode()" style="border: none;"><i class="fa-regular fa-moon dark-icon p-1"></i></button>
     </div>
 </div>
@@ -14,10 +14,10 @@
 <div class="tab-dashboard mt-1">
     <ul class="nav m-2">
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="providerDashboard" aria-current="page">Dashboard</a>
+            <a class="nav-link" asp-controller="Provider" asp-action="providerDashboard" aria-current="page">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="">My Schedule</a>
+            <a class="nav-link" asp-controller="Provider" asp-action="providerMySchedule">My Schedule</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-controller="Provider" asp-action="providerProfile">My Profile</a>

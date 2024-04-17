@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -42,6 +43,8 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
         public short? CallType { get; set; }
         public int? PhysicianId { get; set; }
+        [Column(TypeName = "bit(1)")]
+        public BitArray? CompletedByPhysician { get; set; }
         public IEnumerable<CaseTag> CaseTag { get; set; }
 
         public IEnumerable<Region> Region { get; set; }

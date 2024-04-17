@@ -18,6 +18,8 @@ using HalloDoc.AuthMiddleware;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Repository;
+using DocumentFormat.OpenXml.Office2010.Excel;
+
 namespace HalloDoc.Controllers
 {
     public class ProviderController : Controller
@@ -42,13 +44,13 @@ namespace HalloDoc.Controllers
 
 
        
-        //[CustomeAuthorize("Provider")]
+        [CustomeAuthorize("Physician")]
         public IActionResult providerDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-
+        [CustomeAuthorize("ProviderPhysician")]
         public List<int> getCountNumber()
         {
             List<int> result = new List<int>();
@@ -133,7 +135,7 @@ namespace HalloDoc.Controllers
 
 
         }
-
+        [CustomeAuthorize("Physician")]
         public IActionResult providerAccept(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -141,7 +143,7 @@ namespace HalloDoc.Controllers
             return View("providerDashboard");
         }
 
-        
+        [CustomeAuthorize("Physician")]
         public IActionResult providerViewCase(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -156,7 +158,7 @@ namespace HalloDoc.Controllers
             return View(requestClient);
 
         }
-
+        [CustomeAuthorize("Physician")]
         [HttpGet]
         public IActionResult providerViewNotes(int requestId)
         {
@@ -167,7 +169,7 @@ namespace HalloDoc.Controllers
             return View(res);
 
         }
-        
+        [CustomeAuthorize("Physician")]
         [HttpPost]
         public IActionResult providerViewNotes(int requestId, viewNotes v)
         {
@@ -176,7 +178,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("providerViewNotes", new { requestId = requestId });
 
         }
-
+        [CustomeAuthorize("Physician")]
         [HttpPost]
         public IActionResult providerTransferCase(string requestId, string additionalNotesTransfer)
         {
@@ -185,7 +187,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("providerDashboard");
 
         }
-
+        [CustomeAuthorize("Physician")]
         public IActionResult providerViewUploads(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -209,7 +211,7 @@ namespace HalloDoc.Controllers
 
 
 
-
+        [CustomeAuthorize("Physician")]
         public IActionResult UploadFiles(int requestId, List<IFormFile> files)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -217,7 +219,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("providerViewUploads", new { requestId = requestId });
         }
 
-
+        [CustomeAuthorize("Physician")]
         public IActionResult DownloadFile(int fileId)
         {
             var file = _providerRepository.GetFileById(fileId);
@@ -230,7 +232,7 @@ namespace HalloDoc.Controllers
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, "application/octet-stream", file.FileName);
         }
-
+        [CustomeAuthorize("Physician")]
         public IActionResult DeleteFile(int requestId, int fileId)
         {
             _providerRepository.DeleteFile(fileId);
@@ -238,7 +240,7 @@ namespace HalloDoc.Controllers
             return RedirectToAction("providerViewUploads", new { requestId = requestId });
         }
 
-
+        [CustomeAuthorize("Physician")]
         public IActionResult DownloadFiles(string fileIds, int? requestId)
         {
             IEnumerable<RequestWiseFile> files;
@@ -279,7 +281,7 @@ namespace HalloDoc.Controllers
             return File(zipMemoryStream, "application/zip", "DownloadedFiles.zip");
         }
 
-
+        [CustomeAuthorize("Physician")]
         public IActionResult DeleteFiles(string fileIds, int? requestId)
         {
             IEnumerable<RequestWiseFile> files;
@@ -306,7 +308,7 @@ namespace HalloDoc.Controllers
 
         }
 
-
+        [CustomeAuthorize("Physician")]
         public async Task<ActionResult> SendEmailDocument(string fileIds, int requestId)
         {
             var patientEmail = _providerRepository.GetPatientEmail(requestId);
@@ -391,7 +393,7 @@ namespace HalloDoc.Controllers
 
         }
 
-
+        [CustomeAuthorize("Physician")]
         [HttpGet]
         public List<string> providerSendAgreement(string requestId)
         {
@@ -401,7 +403,7 @@ namespace HalloDoc.Controllers
             return res;
 
         }
-
+        [CustomeAuthorize("Physician")]
         [HttpPost]
         public IActionResult providerSendAgreement(string requestId, string email, string mobile)
         {
@@ -454,7 +456,7 @@ namespace HalloDoc.Controllers
 
 
         [HttpGet]
-
+        [CustomeAuthorize("Physician")]
         public IActionResult sendOrder()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -463,6 +465,7 @@ namespace HalloDoc.Controllers
             s.HealthProfessional = _providerRepository.GetAllHealthProfessional();
             return View(s);
         }
+        [CustomeAuthorize("Physician")]
         [HttpGet]
         public List<HealthProfessional> GetHealthProfessional(int healthprofessionalId)
         {
@@ -486,24 +489,181 @@ namespace HalloDoc.Controllers
             return res;
         }
         [HttpPost]
-       
+        [CustomeAuthorize("Physician")]
         public IActionResult sendOrder(int requestId, sendOrder s)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _providerRepository.sendOrderDetails(requestId, s, ViewBag.Data);
             return RedirectToAction("sendOrder", new { requestId = requestId });
         }
-
+        [CustomeAuthorize("Physician")]
         public IActionResult providerEncounterCase(string calltype, int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _providerRepository.providerEncounterCase(requestId, calltype, ViewBag.Data);
             return View("providerDashboard");
         }
-
+        [CustomeAuthorize("Physician")]
         public IActionResult providerProfile()
         {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            Physician physician = _providerRepository.getProviderInfo(ViewBag.Data);
+            var res = _providerRepository.getPhysicianDetails(physician.PhysicianId);
+            return View(res);
+           
+        }
+
+
+        [CustomeAuthorize("Physician")]
+       
+        [HttpGet]
+        public List<Region> getPhysicianRegions()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            //List<Region> res = new List<Region>();
+            var res = _providerRepository.getPhysicianRegions(ViewBag.Data);
+            return res;
+        }
+        [CustomeAuthorize("Physician")]
+       
+        [HttpPost]
+        public IActionResult physicianUpdatePassword(string password)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _providerRepository.physicianUpdatePassword(ViewBag.Data, password);
+            return RedirectToAction("providerProfile");
+
+        }
+        [CustomeAuthorize("Physician")]
+        [HttpGet]
+        public IActionResult providerEncounterForm(int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            encounterModel em = _providerRepository.providerEncounterForm(requestId);
+            return View(em);
+        }
+        [CustomeAuthorize("Physician")]
+        [HttpPost]
+        public IActionResult providerEncounterForm(int requestId, encounterModel em)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+           _providerRepository.providerEncounterFormPost(requestId, em);
+            return RedirectToAction("providerEncounterForm" , new { requestId = requestId });
+        }
+
+        public IActionResult editAccountRequest(string reqmessage)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+
+           Physician p = _providerRepository.getProviderInfo(ViewBag.Data);
+           AspNetUser a = _providerRepository.GetUserById(p.CreatedBy);
+            string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
+
+            string senderPassword = "Disney@20";
+
+
+            SmtpClient client = new SmtpClient("smtp.office365.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(senderEmail, senderPassword),
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false
+            };
+
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress(senderEmail, "HalloDoc"),
+                Subject = "HalloDoc - Request to edit",
+                IsBodyHtml = true,
+                Body = $"This message is from physician to edit Account! Additional Message:  {reqmessage}"
+            };
+
+            //mailMessage.To.Add(a.Email);
+            mailMessage.To.Add("pateldisney20@gmail.com");
+
+            client.SendMailAsync(mailMessage);
+
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _providerRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), null, ViewBag.Data, null);
+
+
+
+
+            return View("providerProfile");
+
+        }
+        [CustomeAuthorize("Physician")]
+        public IActionResult transferToConcludeState(int requestId)
+        {
+            _providerRepository.transferToConcludeState(requestId);
+            return RedirectToAction("providerDashboard");
+        }
+        [CustomeAuthorize("Physician")]
+        public IActionResult providerIsFinal(int requestId)
+        {
+            _providerRepository.providerIsFinal(requestId);
+            return RedirectToAction("providerDashboard");
+        }
+
+        [CustomeAuthorize("Physician")]
+        public IActionResult providerConcludeCare(int requestId)
+        {
+            var document = _providerRepository.GetDocumentsByRequestId(requestId);
+            ViewBag.pname = _providerRepository.getName(requestId.ToString());
+            ViewBag.num = _providerRepository.getConfirmationNumber(requestId);
+
+            if (document == null)
+            {
+                return NotFound();
+            }
+
+            return View(document);
+        }
+        [CustomeAuthorize("Physician")]
+        public IActionResult providerConcludeCarePost(int requestId, string notes)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _providerRepository.providerConcludeCarePost(requestId, notes, ViewBag.Data);
+            return RedirectToAction("providerDashboard");
+        }
+
+        public IActionResult providerMySchedule()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            ShiftDetailsModel model = getSchedulingData();
+            return View(model);
+        }
+
+        public ShiftDetailsModel getSchedulingData()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            ShiftDetailsModel model = new();
+            model.physicians = _providerRepository.GetAllPhysicians();
+            model.regions = _providerRepository.getAllRegions();
+            model.shiftDetails = _providerRepository.getshiftDetail(ViewBag.Data);
+
+            return model;
+        }
+        public IActionResult _ViewShiftModalProvider()
+        {
             return View();
+        }
+        [HttpGet]
+        public IActionResult _ViewShiftModalProvider(int id)
+        {
+            ShiftDetailsModel res = _providerRepository.getViewShiftData(id);
+            return View(res);
+        }
+        public IActionResult logOut()
+        {
+
+            Response.Cookies.Delete("jwt");
+            HttpContext.Session.Remove("key");
+            return RedirectToAction("Index", "Admin");
         }
     }
 }

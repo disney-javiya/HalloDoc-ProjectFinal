@@ -18,6 +18,7 @@ namespace Repository.IRepository
 
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type, string email);
         public AspNetUser GetUserByEmail(string email);
+        public AspNetUser GetUserById(string id);
         public List<RequestandRequestClient> getFilterByName(IEnumerable<RequestandRequestClient> r, string patient_name);
         public List<RequestandRequestClient> getByRequesttypeId(IEnumerable<RequestandRequestClient> r, int requesttypeId);
         public Physician getProviderInfo(string email);
@@ -50,6 +51,20 @@ namespace Repository.IRepository
         public HealthProfessional GetProfessionInfo(int vendorId);
         public void sendOrderDetails(int requestId, sendOrder s, string email);
         public void providerEncounterCase(int requestId, string calltype, string email);
+        public encounterModel providerEncounterForm(int requestId);
+        public void providerEncounterFormPost(int requestId, encounterModel em);
+        public void transferToConcludeState(int requestId);
 
+        public void providerIsFinal(int requestId);
+        public void providerConcludeCarePost(int requestId, string notes, string email);
+        public Physician getPhysicianDetails(int physicianId);
+        public List<Region> getPhysicianRegions(string email);
+        public void physicianUpdatePassword(string email, string password);
+        public List<Physician> GetAllPhysicians();
+        public List<Region> getAllRegions();
+        public List<ShiftDetailsModel> getshiftDetail(string email);
+        public ShiftDetail getShiftDetailByShiftDetailId(int id);
+        public Shift getShiftByID(int shiftid);
+        public ShiftDetailsModel getViewShiftData(int id);
     }
 }

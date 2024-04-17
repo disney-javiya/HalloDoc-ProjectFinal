@@ -1,4 +1,188 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
+
+
+
+<script>
+    var requestId = null;
+
+    $(document).on('click', '#encounter-option', function () {
+
+        requestId = $(this).attr("value");
+    });
+    $(document).on('click', '#encounter-download', function () {
+
+        requestId = $(this).attr("value");
+    });
+    $('#encounterCaseForm').submit(function (event) {
+
+        $('#requestidinput1').val(requestId);
+
+
+    });
+    $('#encounterDownloadForm').submit(function (event) {
+
+        $('#requestidinput2').val(requestId);
+
+
+    });
+</script>
+<script>
+    function changePage(page) {
+
+
+        $.ajax({
+            url: "/Admin/adminTableData",
+            method: "POST",
+            data: { "type": type, "regionId": regionId, "patient_name": patient_name, "typeid": typeid, 'pagesize': 3, 'pagenumber': page },
+
+            success: function (data) {
+                $('#tableContainer').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
+@*Script for all cards background, icon color and request type role*@
+<script>
+
+    var cards = document.querySelectorAll('#BackgroundColormobile');
+
+    cards.forEach(function (card) {
+        var val = card.getAttribute("value");
+        var rname = "";
+        var iconcolor;
+        switch (val) {
+            case '1':
+                rname = "Business";
+                iconcolor = "#e63368";
+                break;
+            case '2':
+                rname = "Patient";
+                iconcolor = "#35d016";
+                break;
+            case '3':
+                rname = "Family";
+                iconcolor = "#FFD43B";
+                break;
+            default:
+
+                rname = "Concierge";
+                iconcolor = "#74C0FC";
+        }
+
+        var cbs = card.querySelectorAll('.card-body');
+        cbs.forEach(function (cb) {
+            cb.style.background = "rgba(116, 192, 252, 0.3)";
+            card.querySelector('#rname').innerHTML = rname;
+            card.querySelector('#circle-color').style.color = iconcolor;
+        });
+
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var rows = document.querySelectorAll('#BackgroundColor');
+
+        rows.forEach(function (row) {
+            var requestId = row.querySelector('#requestidinput4').value.replace("requestId=", "");
+
+            $.ajax({
+                url: '/Admin/adminTransferNotes',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+                    $(row).find(".note").text(data);
+
+                }
+            });
+        });
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var collapses = document.querySelectorAll('.collapse');
+
+        collapses.forEach(function (c) {
+            var requestId = c.querySelector('#requestidinput5').value.replace("requestId=", "");
+
+            $.ajax({
+                url: '/Admin/adminTransferNotes',
+                type: 'GET',
+                data: { requestId: requestId },
+                success: function (data) {
+                    $(c).find(".note").text(data);
+
+                }
+            });
+        });
+    });
+
+</script>
+
+@*Script for all inner cards background *@
+<script>
+    var innerCards = document.querySelectorAll('#BackgroundColormobileinnercard');
+
+    innerCards.forEach(function (innerCard) {
+        innerCard.style.background = "rgba(116, 192, 252, 0.3)";
+    });
+</script>
+
+
+
+@*Script for collapse element hide and show*@
+<script>
+    var cards = document.querySelectorAll('.card');
+
+    cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+            var collapseElement = this.nextElementSibling;
+            var isExpanded = collapseElement.classList.contains('show');
+
+            if (!isExpanded) {
+                collapseElement.classList.add('show');
+            } else {
+                collapseElement.classList.remove('show');
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    var rows = document.querySelectorAll('#BackgroundColor');
+
+    rows.forEach(function (row) {
+        var val = row.getAttribute("value");
+        var color;
+
+        switch (val) {
+            case '1':
+                color = "rgba(230, 51, 104, 0.5)";
+                break;
+            case '2':
+                color = "rgba(53, 208, 22, 0.5)";
+                break;
+            case '3':
+                color = "rgba(255, 212, 59, 0.5)";
+                break;
+            default:
+                color = "rgba(116, 192, 252, 0.5)";
+        }
+        var tds = row.querySelectorAll('td');
+        tds.forEach(function (td) {
+            td.style.background = color;
+        });
+    });
+</script>
+
 <div class="admin-table m-2">
     <table class="table">
         <thead>
@@ -33,7 +217,7 @@
                         <td>
                             @if(item.Status == 5)
                             {
-                                <a class="btn btn-primary p-1" role="button">House Call</a>
+                                <a class="btn btn-primary p-1" role="button" href="@Url.Action("transferToConcludeState", "Provider", new { requestId = @item.requestId})">House Call</a>
                             }
                             else
                             {
@@ -59,8 +243,20 @@
                                     {
                                         <li><a class="dropdown-item" id="encounter-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounter" value="@item.requestId">Encounter Form</a></li>
                                     }
-                                 
-                                  
+                                    @if(item.Status == 5)
+                                    {
+                                        @if (item.CompletedByPhysician[0])
+                                        {
+                                            <li><a class="dropdown-item" id="encounter-download" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounterDownload" value="@item.requestId">Encounter Form</a></li>
+                                        }
+                                        else  
+                                        {
+                                            <li><a class="dropdown-item" href="@Url.Action("providerEncounterForm", "Provider", new { requestId = @item.requestId})">Encounter Form</a></li>
+                                        }
+                                        
+                                    }
+                                    
+
                                     <li><a class="dropdown-item" href="@Url.Action("sendOrder", "Provider", new { requestId = @item.requestId})">Orders</a></li>
                                     
                                 </ul>
@@ -229,180 +425,41 @@
 
 
 
+<!--For Encounter Download-->
+<div class="modal" id="myModalEncounterDownload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="encounterDownloadForm" action="/Provider/downloadEncounterForm" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Encounter Form</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <p class="m-3">Encounter Form is finalised successfuly!</p>
+
+                    <input type="hidden" id="requestidinput2" name="requestid" />
+
+                    <button class="btn submit-btn-assigncase">Download</button>
+                    
+                  
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Save</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
 
-<script src="/js/pagination.js"></script>
-
-<script>
-    var requestId = null;
-
-    $(document).on('click', '#encounter-option', function () {
-
-        requestId = $(this).attr("value");
-    });
-    $('#encounterCaseForm').submit(function (event) {
-
-        $('#requestidinput1').val(requestId);
-
-
-    });
-</script>
-<script>
-    function changePage(page) {
-
-
-        $.ajax({
-            url: "/Admin/adminTableData",
-            method: "POST",
-            data: { "type": type, "regionId": regionId, "patient_name": patient_name, "typeid": typeid, 'pagesize': 3, 'pagenumber': page },
-
-            success: function (data) {
-                $('#tableContainer').html(data);
-            },
-            error: function () {
-
-            }
-        });
-    }
-</script>
-@*Script for all cards background, icon color and request type role*@
-<script>
-
-    var cards = document.querySelectorAll('#BackgroundColormobile');
-
-    cards.forEach(function (card) {
-        var val = card.getAttribute("value");
-        var rname = "";
-        var iconcolor;
-        switch (val) {
-            case '1':
-                rname = "Business";
-                iconcolor = "#e63368";
-                break;
-            case '2':
-                rname = "Patient";
-                iconcolor = "#35d016";
-                break;
-            case '3':
-                rname = "Family";
-                iconcolor = "#FFD43B";
-                break;
-            default:
-
-                rname = "Concierge";
-                iconcolor = "#74C0FC";
-        }
-
-        var cbs = card.querySelectorAll('.card-body');
-        cbs.forEach(function (cb) {
-            cb.style.background = "rgba(116, 192, 252, 0.3)";
-            card.querySelector('#rname').innerHTML = rname;
-            card.querySelector('#circle-color').style.color = iconcolor;
-        });
-
-    });
-</script>
-
-
-<script>
-    $(document).ready(function () {
-        var rows = document.querySelectorAll('#BackgroundColor');
-
-        rows.forEach(function (row) {
-            var requestId = row.querySelector('#requestidinput4').value.replace("requestId=", "");
-
-            $.ajax({
-                url: '/Admin/adminTransferNotes',
-                type: 'GET',
-                data: { requestId: requestId },
-                success: function (data) {
-                    $(row).find(".note").text(data);
-
-                }
-            });
-        });
-    });
-
-</script>
-
-<script>
-    $(document).ready(function () {
-        var collapses = document.querySelectorAll('.collapse');
-
-        collapses.forEach(function (c) {
-            var requestId = c.querySelector('#requestidinput5').value.replace("requestId=", "");
-
-            $.ajax({
-                url: '/Admin/adminTransferNotes',
-                type: 'GET',
-                data: { requestId: requestId },
-                success: function (data) {
-                    $(c).find(".note").text(data);
-
-                }
-            });
-        });
-    });
-
-</script>
-
-@*Script for all inner cards background *@
-<script>
-    var innerCards = document.querySelectorAll('#BackgroundColormobileinnercard');
-
-    innerCards.forEach(function (innerCard) {
-        innerCard.style.background = "rgba(116, 192, 252, 0.3)";
-    });
-</script>
 
 
 
-@*Script for collapse element hide and show*@
-<script>
-    var cards = document.querySelectorAll('.card');
-
-    cards.forEach(function (card) {
-        card.addEventListener('click', function () {
-            var collapseElement = this.nextElementSibling;
-            var isExpanded = collapseElement.classList.contains('show');
-
-            if (!isExpanded) {
-                collapseElement.classList.add('show');
-            } else {
-                collapseElement.classList.remove('show');
-            }
-        });
-    });
-</script>
-
-
-
-<script>
-    var rows = document.querySelectorAll('#BackgroundColor');
-
-    rows.forEach(function (row) {
-        var val = row.getAttribute("value");
-        var color;
-
-        switch (val) {
-            case '1':
-                color = "rgba(230, 51, 104, 0.5)";
-                break;
-            case '2':
-                color = "rgba(53, 208, 22, 0.5)";
-                break;
-            case '3':
-                color = "rgba(255, 212, 59, 0.5)";
-                break;
-            default:
-                color = "rgba(116, 192, 252, 0.5)";
-        }
-        var tds = row.querySelectorAll('td');
-        tds.forEach(function (td) {
-            td.style.background = color;
-        });
-    });
-</script>
 

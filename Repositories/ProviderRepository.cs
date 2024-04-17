@@ -1,4 +1,5 @@
-﻿using HalloDoc.DataAccessLayer.DataContext;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HalloDoc.DataAccessLayer.DataContext;
 using HalloDoc.DataAccessLayer.DataModels;
 using HalloDoc.DataAccessLayer.DataModels.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -45,6 +46,7 @@ namespace Repository
                              requestorContact = x.Request.PhoneNumber,
                              acceptedDate = x.Request.AcceptedDate,
                              patientAddress = x.Client.Address,
+                             CompletedByPhysician = x.Request.CompletedByPhysician,
                              patientCity = x.Client.City,
                              physicianName = _context.Physicians.Where(u => u.PhysicianId == x.Request.PhysicianId).Select(u => u.FirstName).FirstOrDefault(),
                              Status = x.Status,
@@ -79,15 +81,64 @@ namespace Repository
             }
 
             return query.ToList();
-        }
+        }       
         public AspNetUser GetUserByEmail(string email)
         {
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
-
+        public AspNetUser GetUserById(string id)
+        {
+           return _context.AspNetUsers.Where(x=>x.Id ==  id).FirstOrDefault();
+        }
         public Physician getProviderInfo(string email)
         {
             return _context.Physicians.Where(x => x.Email == email).FirstOrDefault();
+        }
+
+        public List<Region> getPhysicianRegions(string email)
+        {
+            var physician = _context.Physicians.FirstOrDefault(x => x.Email == email);
+            if (physician == null)
+            {
+                return new List<Region>();
+            }
+
+            var regionIds = _context.PhysicianRegions
+                                    .Where(x => x.PhysicianId == physician.PhysicianId)
+                                    .Select(x => x.RegionId)
+                                    .ToList();
+
+            var regions = _context.Regions.Where(x => regionIds.Contains(x.RegionId)).ToList();
+            return regions;
+        }
+        //public void physicianUpdatePassword(string email, int physicianId, string password)
+        //{
+
+
+        //    var physicianAspId = _context.Physicians.Where(x => x.PhysicianId == physicianId).Select(u => u.AspNetUserId).FirstOrDefault();
+        //    if (physicianAspId != null && password != null)
+        //    {
+
+        //        var physician = _context.AspNetUsers.Where(x => x.Id == physicianAspId).FirstOrDefault();
+        //        var plainText = Encoding.UTF8.GetBytes(password);
+        //        physician.PasswordHash = Convert.ToBase64String(plainText);
+        //        physician.ModifiedDate = DateTime.Now;
+        //        _context.SaveChanges();
+        //    }
+        //}
+
+        public void physicianUpdatePassword(string email, string password)
+        {
+            var aspuser = _context.AspNetUsers.Where(x => x.Email == email).First();
+
+
+            if (aspuser != null)
+            {
+                var plainText = Encoding.UTF8.GetBytes(password);
+                aspuser.PasswordHash = Convert.ToBase64String(plainText);
+                aspuser.ModifiedDate = DateTime.Now;
+                _context.SaveChanges();
+            }
         }
         public List<RequestandRequestClient> getFilterByName(IEnumerable<RequestandRequestClient> r, string patient_name)
         {
@@ -517,5 +568,276 @@ namespace Repository
             }
 
        }
+
+        public encounterModel providerEncounterForm(int requestId)
+        {
+
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
+            if(e == null)
+            {
+              var rc =  _context.RequestClients.Where(x=>x.RequestId == requestId).FirstOrDefault();
+                encounterModel result = new encounterModel();
+                result.FirstName = rc.FirstName;
+                result.LastName = rc.LastName;
+                result.Location = rc.Location;
+                result.DateOfBirth = rc.IntDate + rc.StrMonth + rc.IntYear;
+                result.phone = rc.PhoneNumber;
+                result.Email = rc.Email;
+                return result;
+            }
+            else
+            {
+                var query = (from client in _context.RequestClients
+                             join encounter in _context.EncounterForms on client.RequestId equals encounter.RequestId
+                             select new
+                             {
+
+                                 Encounter = encounter,
+                                 client = client,
+
+                             })
+                       .Select(x => new encounterModel
+                       {
+                           requestId = x.client.RequestId,
+                           FirstName = x.client.FirstName,
+                           LastName = x.client.LastName,
+                           Location = x.client.Address,
+                           DateOfBirth = x.client.IntDate + "/" + x.client.StrMonth + "/" + x.client.IntYear,
+                           phone = x.client.PhoneNumber,
+                           Email = x.client.Email,
+                           IsFinalized = x.Encounter.IsFinalized,
+                           HistoryIllness = x.Encounter.HistoryIllness,
+                           MedicalHistory = x.Encounter.MedicalHistory,
+                           Date = x.Encounter.Date,
+                           Medications = x.Encounter.Medications,
+                           Allergies = x.Encounter.Allergies,
+                           Temp = x.Encounter.Temp,
+                           Hr = x.Encounter.Hr,
+                           Rr = x.Encounter.Rr,
+                           BpS = x.Encounter.BpS,
+                           BpD = x.Encounter.BpD,
+                           O2 = x.Encounter.O2,
+                           Pain = x.Encounter.Pain,
+                           Heent = x.Encounter.Heent,
+                           Cv = x.Encounter.Cv,
+                           Chest = x.Encounter.Chest,
+                           Abd = x.Encounter.Abd,
+                           Extr = x.Encounter.Extr,
+                           Skin = x.Encounter.Skin,
+                           Neuro = x.Encounter.Neuro,
+                           Other = x.Encounter.Other,
+                           Diagnosis = x.Encounter.Diagnosis,
+                           TreatmentPlan = x.Encounter.TreatmentPlan,
+                           MedicationDispensed = x.Encounter.MedicationDispensed,
+                           Procedures = x.Encounter.Procedures,
+                           FollowUp = x.Encounter.FollowUp,
+
+                       });
+
+                encounterModel res = query.Where(x => x.requestId == requestId).FirstOrDefault();
+                return res;
+
+            }
+
+        }
+
+        public void providerEncounterFormPost(int requestId, encounterModel em)
+        {
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
+            if(e == null)
+            {
+                EncounterForm encounterForm = new EncounterForm();
+                encounterForm.RequestId = requestId;
+                encounterForm.IsFinalized = new BitArray(new bool[] { false });
+                encounterForm.HistoryIllness = em.HistoryIllness;
+                encounterForm.MedicalHistory = em.MedicalHistory;
+                encounterForm.Date = em.Date;
+                encounterForm.Medications = em.Medications;
+                encounterForm.Allergies = em.Allergies;
+                encounterForm.Temp = em.Temp;
+                encounterForm.Hr = em.Hr;
+                encounterForm.Rr = em.Rr;
+                encounterForm.BpS = em.BpS;
+                encounterForm.BpD = em.BpD;
+                encounterForm.O2 = em.O2;
+                encounterForm.Pain = em.Pain;
+                encounterForm.Heent = em.Heent;
+                encounterForm.Cv = em.Cv;
+                encounterForm.Chest = em.Chest;
+                encounterForm.Abd = em.Abd;
+                encounterForm.Extr = em.Extr;
+                encounterForm.Skin = em.Skin;
+                encounterForm.Neuro = em.Neuro;
+                encounterForm.Other = em.Other;
+                encounterForm.Diagnosis = em.Diagnosis;
+                encounterForm.TreatmentPlan = em.TreatmentPlan;
+                encounterForm.MedicationDispensed = em.MedicationDispensed;
+                encounterForm.Procedures = em.Procedures;
+                encounterForm.FollowUp = em.FollowUp;
+                _context.EncounterForms.Add(encounterForm);
+                _context.SaveChanges();
+            }
+            else
+            {
+               
+                e.IsFinalized = new BitArray(new bool[] { false });
+                e.HistoryIllness = em.HistoryIllness;
+                e.MedicalHistory = em.MedicalHistory;
+                e.Date = em.Date;
+                e.Medications = em.Medications;
+                e.Allergies = em.Allergies;
+                e.Temp = em.Temp;
+                e.Hr = em.Hr;
+                e.Rr = em.Rr;
+                e.BpS = em.BpS;
+                e.BpD = em.BpD;
+                e.O2 = em.O2;
+                e.Pain = em.Pain;
+                e.Heent = em.Heent;
+                e.Cv = em.Cv;
+                e.Chest = em.Chest;
+                e.Abd = em.Abd;
+                e.Extr = em.Extr;
+                e.Skin = em.Skin;
+                e.Neuro = em.Neuro;
+                e.Other = em.Other;
+                e.Diagnosis = em.Diagnosis;
+                e.TreatmentPlan = em.TreatmentPlan;
+                e.MedicationDispensed = em.MedicationDispensed;
+                e.Procedures = em.Procedures;
+                e.FollowUp = em.FollowUp;
+                _context.SaveChanges();
+            }
+            
+        }
+
+
+        public void transferToConcludeState(int requestId)
+        {
+            var res = _context.Requests.Where(x=>x.RequestId == requestId).FirstOrDefault();
+            RequestStatusLog rs = new RequestStatusLog();
+            if(res != null) {
+                res.Status = 6;
+                res.ModifiedDate = DateTime.Now;
+                _context.SaveChanges();
+
+                rs.RequestId = requestId;
+                rs.Status = 6;
+                rs.PhysicianId = res.PhysicianId;
+                rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
+            }
+        }
+
+        public void providerIsFinal(int requestId)
+        {
+            var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
+            if (res != null && e!=null)
+            {
+                res.CompletedByPhysician = new BitArray(new bool[] { true });
+
+                e.IsFinalized = new BitArray(new bool[] { true });
+                _context.SaveChanges();
+
+            }
+        }
+
+        public void providerConcludeCarePost(int requestId, string notes, string email)
+        {
+            var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+            RequestStatusLog rs = new RequestStatusLog();
+            RequestNote rn = _context.RequestNotes.Where(x=>x.RequestId == requestId).FirstOrDefault();
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
+            if(res.CompletedByPhysician[0] && e.IsFinalized[0])
+            {
+                res.Status = 8;
+                _context.SaveChanges();
+
+                rs.RequestId = requestId;
+                rs.Status = 8;
+                rs.PhysicianId = res.PhysicianId;
+                rs.CreatedDate = DateTime.Now;
+                _context.RequestStatusLogs.Add(rs);
+                _context.SaveChanges();
+
+                rn.PhysicianNotes = notes;
+                rn.ModifiedDate = DateTime.Now;
+               string name = _context.Physicians.Where(x=>x.Email == email).Select(u=>u.FirstName).First();
+                rn.ModifiedBy = name;
+                _context.SaveChanges();
+            }
+        }
+
+
+        public Physician getPhysicianDetails(int physicianId)
+        {
+            
+            var res = _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
+            return res;
+        }
+
+        public List<Physician> GetAllPhysicians()
+        {
+            return _context.Physicians.Where(x => x.IsDeleted == new BitArray(new bool[] { false })).ToList();
+        }
+        public List<Region> getAllRegions()
+        {
+            return _context.Regions.ToList();
+        }
+        public List<ShiftDetailsModel> getshiftDetail(string email)
+        {
+            Physician res = _context.Physicians.Where(x => x.Email == email).FirstOrDefault();
+            var data = from sd in _context.ShiftDetails
+                       join
+                       s in _context.Shifts on sd.ShiftId equals s.ShiftId
+                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId
+                       join reg in _context.Regions on sd.RegionId equals reg.RegionId
+                       where sd.IsDeleted == new BitArray(new bool[] { false }) && phy.PhysicianId == res.PhysicianId
+                       select new ShiftDetailsModel
+                       {
+                           PhysicianName = phy.FirstName + " " + phy.LastName,
+                           Physicianid = phy.PhysicianId,
+                           RegionName = reg.Name,
+                           Status = sd.Status,
+                           Starttime = sd.StartTime,
+                           Endtime = sd.EndTime,
+                           Shiftdate = DateOnly.FromDateTime(sd.ShiftDate),
+
+                           Shiftdetailid = sd.ShiftDetailId,
+                       };
+            return data.ToList();
+
+        }
+        public ShiftDetail getShiftDetailByShiftDetailId(int id)
+        {
+            return _context.ShiftDetails.FirstOrDefault(e => e.ShiftDetailId == id && e.IsDeleted != new BitArray(1, true));
+        }
+        public Shift getShiftByID(int shiftid)
+        {
+            return _context.Shifts.FirstOrDefault(e => e.ShiftId == shiftid);
+        }
+        public ShiftDetailsModel getViewShiftData(int id)
+        {
+            ShiftDetailsModel model = new ShiftDetailsModel();
+            ShiftDetail sd = getShiftDetailByShiftDetailId(id);
+
+            Shift s = getShiftByID(sd.ShiftId);
+            model.RegionId = (int)sd.RegionId;
+            model.physicians = GetAllPhysicians();
+
+
+            DateOnly date = DateOnly.Parse(sd.ShiftDate.ToString("yyyy-MM-dd"));
+            model.regions = getAllRegions();
+            model.Shiftdate = date;
+            model.Physicianid = s.PhysicianId;
+            model.shiftData = s;
+            model.ShiftDetailData = sd;
+
+
+            return model;
+        }
+
     }
 }

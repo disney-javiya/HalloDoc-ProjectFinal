@@ -1,0 +1,299 @@
+﻿@using System.Text.Json
+@using System.Text.Json.Serialization
+@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ShiftDetailsModel
+@{
+    Layout = "_ProviderHeader";
+}
+<link rel="stylesheet" href="~/css/Scheduling.css" />
+<script src="~/js/daypilot-all.min.js"></script>
+
+
+<div class="container ">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between mt-3">
+                <h4 class="mt-3">Scheduling</h4>
+                <a class="text-start text-info text-decoration-none " asp-action="providerDashboard" asp-controller="Provider">
+                    <button class="btn btn-white  text-info border-info rounded ">
+                        <i class="fa-solid  fa-less-than"></i> Back
+                    </button>
+                </a>
+            </div>
+            <div class=" container rounded bg-white shadow py-3 ">
+                <div class="d-flex align-items-center justify-content-between my-3">
+                    <div class="col-md-4 col-sm-12">
+                      
+                    </div>
+
+                    <div>
+                       
+                       
+                        <a role="button" id="create-shift" data-bs-toggle="modal" data-bs-target="#modalShift" class="btn btn-info text-white me-2">Add New Shift</a>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="h5  heading"> <span id="dateValue"></span> Monday,Dec 4 2023</div>
+                </div>
+                <div class="text-end mb-3">
+                    <i class="bi bi-square-fill" style="color: #ff80ff;"></i>
+                    <span class="me-2">Pending Shifts</span>
+                    <i class="bi bi-square-fill" style="color: #00cc00;"></i>
+                    <span>Approved Shifts</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="javascript:dp.startDate = dp.startDate.addMonths(-1); dp.update();" class="text-decoration-none">
+                            <i class="fa-solid fa-less-than text-white p-2" style="background-color:#1ad1ff;border-radius:20px;"></i>
+                        </a>
+                        <span style="height:20px;" id="change"><i class="bi bi-calendar3"></i> </span>
+                        <a href="javascript:dp.startDate = dp.startDate.addMonths(1); dp.update();">
+                            <i class="fa-solid fa-greater-than text-white p-2 me-2" style="background-color:#1ad1ff;border-radius:20px;"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <a asp-action="ProviderSchedulingDayWise" asp-controller="Admin"> <button class="btn btn-outline-info  me-2">Day</button></a>
+                        <a asp-action="ProviderSchedulingWeekWise" asp-controller="Admin"> <button class="btn btn-outline-info me-2">Week</button></a>
+                        <a asp-action="ProviderSchedulingMonthWise" asp-controller="Admin"> <button class="btn btn-info text-white">Month</button></a>
+                    </div>
+                </div>
+            </div>
+            <span id="start" class="hide"></span>
+            <div class="main">
+                <div id="dp"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="modalpopup" class="pb-3">
+</div>
+
+<!--For create shift-->
+<div class="modal" id="modalShift">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="createShiftForm" asp-controller="Admin" asp-action="insertShift" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Create Shift</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+
+                <div class="modal-body" style="color:grey;">
+                    <select asp-for="RegionId" class="form-select mb-3 region" aria-label="Default select example">
+                        <option selected>Select Region</option>
+
+
+                    </select>
+
+
+                    <select asp-for="Physicianid" id="physician" class="form-select mb-3" aria-label="Default select example">
+                        <option selected>Select Physician</option>
+
+
+                    </select>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Shiftdate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="dob-create-patient-text" for="floatingInput">Shift Date</label>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Starttime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                        <label class="dob-create-patient-text">Start</label>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Endtime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                        <label class="dob-create-patient-text">End</label>
+
+                    </div>
+
+
+                    <input name="checktoggle" type="checkbox" id="toggle" />
+                    <label class="toggle-label" for="toggle"></label>
+                    <div class="d-flex justify-content-around mb-1">
+                        <input type="checkbox" id="sun" name="dayList" value="1">
+                        <label for="sun"> Every Sunday</label>
+                        <input type="checkbox" id="mon" name="dayList" value="2">
+                        <label for="mon"> Every Monday</label>
+                        <input type="checkbox" id="tue" name="dayList" value="3">
+                        <label for="tue"> Every Tuesday</label>
+
+                    </div>
+                    <div class="d-flex justify-content-around mb-1">
+                        <input type="checkbox" id="wed" name="dayList" value="4">
+                        <label for="wed"> Every Wednesday</label>
+                        <input type="checkbox" id="thur" name="dayList" value="5">
+                        <label for="thur"> Every Thursday</label>
+                        <input type="checkbox" id="fri" name="dayList" value="6">
+                        <label for="fri"> Every Friday</label>
+
+                    </div>
+                    <input type="checkbox" class="mb-3" id="sat" name="dayList" value="7">
+                    <label for="sat"> Every Saturday</label>
+                    <select asp-for="RepeatUpto" id="repeat" class="form-select mb-3" aria-label="Default select example">
+                        <option selected>Repeat End</option>
+                        <option value="1">1-time</option>
+                        <option value="2">2-times</option>
+                        <option value="3">3-times</option>
+
+                    </select>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+            success: function (data) {
+
+                var regionDropdown = $('.region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').text("Select Region"));
+                $.each(data, function (index, RegionId) {
+                    regionDropdown.append($('<option></option>').attr('value', RegionId.regionId).text(RegionId.name));
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.region').change(function () {
+            var regionId = $(this).val();
+
+            $.ajax({
+                url: '/Admin/GetPhysicians',
+                type: 'GET',
+                data: { regionId: regionId },
+                success: function (data) {
+
+                    var physicianDropdown = $('#physician');
+                    physicianDropdown.empty();
+                    physicianDropdown.append($('<option></option>').text("Select Physicians"));
+                    $.each(data, function (index, PhysicianId) {
+                        physicianDropdown.append($('<option></option>').attr('value', PhysicianId.physicianId).text(PhysicianId.firstName + "  " + PhysicianId.lastName));
+                    });
+                }
+            });
+
+
+        });
+
+    });
+</script>
+
+<script>
+
+    @{
+        JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+        string listJson = System.Text.Json.JsonSerializer.Serialize(Model.physicians, options);
+        string eventsJson = System.Text.Json.JsonSerializer.Serialize(Model.shiftDetails, options);
+    }
+
+                    const resourcess = @Html.Raw(listJson);
+    const eventss = @Html.Raw(eventsJson);
+    const picker = new DayPilot.DatePicker({
+        target: 'start',
+        pattern: 'yyyy-MM-dd',
+        resetTarget: true,
+        onTimeRangeSelected: args => {
+            dp.update({
+                startDate: args.start
+            });
+        }
+    });
+    const dp = new DayPilot.Month("dp", {
+        locale: "en-us",
+        viewType: "Month",
+        showWeekend: true,
+        timeRangeSelectedHandling: "Disabled",
+        eventDeleteHandling: "Disabled",
+        eventMoveHandling: "Disabled",
+        eventResizeHandling: "Disabled",
+        eventClickHandling: "Enabled",
+        onEventClicked: (args) => {
+
+            $.ajax({
+                url: "/Provider/_ViewShiftModalProvider",
+                data: { 'id': args.e.data.id },
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+
+
+                    $("#modalpopup").html(data);
+
+                },
+                error: function () {
+                    alert("No Projects Found");
+                    $("#tableContent").html('An error has occurred');
+                }
+            });
+
+        },
+        eventHoverHandling: "Disabled",
+    });
+    dp.events.list = [];
+    dp.init();
+    const app = {
+        elements: {
+            previous: document.getElementById("previous"),
+            next: document.getElementById("next"),
+            start: document.querySelector("#start"),
+            change: document.querySelector("#change")
+        },
+        loadData() {
+            const events = []
+            console.log(eventss['$values']);
+            for (let i = 0; i < eventss['$values'].length; ++i) {
+                let obj = {
+                    id: eventss['$values'][i].Shiftdetailid,
+                    text: `${new DayPilot.Date(eventss['$values'][i].Shiftdate.split("T")[0] + "T" + eventss['$values'][i].Starttime).toString("h:mm tt")} - ${new DayPilot.Date(eventss['$values'][i].Shiftdate.split("T")[0] + "T" + eventss['$values'][i].Endtime).toString("h:mm tt")} `,
+                    start: eventss['$values'][i].Shiftdate.split("T")[0] + "T" + eventss['$values'][i].Starttime,
+                    end: eventss['$values'][i].Shiftdate.split("T")[0] + "T" + eventss['$values'][i].Endtime,
+
+                    regionid: eventss['$values'][i].RegionName,
+                    backColor: eventss['$values'][i].Status == 0 ? "#EEACD0" : "#A1D0A2"
+                }
+                events.push(obj)
+            }
+
+            dp.update({ events });
+
+        },
+        barColor(i) {
+            const colors = ["#3c78d8", "#6aa84f", "#f1c232", "#cc0000"];
+            return colors[i % 4];
+        },
+        init() {
+            this.addEventHandlers();
+            this.loadData();
+        },
+        addEventHandlers() {
+            this.elements.change.addEventListener("click", (ev) => {
+                ev.preventDefault();
+                picker.show();
+            });
+        }
+    };
+    app.init();
+</script>

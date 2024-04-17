@@ -1,0 +1,283 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.encounterModel;
+@{
+    Layout = "_ProviderHeader";
+}
+
+<form method="post" action="@Url.Action("providerEncounterForm", "Provider", new { requestId =  Context.Request.Query["requestId"]})">
+    <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+        <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+            <div class="col  d-flex justify-content-between ">
+                <h3>Encounter Form</h3>
+                <a class="btn back-btn mt-1" role="button" asp-controller="Provider" asp-action="providerDashboard"> < Back</a>
+
+            </div>
+            <div class="col">
+                <h3 style="color:#01bce9; text-align:center;"><b>Medical Report-Confidential</b></h3>
+            </div>
+
+
+
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="FirstName"  type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="LastName" type="text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+
+                </div>
+            </div>
+
+            <div class="col-md-12 gy-3">
+                <div  class="form-floating mb-3">
+                    <textarea asp-for="Location" class="form-control symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea"></textarea>
+                    <label class="symptoms-create-patient-text" for="floatingTextarea">Location</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="DateOfBirth" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Date" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="dob-create-patient-text" for="floatingInput">Date</label>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3 ">
+                <div class="form-floating mb-3">
+
+                    <input asp-for="phone" class=" form-control contact-create-patient shadow-none" id="phone" type="tel" />
+                    <label class="contact-create-patient-text" for="phone"> </label>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" type="email" id="email" class="form-control email-create-patient shadow-none" id="floatingInput" mailto:placeholder="name@example.com">
+                    <label class="email-create-patient-text" for="floatingInput">Email address</label>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="HistoryIllness" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">History of Present Illness or Injury</label>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="MedicalHistory" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Medical History</label>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Medications</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Allergies" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Allergies</label>
+
+                </div>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Temp" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Temp</label>
+
+                </div>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Hr" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">HR</label>
+
+                </div>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Rr" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">RR</label>
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating mb-3">
+                    <input asp-for="BpS" type="text" class="form-control street-create-patient shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Blood Pressure(S)</label>
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating mb-3">
+                    <input asp-for="BpD" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Blood Pressure(D)</label>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="O2" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">O2</label>
+
+                </div>
+            </div>
+            <div class="col-md-4 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Pain" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Pain</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Heent" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Heent</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Cv" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">CV</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Chest" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Chest</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Abd" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">ABD</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Extr" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Extr</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Skin" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Skin</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Neuro" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Neuro</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Other" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Other</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Diagnosis" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Diagnosis</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="TreatmentPlan" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Treatment Plan</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="MedicationDispensed" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Medications Dispensed</label>
+
+                </div>
+            </div>
+            <div class="col-md-6 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="Procedures" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Procedures</label>
+
+                </div>
+            </div>
+            <div class="col-md-12 gy-3">
+                <div class="form-floating mb-3">
+                    <input asp-for="FollowUp" type="text" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                    <label class="street-create-patient-text" for="floatingInput">Followup</label>
+
+                </div>
+            </div>
+
+
+
+            <div class="col d-flex justify-content-end mb-2">
+                <button type="submit" class="btn submit-btn-create-patient me-2">Save Changes</button>
+                <a href="@Url.Action("providerIsFinal", "Provider", new { requestId =  Context.Request.Query["requestId"]})" role="button"  class="me-2 p-2" style="color: white; background:purple; border:none; border-radius:5px;">Finalize</a>
+                <button class="btn cancel-btn-create-patient ms-1" asp-controller="Provider" asp-action="providerDashboard">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+
+<script>
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+</script>
+
+
+@* <script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Provider/providerEncounterForm',
+            type: 'GET',
+            data: {requestId: requestId},
+            success: function (data) { 
+
+            }
+        });
+    });
+
+</script> *@

@@ -11,6 +11,7 @@
     <Content Remove="Views\ErrorView.cshtml" />
     <Content Remove="Views\Home\ErrorViewPatient.cshtml" />
     <Content Remove="Views\Shared\_ViewShiftModal.cshtml" />
+    <Content Remove="Views\Shared\_ViewShiftModalProvider.cshtml" />
   </ItemGroup>
 	
   <ItemGroup>

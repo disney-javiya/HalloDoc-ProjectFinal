@@ -1,4 +1,5 @@
-﻿using HalloDoc.DataAccessLayer.DataModels;
+﻿using HalloDoc.DataAccessLayer.DataContext;
+using HalloDoc.DataAccessLayer.DataModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository.IRepository;
@@ -16,13 +17,19 @@ namespace Repository
     {
         private readonly string _secret;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
 
-        public AuthenticateRepository(IConfiguration configuration)
+        public AuthenticateRepository(IConfiguration configuration, ApplicationDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
         public string GenerateJwtToken(AspNetUser user, string role)
         {
+
+
+            
+
             var claims = new List<Claim> {
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, role),

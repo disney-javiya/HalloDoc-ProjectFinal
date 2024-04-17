@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\HalloDoc",
-    "\\HalloDoc\\Views",
-    "\\HalloDoc\\Views\\Admin",
-    "\\HalloDoc\\Views\\Shared",
-    "\\Repositories",
-    "\\Repositories\\IRepository"
+    ""
   ],
   "SelectedNode": "\\HalloDoc.sln",
   "PreviewInSolutionExplorer": false
