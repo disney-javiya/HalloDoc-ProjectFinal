@@ -1,28 +1,10 @@
-﻿@model List<HalloDoc.DataAccessLayer.DataModels.AspNetUser>
+﻿@model List<HalloDoc.DataAccessLayer.DataModels.ViewModels.userAccessModel>
 
 
 @{
     Layout = "_AdminHeader";
 }
-@* <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <title>Provider Menu</title>
-</head>
-<body>
-    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between admin-view-documents-main full-content">
-        <header>
-            <partial name="admin_dashboard_header" />
-        </header> *@
 <main>
 
     <div class="main-viewdocuments d-flex flex-column">
@@ -31,14 +13,14 @@
                 <h3>User Access</h3>
 
             </div>
-            <form action="/Admin/blockedHistory" method="POST">
+            <form action="/Admin/userAccess" method="POST">
                 <div class="row d-flex justify-content-between">
                     <div class="col-md-3 gy-3">
-                        <div class="form-floating mb-3">
-                            <input name="patientName" type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
-                            <label class="first-name-create-patient-text" for="floatingInput">Region</label>
+                        <select name="region" class="form-select mb-3 region" aria-label="Default select example">
+                            <option selected>Select Region</option>
 
-                        </div>
+
+                        </select>
                     </div>
 
 
@@ -72,19 +54,19 @@
 
 
                                     <td>
-                                       @*  @Html.DisplayFor(modelItem => item.) *@
+                                        @Html.DisplayFor(modelItem => item.AccountType)
 
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.UserName)
+                                        @Html.DisplayFor(modelItem => item.AccountPOC)
 
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                        @Html.DisplayFor(modelItem => item.Phone)
 
                                     </td>
                                     <td>
-                                       @*  @Html.DisplayFor(modelItem => item.Users.Select(u=>u.Status)); *@
+                                         @Html.DisplayFor(modelItem => item.Status)
 
                                     </td>
                                     <td>
@@ -93,7 +75,15 @@
                                     </td>
                                    
                                     <td>
-                                        <a class="providermenu-btn p-1" role="button" href="@Url.Action("edit", "Admin", new { RequestId = @item.Id})">Edit</a>
+                                        @if(item.AccountType == "Admin")
+                                        {
+                                            <a class="providermenu-btn p-1" role="button" href="@Url.Action("adminEditAccount", "Admin", new { email = @item.email})">Edit</a>
+                                        }
+                                        @if(item.AccountType == "Physician")
+                                        {
+                                            <a class="providermenu-btn p-1" role="button" href="@Url.Action("editPhysicianAccount", "Admin", new { physicianId = @item.Id})">Edit</a>
+                                        }
+
                                     </td>
                                 </tr>
                             }
@@ -154,38 +144,23 @@
         </div>
     </div>
 </div>
-@*
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> *@
 
 
 <script>
-    const phoneInputField = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+            success: function (data) {
 
-</script>
-<script>
-    $(document).on('click', '#delete-option', function () {
-
-        VendorId = $(this).attr("value");
-
-    });
-
-    $('#deleteConfirmationForm').submit(function (event) {
-
-        $('#roleinput1').val(VendorId);
-
-
+                var regionDropdown = $('.region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').text("Select Region"));
+                $.each(data, function (index, RegionId) {
+                    regionDropdown.append($('<option></option>').attr('value', RegionId.regionId).text(RegionId.name));
+                });
+            }
+        });
     });
 </script>
 
-@* </body>
-</html> *@

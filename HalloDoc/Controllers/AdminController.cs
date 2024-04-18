@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Configuration.Provider;
 using System.Web.Helpers;
 using System.Globalization;
+using DocumentFormat.OpenXml.InkML;
 
 namespace HalloDoc.Controllers
 {
@@ -95,6 +96,101 @@ namespace HalloDoc.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public IActionResult Reset(PatientLoginVM obj)
+        {
+            AspNetUser aspNetUser = _adminRepository.GetUserByEmail(obj.Email);
+            if (aspNetUser == null)
+            {
+
+                return RedirectToAction("Forgotpassword");
+            }
+            else
+            {
+                string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
+
+                string senderPassword = "Disney@20";
+                string Token = Guid.NewGuid().ToString();
+                string resetLink = $"{Request.Scheme}://{Request.Host}/Admin/Resetpassword?token={Token}";
+
+            
+                _adminRepository.passwordresetInsert(obj.Email, Token);
+
+
+                
+
+                SmtpClient client = new SmtpClient("smtp.office365.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(senderEmail, senderPassword),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false
+                };
+
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail, "HalloDoc"),
+                    Subject = "Set up your Account",
+                    IsBodyHtml = true,
+                    Body = $"Please click the following link to reset your password: <a href='{resetLink}'>{resetLink}</a>"
+                };
+
+                //mailMessage.To.Add(obj.Email);
+                mailMessage.To.Add("pateldisney20@gmail.com");
+
+                client.SendMailAsync(mailMessage);
+
+                return RedirectToAction("Index", "Admin");
+            }
+        }
+
+        [HttpGet]
+
+        public IActionResult ResetPassword(string token)
+        {
+            var passwordReset = _adminRepository.getPasswordReset(token);
+
+            ResetPasswordVM resetPasswordVM = new ResetPasswordVM
+            {
+                Email = passwordReset.Email,
+                Token = token
+            };
+
+            TimeSpan difference = (TimeSpan)(DateTime.Now - passwordReset.Createddate);
+
+            double hours = difference.TotalHours;
+
+            if (hours > 24)
+            {
+                return NotFound();
+            }
+
+            if (passwordReset.Isupdated == new BitArray(1))
+            {
+                ModelState.AddModelError("Email", "You can only update one time using this link");
+                return View(resetPasswordVM);
+            }
+            TempData["success"] = "Enter Password";
+            return View(resetPasswordVM); ;
+
+        }
+
+
+        [HttpPost]
+
+
+        public IActionResult ResetPassword(ResetPasswordVM obj)
+        {
+
+            _adminRepository.ResetPassword(obj);
+          
+
+            return RedirectToAction("Index", "Admin");
+        }
+
         [CustomeAuthorize("Admin")]
         public IActionResult adminDashboard()
         {
@@ -837,6 +933,16 @@ namespace HalloDoc.Controllers
             return View(a);
 
         }
+
+        [HttpGet]
+        public IActionResult adminEditAccount(string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            Admin a = new Admin();
+            a = _adminRepository.getAdminInfo(email);
+            return View(a);
+
+        }
         [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfileUpdatePassword(string password)
@@ -952,12 +1058,20 @@ namespace HalloDoc.Controllers
         }
 
         [CustomeAuthorize("Admin")]
-        public IActionResult encounterForm()
+        [HttpGet]
+        public IActionResult encounterForm(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-
-
-            return View();
+            encounterModel em = _adminRepository.adminEncounterForm(requestId);
+            return View(em);
+        }
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult adminEncounterForm(int requestId, encounterModel em)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _adminRepository.adminEncounterFormPost(requestId, em);
+            return RedirectToAction("encounterForm", new { requestId = requestId });
         }
         [HttpGet]
         public List<Region> getAdminRegions()
@@ -1371,6 +1485,36 @@ namespace HalloDoc.Controllers
             List<User> res = _adminRepository.patientHistory();
             return View(res);
         }
+
+        public IActionResult clearBtnSearch(string id)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            if(id == "clearBtnPatientHistory")
+            {
+                return RedirectToAction("patientHistory");
+            }
+            else if(id == "clearBtnSearchRecords")
+            {
+                return RedirectToAction("searchRecords");
+               
+            }
+            else if(id == "clearBtnSMSLogs")
+            {
+                return RedirectToAction("SMSLogs");
+             
+            }
+            else if(id == "clearBtnEmailLogs")
+            {
+                return RedirectToAction("emailLogs");
+
+            }
+            else
+            {
+                return RedirectToAction("blockedHistory");
+
+            }
+
+        }
         [CustomeAuthorize("Admin")]
         [HttpPost]
 
@@ -1403,6 +1547,12 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
             List<searchRecords> res = _adminRepository.filterSearchRecords(ViewBag.Data, requestStatus, patientName, requestType, fromDate, toDate, providerName, email, phone);
             return View(res);
+        }
+
+        public IActionResult deleteRequest(int requestId)
+        {
+            _adminRepository.deleteRequest(requestId);
+            return View("searchRecords");
         }
         [CustomeAuthorize("Admin")]
         [HttpGet]
@@ -1503,6 +1653,7 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin")]
         public IActionResult ApproveShift(string[] selectedShifts)
         {
+
             _adminRepository.ApproveShift(selectedShifts);
             return RedirectToAction("ShiftForReview");
         }
@@ -1522,7 +1673,7 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin")]
         public IActionResult ShiftForReview(int reg = 0)
         {
-
+            ViewBag.Data = HttpContext.Session.GetString("key");
             return View(_adminRepository.getReviewShiftData(reg));
         }
         [CustomeAuthorize("Admin")]
@@ -1542,11 +1693,21 @@ namespace HalloDoc.Controllers
             return View(s);
         }
         [CustomeAuthorize("Admin")]
+        [HttpGet]
         public IActionResult userAccess()
         {
-            List<AspNetUser> a = _adminRepository.userAccess();
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            List<userAccessModel> a = _adminRepository.userAccess();
             return View(a);
         }
+        [HttpPost]
+        public IActionResult userAccess(int region)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            List<userAccessModel> a = _adminRepository.userAccessSearch(region);
+            return View(a);
+        }
+
         [CustomeAuthorize("Admin")]
         public List<int> getPhysicianNotification()
         {
@@ -1554,13 +1715,9 @@ namespace HalloDoc.Controllers
             phy_ids = _adminRepository.getPhysicianNotification();
             return phy_ids;
         }
-        //[HttpPost]
-        //public IActionResult updatePhysicianNotification(List<int> physicianIds)
-        //{
-        //    _adminRepository.updatePhysicianNotification(physicianIds);
-        //    return RedirectToAction("providerMenu");
-        //}
+       
 
+       
         public IActionResult logOut()
         {
 

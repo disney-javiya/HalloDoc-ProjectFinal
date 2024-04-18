@@ -839,5 +839,132 @@ namespace Repository
             return model;
         }
 
+
+
+        public void insertShift(shiftViewModel s, string checktoggle, int[] dayList, string email)
+        {
+            var weekdays = "";
+            foreach (var i in dayList)
+            {
+
+                weekdays += i;
+            }
+
+            int phy_id =   _context.Physicians.Where(x => x.Email == email).Select(u => u.PhysicianId).FirstOrDefault();
+            Shift shift = new Shift();
+            shift.PhysicianId = phy_id;
+
+            DateOnly testDateOnly = DateOnly.FromDateTime(s.ShiftDate);
+            shift.StartDate = testDateOnly;
+            shift.RepeatUpto = s.RepeatUpto;
+            shift.WeekDays = weekdays;
+            var asp_id = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).First();
+            shift.CreatedBy = asp_id;
+            shift.CreatedDate = DateTime.Now;
+            if (checktoggle == "on")
+            {
+                shift.IsRepeat = new BitArray(new bool[] { true });
+            }
+            else
+            {
+                shift.IsRepeat = new BitArray(new bool[] { false });
+            }
+            _context.Shifts.Add(shift);
+            _context.SaveChanges();
+
+
+            List<ShiftDetail> shiftDetails = new List<ShiftDetail>();
+            ShiftDetail shiftDetail = new ShiftDetail();
+            shiftDetail.ShiftId = shift.ShiftId;
+            shiftDetail.ShiftDate = s.ShiftDate;
+            shiftDetail.RegionId = s.RegionId;
+            shiftDetail.StartTime = s.StartTime;
+            shiftDetail.EndTime = s.EndTime;
+            shiftDetail.IsDeleted = new BitArray(new bool[] { false });
+            _context.ShiftDetails.Add(shiftDetail);
+            _context.SaveChanges();
+
+
+
+            if (shift.IsRepeat.Get(0) == true)
+            {
+                List<DateOnly> days = new();
+                days.Add(testDateOnly);
+
+                for (var i = 0; i < s.RepeatUpto; i++)
+                {
+                    for (int j = 0; j < dayList.Count(); j++)
+                    {
+
+                        int temp;
+                        switch (dayList[j])
+                        {
+                            case 1:
+                                temp = (int)DayOfWeek.Sunday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                            case 2:
+                                temp = (int)DayOfWeek.Monday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                            case 3:
+                                temp = (int)DayOfWeek.Tuesday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+
+                                break;
+                            case 4:
+                                temp = (int)DayOfWeek.Wednesday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                            case 5:
+                                temp = (int)DayOfWeek.Thursday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                            case 6:
+                                temp = (int)DayOfWeek.Friday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                            default:
+                                temp = (int)DayOfWeek.Saturday - (int)DateTime.Parse(days.Last().ToString()).DayOfWeek;
+                                break;
+                        }
+                        if (temp <= 0)
+                        {
+                            temp += 7;
+                        }
+                        days.Add(days.Last().AddDays(temp));
+                    }
+
+                }
+
+                foreach (var day in days)
+                {
+
+                    ShiftDetail shiftdetail1 = new ShiftDetail();
+
+                    shiftdetail1.ShiftId = shift.ShiftId;
+                    shiftdetail1.ShiftDate = day.ToDateTime(s.StartTime);
+                    shiftdetail1.RegionId = s.RegionId;
+                    shiftdetail1.StartTime = s.StartTime;
+                    shiftdetail1.EndTime = s.EndTime;
+                    shiftdetail1.IsDeleted = new BitArray(new bool[] { false });
+
+
+
+                    var d1 = DateOnly.FromDateTime(shiftDetail.ShiftDate);
+                    var d2 = DateOnly.FromDateTime(shiftdetail1.ShiftDate);
+
+
+
+                    if (d1 == d2)
+                    {
+                        continue;
+                    }
+                    shiftDetails.Add(shiftdetail1);
+                    _context.ShiftDetails.Add(shiftdetail1);
+                    _context.SaveChanges();
+                }
+            }
+
+
+
+
+        }
+
+
     }
 }

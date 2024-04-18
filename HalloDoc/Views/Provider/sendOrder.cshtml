@@ -104,7 +104,7 @@
             var HealthProfessionalId = $('#healthtype').val();
 
             $.ajax({
-                url: '/Admin/GetHealthProfessional',
+                url: '/Provider/GetHealthProfessional',
                 type: 'GET',
                 data: { HealthProfessionalId: HealthProfessionalId },
                 success: function (data) {
@@ -133,7 +133,7 @@
             var vendorId = $('#healthprofesional').val();
 
             $.ajax({
-                url: '/Admin/GetProfessionInfo',
+                url: '/Provider/GetProfessionInfo',
                 type: 'GET',
                 data: { vendorId: vendorId },
                 success: function (data) {

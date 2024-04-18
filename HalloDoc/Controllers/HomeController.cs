@@ -157,7 +157,7 @@ namespace HalloDoc.Controllers
             }
         }
         [HttpGet]
-        //[Route("Patient/ResetPassword/{token}")]
+       
         public IActionResult ResetPassword(string token)
         {
             var passwordReset = _context.Passwordresets.Where(u => u.Token == token).FirstOrDefault();
@@ -189,7 +189,7 @@ namespace HalloDoc.Controllers
 
 
         [HttpPost]
-        //[Route("/ResetPassword/{token}")]
+        
 
         public IActionResult ResetPassword(ResetPasswordVM obj)
         {
@@ -241,10 +241,7 @@ namespace HalloDoc.Controllers
         public IActionResult patientDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+           
             var res = _patientRepository.GetbyEmail(ViewBag.Data);
             return View(res);
         }
@@ -495,10 +492,7 @@ namespace HalloDoc.Controllers
         public IActionResult ViewDocuments(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+            
             var document = _patientRepository.GetDocumentsByRequestId(requestId);
             ViewBag.pname = _patientRepository.getName(requestId.ToString());
             ViewBag.num = _patientRepository.getConfirmationNumber(requestId.ToString());
@@ -529,10 +523,7 @@ namespace HalloDoc.Controllers
         public IActionResult patientProfile()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+          
             
             var res = _patientRepository.GetPatientData(ViewBag.Data);
             return View(res);
@@ -542,11 +533,7 @@ namespace HalloDoc.Controllers
         public IActionResult patientProfile(User u)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
-
+           
             
             _patientRepository.updateProfile(ViewBag.Data, u);
             return View();

@@ -39,7 +39,7 @@
 
                     </div>
 
-                    <div class="col-md-4 gy-3 mb-3" style=" color: lightgray;">
+                    <div class="col-md-6 gy-3" style=" color: lightgray;">
 
                         <select asp-for="RoleId" id="role" class="form-select m-2 p-2 ainfo" aria-label="Default select example" disabled>
                            
@@ -224,7 +224,7 @@
 
                     var roleDropdown = $('#role');
                     roleDropdown.empty();
-                    roleDropdown.append($('<option></option>').text(@Model.RoleId));
+                    roleDropdown.append($('<option></option>').text(""));
                     $.each(data, function (index, RoleId) {
 
                         roleDropdown.append($('<option></option>').attr('value', RoleId.roleId).text(RoleId.name));

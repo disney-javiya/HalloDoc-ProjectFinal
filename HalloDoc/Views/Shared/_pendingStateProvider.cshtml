@@ -88,22 +88,18 @@
             </div>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body" id="BackgroundColormobileinnercard" value="@item.RequestTypeId">
-                    <a role="button" class="card-title-legend ms-auto" style="text-decoration:none; color: purple" href="@Url.Action("providerViewCase", "Admin", new { requestId = @item.requestId , state = 1})">
+                    <a role="button" class="card-title-legend ms-auto" style="text-decoration:none; color: purple" href="@Url.Action("providerViewCase", "Provider", new { requestId = @item.requestId })">
                         View Case
                     </a>
-                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of birth: @item.patientDOB</p>
-                    <p> <i class="fa-regular fa-envelope p-2 me-1" style="color: #a0a0a2;"></i>Email: @item.patientEmail</p>
+                  
                     <p> <i class="fa-solid fa-phone  p-2 me-1" style="color: #a0a0a2;"></i>Patient: @item.patientContact</p>
-                    <p> <i class="fa-solid fa-note-sticky p-2 me-1" style="color: #a0a0a2;"></i>Transfer Notes:<input type="hidden" id="requestidinput5" value="requestId=@item.requestId" /><p class="note"></p></p>
-                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of service: -</p>
-                    <p> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #a0a0a2;"></i>Physician: @item.physicianName</p>
-                    <p> <i class="fa-regular fa-user p-2 me-1" style="color: #a0a0a2;"></i>Requestor: @item.requestorName</p>
+                   
                     <div class=" d-flex flex-row ">
 
                         <a class="admin-mob-button p-2 m-1" role="button" id="sendagreement-option1" data-bs-toggle="modal" data-bs-target="#myModalSendAgreement" value="@item.requestId">
                             Send Agreement
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("providerViewNotes", "Admin", new { requestId = @item.requestId})">
+                        <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("providerViewNotes", "Provider", new { requestId = @item.requestId})">
                             View Notes
                         </a>
                     </div>
@@ -113,20 +109,11 @@
                         <a class="admin-mob-button p-2 m-1" role="button" id="transfer-option1" data-bs-toggle="modal" data-bs-target="#myModalTransfer" value="@item.requestId">
                             Transfer
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" href="@Url.Action("providerViewUploads", "Admin", new { requestId = @item.requestId})" role="button">
+                        <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" href="@Url.Action("providerViewUploads", "Provider", new { requestId = @item.requestId})" role="button">
                             View Uploads
                         </a>
                     </div>
-                    <div class=" d-flex flex-row ">
-
-                        <a class="admin-mob-button p-2 m-1" role="button" id="clear-option1" data-bs-toggle="modal" data-bs-target="#myModalClear" value="@item.requestId">
-                            Clear Case
-                        </a>
-                        <a class="admin-mob-button p-2 m-1" id="email-admin-mob-button" role="button">
-                            Email
-                        </a>
-                    </div>
-
+                   
 
                 </div>
             </div>

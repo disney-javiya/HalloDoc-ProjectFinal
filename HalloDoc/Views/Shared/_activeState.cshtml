@@ -59,8 +59,20 @@
                                     <li><a class="dropdown-item" href="@Url.Action("adminViewUploads", "Admin", new { requestId = @item.requestId})">View Uploads</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">View Notes</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("sendOrder", "Admin", new { requestId = @item.requestId})">Orders</a></li>
-                                   @*  <li><a class="dropdown-item" href="#">Doctors Notes</a></li> *@
-                                    <li><a class="dropdown-item" href="@Url.Action("encounterForm", "Admin", new { requestId = @item.requestId})">Encounter</a></li>
+
+                                  
+                                    @if (item.Status == 5 || item.Status == 4)
+                                    {
+                                        @if (item.CompletedByPhysician != null && item.CompletedByPhysician[0])
+                                        {
+                                            <li><a class="dropdown-item" id="encounter-download" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounterDownload" value="@item.requestId">Encounter Form</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a class="dropdown-item" href="@Url.Action("encounterForm", "Admin", new { requestId = @item.requestId})">Encounter Form</a></li>
+                                        }
+
+                                    }
                                 </ul>
                             </div>
 
@@ -116,9 +128,7 @@
                         <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">
                             View Notes
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="doctor-admin-mob-button" role="button">
-                            Doctors Note
-                        </a>
+                       
                     </div>
 
                     <div class=" d-flex flex-row ">
@@ -185,6 +195,40 @@
 
 
 <script src="/js/pagination.js"></script>
+
+
+<!--For Encounter Download-->
+<div class="modal" id="myModalEncounterDownload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="encounterDownloadForm" action="/Admin/downloadEncounterForm" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#01bce9; color:white;">
+                    <h4 class="modal-title">Encounter Form</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <p class="m-3">Encounter Form is finalised successfuly!</p>
+
+                    <input type="hidden" id="requestidinput2" name="requestid" />
+
+                    <button class="btn submit-btn-assigncase">Download</button>
+
+
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn submit-btn-assigncase">Save</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <script>
     function changePage(page) {
 

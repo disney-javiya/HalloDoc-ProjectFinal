@@ -80,9 +80,12 @@ namespace Repository.IRepository
         public Admin getAdminInfo(string email);
         public string adminCreateRequest(createAdminRequest RequestData, string email);
         public void passwordresetInsert(string Email, string id);
-        public List<Region> getAdminRegions(string email);
 
-       
+        public Passwordreset getPasswordReset(string token);
+        public List<Region> getAdminRegions(string email);
+        public void ResetPassword(ResetPasswordVM obj);
+
+
         public void adminProfileUpdatePassword(string email, string password);  
         public void adminProfileUpdateStatus(string email, Admin a);
         public void adminUpdateProfile(string email, Admin a, string uncheckedCheckboxes);
@@ -162,8 +165,13 @@ namespace Repository.IRepository
 
         public List<Physician> getPhysicianOnCallList(int reg);
 
-        public List<AspNetUser> userAccess();
+        public List<userAccessModel> userAccess();
+        public List<userAccessModel> userAccessSearch(int region);
         public List<int> getPhysicianNotification();
+        public void deleteRequest(int requestId);
+
         //public void updatePhysicianNotification(List<int> phy_ids);
+        public encounterModel adminEncounterForm(int requestId);
+        public void adminEncounterFormPost(int requestId, encounterModel em);
     }
 }

@@ -108,28 +108,29 @@
             </div>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body" id="BackgroundColormobileinnercard" value="@item.RequestTypeId">
-                    <a role="button" class="card-title-legend ms-auto" style="text-decoration:none; color: purple" href="@Url.Action("adminViewCase", "Admin", new { requestId = @item.requestId , state = 1})">
+                    <a role="button" class="card-title-legend ms-auto" style="text-decoration:none; color: purple" href="@Url.Action("providerViewCase", "Provider", new { requestId = @item.requestId })">
                         View Case
                     </a>
-                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of birth: @item.patientDOB</p>
-                    <p> <i class="fa-regular fa-envelope p-2 me-1" style="color: #a0a0a2;"></i>Email: @item.patientEmail</p>
+                   
+                   
                     <p> <i class="fa-solid fa-phone  p-2 me-1" style="color: #a0a0a2;"></i>Patient: @item.patientContact</p>
-                    <p> <i class="fa-solid fa-calendar-days p-2 me-1" style="color: #a0a0a2;"></i>Date of service: -</p>
-                    <p> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #a0a0a2;"></i>Physician: @item.physicianName</p>
+                   
                     <div class=" d-flex flex-row ">
 
-                        <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">
+                        <a class="admin-mob-button p-2 m-1" id="view-admin-mob-button" role="button" href="@Url.Action("providerViewNotes", "Provider", new { requestId = @item.requestId})">
                             View Notes
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="doctor-admin-mob-button" role="button">
-                            Doctors Note
-                        </a>
+                        <div class=" d-flex flex-row ">
+                            <a class="admin-mob-button p-2 m-1 dropdown-item" id="order-admin-mob-button" href="@Url.Action("providerConcludeCare", "Provider", new { requestId = @item.requestId})">Conclude Care</a>
+
+
+                        </div>
                     </div>
 
                     <div class=" d-flex flex-row ">
 
 
-                        <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" role="button" href="@Url.Action("adminViewUploads", "Admin", new { requestId = @item.requestId})">
+                        <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" role="button" href="@Url.Action("providerViewUploads", "Provider", new { requestId = @item.requestId})">
                             View Uploads
                         </a>
                         <a class="admin-mob-button p-2 m-1" id="encounter-admin-mob-button" role="button">
@@ -137,20 +138,7 @@
                         </a>
                     </div>
 
-                    <div class=" d-flex flex-row ">
-
-                        <a class="admin-mob-button p-2 m-1" id="order-admin-mob-button" role="button" href="@Url.Action("sendOrder", "Admin", new { requestId = @item.requestId})">
-                            Orders
-                        </a>
-                        <a class="admin-mob-button p-2 m-1" id="email-admin-mob-button" role="button">
-                            Email
-                        </a>
-                    </div>
-                    <div class=" d-flex flex-row justify-content-end">
-                        <p class="m-1 p-1">Chat with:</p>
-                        <a class="admin-mob-btn p-1 m-1" role="button"> <i class="fa-regular fa-user p-2 me-2" style="color: #01BCE9; border:none">Patient</i></a>
-                        <a class="admin-mob-btn p-1 m-1" role="button"> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #01BCE9;  border:none">Provider</i></a>
-                    </div>
+                  
 
                 </div>
             </div>

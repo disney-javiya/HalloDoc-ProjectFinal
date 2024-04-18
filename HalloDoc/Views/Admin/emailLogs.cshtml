@@ -74,7 +74,7 @@
 
                         </div>
                         <div class="d-flex justify-content-end m-2">
-                            <a role="button" class="btn back-btn me-2">Clear</a>
+                    <a role="button" href="@Url.Action("clearBtnSearch", "Admin", new { id = "clearBtnEmailLogs"})" class="btn back-btn me-2">Clear</a>
                             <button role="button" type="submit" class="btn submit-btn-create-patient">Search</button>
                         </div>
 
@@ -92,7 +92,7 @@
                                     <th scope="col">Created Date</th>
                                     <th scope="col">Sent Date</th>
                                     <th scope="col">Sent</th>
-                                    <th scope="col">Sent Tries</th>
+                                  
                                     <th scope="col">Confirmation Number</th>
                                 </tr>
                             </thead>
@@ -132,10 +132,7 @@
                                                 @Html.DisplayFor(modelItem => item.IsEmailSent)
 
                                             </td>
-                                             <td>
-                                                @Html.DisplayFor(modelItem => item.SentTries)
-
-                                            </td>
+                                             
                                              <td>
                                                 @Html.DisplayFor(modelItem => item.ConfirmationNumber)
 

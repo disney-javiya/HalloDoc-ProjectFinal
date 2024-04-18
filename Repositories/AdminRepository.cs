@@ -192,6 +192,7 @@ namespace Repository
                 //var caseName = _context.CaseTags.Where(x => x.CaseTagId == CaseTagid).Select(u => u.Name).ToString();
                 res.CaseTag = reason;
                 res.DeclinedBy = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = reqId;
                 rs.Status = 3;
@@ -250,14 +251,7 @@ namespace Repository
                 rn.CreatedDate = DateTime.Now;
 
 
-                //rs.RequestId = reqId;
-                //rs.Status = 2;
-                //var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
-                //var id = _context.Admins.Where(x => x.AspNetUserId == aspId).Select(u => u.AdminId).FirstOrDefault();
-                //rs.AdminId = id;
-                //rs.TransToPhysicianId = int.Parse(physician);
-                //rs.Notes = additionalNotesAssign;
-                //rs.CreatedDate = DateTime.Now;
+                
                 _context.RequestNotes.Add(rn);
                 _context.SaveChanges();
             }
@@ -341,6 +335,7 @@ namespace Repository
             if (res != null && additionalNotesPatient!=null)
             {
                 res.Status = 7;
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = reqId;
                 rs.Status = 7;
@@ -810,6 +805,7 @@ namespace Repository
             {
 
                 res.Status = 9;
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = requestId;
                 rs.Status = 9;
@@ -959,8 +955,28 @@ namespace Repository
         }
 
 
+        public Passwordreset getPasswordReset(string token)
+        {
+          return  _context.Passwordresets.Where(u => u.Token == token).FirstOrDefault();
+        }
 
+        public void ResetPassword(ResetPasswordVM obj)
+        {
+            var passwordReset = _context.Passwordresets.Where(u => u.Token == obj.Token).FirstOrDefault();
 
+            AspNetUser aspNetUser =  GetUserByEmail(obj.Email);
+
+            if (aspNetUser != null)
+            {
+
+                var plainText = Encoding.UTF8.GetBytes(obj.Password);
+               var passwordhash = Convert.ToBase64String(plainText);
+                aspNetUser.PasswordHash = passwordhash;
+                passwordReset.Isupdated = new BitArray(1, true);
+                _context.SaveChanges();
+               
+            }
+        }
 
         public List<Region> getAdminRegions(string email)
         {
@@ -2121,8 +2137,12 @@ namespace Repository
             {
                 foreach (var u in uids)
                 {
-                    var row = _context.Requests.Where(x => x.UserId == u).First();
-                    patients.Add(row);
+                    var row = _context.Requests.Where(x => x.UserId == u).FirstOrDefault();
+                    if(row != null)
+                    {
+                        patients.Add(row);
+                    }
+                   
                 }
             }
            
@@ -2132,7 +2152,7 @@ namespace Repository
         public List<searchRecords> searchRecords(string email)
         {
             var query = (from req in _context.Requests
-                         join client in _context.RequestClients on req.RequestId equals client.RequestId
+                         join client in _context.RequestClients on req.RequestId equals client.RequestId where req.IsDeleted != new BitArray(new bool[] {true }) 
                          select new
                          {
                              Request = req,
@@ -2143,7 +2163,7 @@ namespace Repository
                          {
                              requestId = x.Client.RequestId,
                              patientName = x.Client.FirstName + " " + x.Client.LastName,
-                           
+
                              requestorName = x.Request.FirstName + " " + x.Request.LastName,
                              patientEmail = x.Client.Email,
                              requestedDate = x.Request.CreatedDate,
@@ -2156,14 +2176,21 @@ namespace Repository
                              Status = x.Status,
                              RequestTypeId = x.Request.RequestTypeId,
                             
-                             PhysicianId = x.Request.PhysicianId,
+                             
+                             FromDateOfService = DateOnly.FromDateTime( _context.RequestStatusLogs.Where(u=>u.RequestId ==  x.Request.RequestId && u.Status == 2).Select(u=>u.CreatedDate).FirstOrDefault()),
                             
-                           
+                             ToDateOfService = DateOnly.FromDateTime(_context.RequestStatusLogs.Where(u => u.RequestId == x.Request.RequestId && (u.Status == 3 || u.Status == 7 || u.Status == 8)).Select(u => u.CreatedDate).FirstOrDefault()),
+                             PhysicianId = x.Request.PhysicianId,
+                             physicianNote = _context.RequestNotes.Where(u=>u.RequestId == x.Request.RequestId).Select(u=>u.PhysicianNotes).FirstOrDefault(),
+                             adminNote = _context.RequestNotes.Where(u => u.RequestId == x.Request.RequestId).Select(u => u.AdminNotes).FirstOrDefault(),
+                             patientNote = _context.RequestStatusLogs.Where(u=>u.RequestId ==x.Request.RequestId && u.Status == 7).Select(u=>u.Notes).FirstOrDefault(),
+
                          });
 
             return query.ToList();
 
         }
+
 
         public List<searchRecords> filterSearchRecords(string sessionemail, int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone)
         {
@@ -2179,7 +2206,7 @@ namespace Repository
             List<searchRecords> res = searchRecords(sessionemail);
             if(!string.IsNullOrWhiteSpace(patientName))
             {
-                res = res.Where(u => u.patientName.ToLower().Contains(patientName)).ToList();
+                res = res.Where(u => u.patientName != null && u.patientName.ToLower().Contains(patientName)).ToList();
             }
             if(requestStatus != null)
             {
@@ -2189,9 +2216,18 @@ namespace Repository
             {
                 res = res.Where(u => u.RequestTypeId == requestType).ToList();
             }
-            if(!string.IsNullOrWhiteSpace(providerName))
+            if (fromDate != null)
             {
-                res = res.Where(u => u.physicianName.ToLower().Contains(providerName)).ToList();
+                res = res.Where(u => u.FromDateOfService == fromDate).ToList();
+            }
+            if (toDate != null)
+            {
+                res = res.Where(u => u.ToDateOfService == toDate).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(providerName))
+            {
+                
+                res = res.Where(u =>u.physicianName!=null &&  u.physicianName.ToLower().Contains(providerName)).ToList();
             }
             if(!string.IsNullOrWhiteSpace(email))
             {
@@ -2207,7 +2243,13 @@ namespace Repository
             return res;
         }
 
-
+        public void deleteRequest(int requestId)
+        {
+           Request res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+            res.IsDeleted = new BitArray(new bool[] {true });
+            res.ModifiedDate = DateTime.Now;
+            _context.SaveChanges();
+        }
 
         public List<User> filterPatientHistory(string patientFirstName, string patientLastName, string email, string phone)
         {
@@ -2252,7 +2294,7 @@ namespace Repository
             {
                 patientName = patientName.ToLower();
             }
-           
+
 
 
 
@@ -2260,10 +2302,10 @@ namespace Repository
             //{
             //    res = res.Where(u => u.FirstName.ToLower().Contains(patientName)).ToList();
             //}
-            //if(date != null)
-            //{
-            //    res = res.Where(x=>x.CreatedDate == date)
-            //}
+            if (date != null)
+            {
+                res = res.Where(x => DateOnly.FromDateTime((DateTime)x.CreatedDate) == date).ToList();
+            }
             if (!string.IsNullOrWhiteSpace(email))
             {
                 res = res.Where(x => x.Email == email).ToList();
@@ -2335,18 +2377,23 @@ namespace Repository
             {
                 res = res.Where(x => x.RoleId == role).ToList();
             }
-            //if(recieverName != null)
+            //if (recieverName != null)
             //{
-            //    res = res.Where(x=>x.)
+            //    res = res.Where(x => x.)
             //}
-            if(email != null)
+            if (email != null)
             {
                 res = res.Where(x=>x.EmailId == email).ToList();
             }
-            //if(createdDate != null)
-            //{
-            //    res = res.Where(x=>x.CreateDate.Date() == createdDate).ToList();
-            //}
+            if (createdDate != null)
+            {
+                res = res.Where(x => DateOnly.FromDateTime(x.CreateDate) == createdDate).ToList();
+            }
+            if (sentDate != null)
+            {
+                res = res.Where(x => DateOnly.FromDateTime((DateTime)x.SentDate) == sentDate).ToList();
+            }
+
 
             return res;
         }
@@ -2375,10 +2422,15 @@ namespace Repository
             {
                 res = res.Where(x => x.MobileNumber == mobile).ToList();
             }
-            //if(createdDate != null)
-            //{
-            //    res = res.Where(x=>x.CreateDate.Date() == createdDate).ToList();
-            //}
+            if (createdDate != null)
+            {
+                res = res.Where(x => DateOnly.FromDateTime(x.CreateDate) == createdDate).ToList();
+            }
+            if (sentDate != null)
+            {
+                res = res.Where(x => DateOnly.FromDateTime((DateTime)x.SentDate) == sentDate).ToList();
+            }
+
 
             return res;
         }
@@ -2481,11 +2533,72 @@ namespace Repository
 
         public ShiftDetailsModel getProviderOnCall(int reg)        {            return new ShiftDetailsModel            {                regions = getAllRegions(),                physicians = getPhysicianOnCallList(reg).ToList()            };        }
 
-        public List<AspNetUser> userAccess()        {          List<string> asprole =   _context.AspNetUserRoles.Where(x=>x.RoleId == "e526da0c-e8e0-41aa-a610-ec76bcde6dd7" || x.RoleId == "c50adcd5-b764-49dd-9eb6-9d42430f5d6e").Select(u=>u.UserId).ToList();            List<AspNetUser> asp = new List<AspNetUser>();            foreach(string s in asprole)
+        public List<userAccessModel> userAccess()        {
+           
+            var query = from admin in _context.Admins
+                        join asp in _context.AspNetUsers on admin.AspNetUserId equals asp.Id
+                        select new userAccessModel
+                        {
+                            Id = admin.AdminId,
+                            AccountType = "Admin",
+                            AccountPOC = asp.UserName,
+                            Phone = asp.PhoneNumber,
+                            Status = admin.Status,
+                            email = admin.Email,
+                            RegionId = admin.RegionId
+                        };
+            var query2 = from phy in _context.Physicians
+                         join asp in _context.AspNetUsers on phy.AspNetUserId equals asp.Id
+                         select new userAccessModel
+                         {
+                             Id = phy.PhysicianId,
+                             AccountType = "Physician",
+                             AccountPOC = asp.UserName,
+                             Phone = asp.PhoneNumber,
+                             Status = phy.Status,
+                             RegionId = phy.RegionId
+                         };
+           
+            List<userAccessModel> u = query.ToList();
+            u.AddRange(query2.ToList());
+           
+            return u.ToList();
+        }
+
+        public List<userAccessModel> userAccessSearch(int region)        {
+            if(region == 0)
             {
-               AspNetUser res = _context.AspNetUsers.Where(x => x.Id == s).Include(e => e.Users.Select(u=>u.Status)).First();
-                asp.Add(res);
-            }            return asp;        }
+                return userAccess();
+            }
+            var query = from admin in _context.Admins
+                        join asp in _context.AspNetUsers on admin.AspNetUserId equals asp.Id where admin.RegionId == region
+                        select new userAccessModel
+                        {
+                            Id = admin.AdminId,
+                            AccountType = "Admin",
+                            AccountPOC = asp.UserName,
+                            Phone = asp.PhoneNumber,
+                            Status = admin.Status,
+                            RegionId = admin.RegionId
+                        };
+            var query2 = from phy in _context.Physicians
+                         join asp in _context.AspNetUsers on phy.AspNetUserId equals asp.Id
+                         where phy.RegionId == region
+                         select new userAccessModel
+                         {
+                             AdminId = phy.PhysicianId,
+                             AccountType = "Physician",
+                             AccountPOC = asp.UserName,
+                             Phone = asp.PhoneNumber,
+                             Status = phy.Status,
+                             RegionId = phy.RegionId
+                         };
+
+            List<userAccessModel> u = query.ToList();
+            u.AddRange(query2.ToList());
+
+            return u.ToList();
+        }
         public List<int> getPhysicianNotification()
         {
             return _context.PhysicianNotifications.Where(x => x.IsNotificationStopped == new BitArray(new bool[] { true })).Select(u => u.PhysicianId).ToList();
@@ -2516,7 +2629,153 @@ namespace Repository
         //        }
         //    }
         //}
-        
+
+
+        public encounterModel adminEncounterForm(int requestId)
+        {
+
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId  ).FirstOrDefault();
+            if (e == null)
+            {
+                var rc = _context.RequestClients.Where(x => x.RequestId == requestId).FirstOrDefault();
+                encounterModel result = new encounterModel();
+                result.FirstName = rc.FirstName;
+                result.LastName = rc.LastName;
+                result.Location = rc.Location;
+                result.DateOfBirth = rc.IntDate + rc.StrMonth + rc.IntYear;
+                result.phone = rc.PhoneNumber;
+                result.Email = rc.Email;
+                return result;
+            }
+            else
+            {
+                var query = (from client in _context.RequestClients
+                             join encounter in _context.EncounterForms on client.RequestId equals encounter.RequestId
+                             select new
+                             {
+
+                                 Encounter = encounter,
+                                 client = client,
+
+                             })
+                       .Select(x => new encounterModel
+                       {
+                           requestId = x.client.RequestId,
+                           FirstName = x.client.FirstName,
+                           LastName = x.client.LastName,
+                           Location = x.client.Address,
+                           DateOfBirth = x.client.IntDate + "/" + x.client.StrMonth + "/" + x.client.IntYear,
+                           phone = x.client.PhoneNumber,
+                           Email = x.client.Email,
+                           IsFinalized = x.Encounter.IsFinalized,
+                           HistoryIllness = x.Encounter.HistoryIllness,
+                           MedicalHistory = x.Encounter.MedicalHistory,
+                           Date = x.Encounter.Date,
+                           Medications = x.Encounter.Medications,
+                           Allergies = x.Encounter.Allergies,
+                           Temp = x.Encounter.Temp,
+                           Hr = x.Encounter.Hr,
+                           Rr = x.Encounter.Rr,
+                           BpS = x.Encounter.BpS,
+                           BpD = x.Encounter.BpD,
+                           O2 = x.Encounter.O2,
+                           Pain = x.Encounter.Pain,
+                           Heent = x.Encounter.Heent,
+                           Cv = x.Encounter.Cv,
+                           Chest = x.Encounter.Chest,
+                           Abd = x.Encounter.Abd,
+                           Extr = x.Encounter.Extr,
+                           Skin = x.Encounter.Skin,
+                           Neuro = x.Encounter.Neuro,
+                           Other = x.Encounter.Other,
+                           Diagnosis = x.Encounter.Diagnosis,
+                           TreatmentPlan = x.Encounter.TreatmentPlan,
+                           MedicationDispensed = x.Encounter.MedicationDispensed,
+                           Procedures = x.Encounter.Procedures,
+                           FollowUp = x.Encounter.FollowUp,
+
+                       });
+
+                encounterModel res = query.Where(x => x.requestId == requestId).FirstOrDefault();
+                return res;
+
+            }
+
+        }
+
+        public void adminEncounterFormPost(int requestId, encounterModel em)
+        {
+            var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
+            if (e == null)
+            {
+                EncounterForm encounterForm = new EncounterForm();
+                encounterForm.RequestId = requestId;
+                encounterForm.IsFinalized = new BitArray(new bool[] { false });
+                encounterForm.HistoryIllness = em.HistoryIllness;
+                encounterForm.MedicalHistory = em.MedicalHistory;
+                encounterForm.Date = em.Date;
+                encounterForm.Medications = em.Medications;
+                encounterForm.Allergies = em.Allergies;
+                encounterForm.Temp = em.Temp;
+                encounterForm.Hr = em.Hr;
+                encounterForm.Rr = em.Rr;
+                encounterForm.BpS = em.BpS;
+                encounterForm.BpD = em.BpD;
+                encounterForm.O2 = em.O2;
+                encounterForm.Pain = em.Pain;
+                encounterForm.Heent = em.Heent;
+                encounterForm.Cv = em.Cv;
+                encounterForm.Chest = em.Chest;
+                encounterForm.Abd = em.Abd;
+                encounterForm.Extr = em.Extr;
+                encounterForm.Skin = em.Skin;
+                encounterForm.Neuro = em.Neuro;
+                encounterForm.Other = em.Other;
+                encounterForm.Diagnosis = em.Diagnosis;
+                encounterForm.TreatmentPlan = em.TreatmentPlan;
+                encounterForm.MedicationDispensed = em.MedicationDispensed;
+                encounterForm.Procedures = em.Procedures;
+                encounterForm.FollowUp = em.FollowUp;
+                _context.EncounterForms.Add(encounterForm);
+                _context.SaveChanges();
+            }
+            else
+            {
+                if(e.IsFinalized == new BitArray(new bool[] { false }))
+                {
+                    e.IsFinalized = new BitArray(new bool[] { false });
+                    e.HistoryIllness = em.HistoryIllness;
+                    e.MedicalHistory = em.MedicalHistory;
+                    e.Date = em.Date;
+                    e.Medications = em.Medications;
+                    e.Allergies = em.Allergies;
+                    e.Temp = em.Temp;
+                    e.Hr = em.Hr;
+                    e.Rr = em.Rr;
+                    e.BpS = em.BpS;
+                    e.BpD = em.BpD;
+                    e.O2 = em.O2;
+                    e.Pain = em.Pain;
+                    e.Heent = em.Heent;
+                    e.Cv = em.Cv;
+                    e.Chest = em.Chest;
+                    e.Abd = em.Abd;
+                    e.Extr = em.Extr;
+                    e.Skin = em.Skin;
+                    e.Neuro = em.Neuro;
+                    e.Other = em.Other;
+                    e.Diagnosis = em.Diagnosis;
+                    e.TreatmentPlan = em.TreatmentPlan;
+                    e.MedicationDispensed = em.MedicationDispensed;
+                    e.Procedures = em.Procedures;
+                    e.FollowUp = em.FollowUp;
+                    _context.SaveChanges();
+                }
+               
+            }
+
+        }
+
 
     }
 }

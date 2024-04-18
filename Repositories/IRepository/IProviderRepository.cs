@@ -66,5 +66,6 @@ namespace Repository.IRepository
         public ShiftDetail getShiftDetailByShiftDetailId(int id);
         public Shift getShiftByID(int shiftid);
         public ShiftDetailsModel getViewShiftData(int id);
+        public void insertShift(shiftViewModel s, string checktoggle, int[] dayList, string email);
     }
 }

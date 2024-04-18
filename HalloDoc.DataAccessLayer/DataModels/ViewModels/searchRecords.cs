@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +39,25 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         [StringLength(50)]
         public string? physicianName { get; set; }
 
+
+        public string? physicianNote { get; set; }
+        public string? cancelByProviderNote { get; set; }
+
+        public string? adminNote { get; set; }
+
+        public string? patientNote { get; set; }
+
         public int? PhysicianId { get; set; }
 
-       public viewNotes? viewNotes { get; set; }
+        [Column(TypeName = "timestamp without time zone")]
+        public DateOnly FromDateOfService { get; set; }
+        [Column(TypeName = "timestamp without time zone")]
+        public DateOnly? ToDateOfService { get; set; }
+
+
+        [Column(TypeName = "timestamp without time zone")]
+        public DateTime DateService { get; set; }
+
+        public RequestNote? reqNotes { get; set; }
     }
 }

@@ -658,6 +658,16 @@ namespace HalloDoc.Controllers
             ShiftDetailsModel res = _providerRepository.getViewShiftData(id);
             return View(res);
         }
+
+        [HttpPost]
+        public IActionResult insertShift(shiftViewModel s, string checktoggle, int[] dayList)
+        {
+            //string selected = Request.Form["uncheckedCheckboxes"];
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _providerRepository.insertShift(s, checktoggle, dayList, ViewBag.Data);
+
+            return RedirectToAction("providerMySchedule");
+        }
         public IActionResult logOut()
         {
 

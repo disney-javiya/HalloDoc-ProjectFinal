@@ -53,11 +53,7 @@
                             <i class="fa-solid fa-greater-than text-white p-2 me-2" style="background-color:#1ad1ff;border-radius:20px;"></i>
                         </a>
                     </div>
-                    <div>
-                        <a asp-action="ProviderSchedulingDayWise" asp-controller="Admin"> <button class="btn btn-outline-info  me-2">Day</button></a>
-                        <a asp-action="ProviderSchedulingWeekWise" asp-controller="Admin"> <button class="btn btn-outline-info me-2">Week</button></a>
-                        <a asp-action="ProviderSchedulingMonthWise" asp-controller="Admin"> <button class="btn btn-info text-white">Month</button></a>
-                    </div>
+
                 </div>
             </div>
             <span id="start" class="hide"></span>
@@ -75,7 +71,7 @@
 <div class="modal" id="modalShift">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="createShiftForm" asp-controller="Admin" asp-action="insertShift" method="POST">
+            <form id="createShiftForm" asp-controller="Provider" asp-action="insertShift" method="POST">
                 <!-- Modal Header -->
                 <div class="modal-header" style="background:#01bce9; color:white;">
                     <h4 class="modal-title">Create Shift</h4>
@@ -91,11 +87,7 @@
                     </select>
 
 
-                    <select asp-for="Physicianid" id="physician" class="form-select mb-3" aria-label="Default select example">
-                        <option selected>Select Physician</option>
-
-
-                    </select>
+                   
 
                     <div class="form-floating mb-3">
                         <input asp-for="Shiftdate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
