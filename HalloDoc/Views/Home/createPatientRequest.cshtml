@@ -3,31 +3,7 @@
     Layout = "_Layout";
 }
 
-@* <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
-    <title>Create Patient Request</title>
-</head>
-
-<body>
-
-    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-between create-patient-req-main full-content">
-        <header>
-            <partial name="Request_header" />
-        </header> *@
             <form method="post" asp-controller="Home" asp-action="createPatientRequest" enctype="multipart/form-data">
         <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
             <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
@@ -177,9 +153,7 @@
                             </div>
 
                     </div>
-                    <!-- <div class="col-md-3 gy-3">
-                        <button class="btn upload-btn-create-patient position-absolute mb-3"><i class="fa-solid fa-cloud-arrow-up me-2 " style="color: #ffffff;"></i>Upload</button>
-                    </div> -->
+                 
                     <div class="col d-flex justify-content-end mb-2">
                         <button class="btn submit-btn-create-patient me-2" id="showAlertButton">Submit</button>
                         <button class="btn cancel-btn-create-patient ms-1">Cancel</button>
@@ -222,11 +196,7 @@
         </div>
 
         </form>
-@*         <footer class="d-flex justify-content-end align-items-baseline create-patient-req-footer ">
-            <partial name="Request_footer" />
-        </footer>
-    </div>
-    <script src="/js/custom.js"></script> *@
+
     <script>
 
         let file = document.getElementById("real-file");
@@ -253,11 +223,7 @@
                 customTxt.setAttribute("value", "Select File");
             }
         });
-        // function getFilePath() {
-        //     $('input[type=file]').change(function () {
-        //         var filePath = $('#myFile').val();
-        //         input_text.innerHTML = file.files.item(0).name;
-        //     });
+   
         
     </script>
 
@@ -290,11 +256,11 @@
     <script>
         $('#loginPrompt').css('display', 'none');
         $(document).ready(function () {
-            // Attach blur event handler to the email input field
+          
             $('#email').blur(function () {
-                // Perform client-side email validation
+                
                 var email = $(this).val();
-                // Perform AJAX validation if the email is valid
+               
                 $.ajax({
                     url: '/Home/CheckEmail',
                     method: 'POST',
@@ -332,7 +298,3 @@
         });
     </script>
 
-@* </body>
-
-</html>
- *@

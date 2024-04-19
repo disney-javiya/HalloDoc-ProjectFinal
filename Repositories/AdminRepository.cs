@@ -184,12 +184,12 @@ namespace Repository
             RequestStatusLog rs = new RequestStatusLog();
             Request r = new Request();
             int reqId = int.Parse(requestId);
-            //int CaseTagid = int.Parse(reason);
+          
             var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
             if (reqId != null && reason != "Reason for Cancellation")
             {
                 res.Status = 3;
-                //var caseName = _context.CaseTags.Where(x => x.CaseTagId == CaseTagid).Select(u => u.Name).ToString();
+               
                 res.CaseTag = reason;
                 res.DeclinedBy = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
                 res.ModifiedDate = DateTime.Now;
@@ -230,7 +230,7 @@ namespace Repository
 
         public void adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email)
         {
-            //RequestStatusLog rs = new RequestStatusLog();
+           
             Request r = new Request();
             RequestNote rn = new RequestNote();
             int reqId = int.Parse(requestId);
@@ -240,7 +240,7 @@ namespace Repository
             {
                 
                 res.PhysicianId = int.Parse(physician);
-
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
 
                 rn.RequestId = reqId;
@@ -255,8 +255,7 @@ namespace Repository
                 _context.RequestNotes.Add(rn);
                 _context.SaveChanges();
             }
-            //_context.RequestStatusLogs.Add(rs);
-            //_context.SaveChanges();
+        
            
         }
 
@@ -273,6 +272,7 @@ namespace Repository
             {
                 rs.RequestId = reqId;
                 res.Status = 11;
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = reqId;
                 rs.Status = 11;
@@ -308,7 +308,7 @@ namespace Repository
             {
                 res.Status = 2;
                 res.PhysicianId = int.Parse(physician);
-
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = reqId;
                 rs.Status = 2;
@@ -765,6 +765,7 @@ namespace Repository
             {
                 rs.RequestId = reqId;
                 res.Status = 10;
+                res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
                 rs.RequestId = reqId;
                 rs.Status = 10;
@@ -1214,7 +1215,7 @@ namespace Repository
         }
         public Physician getPhysicianDetails(int physicianId)
         {
-            //int pid = int.Parse(physicianId);
+           
             var res = _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
             return res;
         }
@@ -1358,24 +1359,7 @@ namespace Repository
                 var aid = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
                 physician.ModifiedBy = aid;
                 physician.ModifiedDate = DateTime.Now;
-                //foreach (var file in files)
-                //{
-                //    if (file != null && file.Length > 0)
-                //    {
-                //        string fileName = "Photo" + System.IO.Path.GetExtension(file?.FileName);
-                //        string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
-
-                //        if (!Directory.Exists(path))
-                //            Directory.CreateDirectory(path);
-
-                //        string filePath = System.IO.Path.Combine(path, fileName);
-
-                //        using (var stream = new FileStream(filePath, FileMode.Create))
-                //        {
-                //            file.CopyTo(stream);
-                //        }
-                //    }
-                //}
+           
 
                 if (photo != null && photo.Length > 0)
                 {
@@ -1448,8 +1432,7 @@ namespace Repository
                     _context.SaveChanges();
                 }
             }
-                //physician.Photo = files[0].FileName;
-                //physician.Signature = files[1].FileName;
+                
                
                
                 _context.SaveChanges();
@@ -2093,23 +2076,7 @@ namespace Repository
             }
         }
 
-        //public List<User> patientHistory()
-        //{
-        //    List<User> patient = new List<User>();
-        //    foreach (var item in _context.AspNetUsers.Select(x => x.Email))
-        //    {
-        //        User u = _context.Users.Where(x => x.Email == item).FirstOrDefault();
-        //        if (u != null)
-        //        {
-        //            patient.Add(u);
-        //        }
-
-
-        //    }
-        //    return patient;
-
-
-        //}
+       
         public List<User> patientHistory()
         {
             List<User> patients = new List<User>();
@@ -2298,10 +2265,6 @@ namespace Repository
 
 
 
-            //if (!string.IsNullOrWhiteSpace(patientName))
-            //{
-            //    res = res.Where(u => u.FirstName.ToLower().Contains(patientName)).ToList();
-            //}
             if (date != null)
             {
                 res = res.Where(x => DateOnly.FromDateTime((DateTime)x.CreatedDate) == date).ToList();
@@ -2604,31 +2567,7 @@ namespace Repository
             return _context.PhysicianNotifications.Where(x => x.IsNotificationStopped == new BitArray(new bool[] { true })).Select(u => u.PhysicianId).ToList();
         }
 
-        //public void updatePhysicianNotification(List<int> phy_ids)
-        //{
-        //    List<int> old_ids = getPhysicianNotification();
-        //    foreach (int id in phy_ids)
-        //    {
-        //        if (!old_ids.Contains(id))
-        //        {
-        //            PhysicianNotification pn = new PhysicianNotification();
-        //            pn.PhysicianId = id;
-        //            pn.IsNotificationStopped = new BitArray(new bool[] { true });
-        //            _context.PhysicianNotifications.Add(pn);
-        //            _context.SaveChanges();
-        //        }
-        //    }
-
-        //    foreach (int id in old_ids)
-        //    {
-        //        if (!phy_ids.Contains(id))
-        //        {
-        //            PhysicianNotification row = _context.PhysicianNotifications.Where(x => x.PhysicianId == id).First();
-        //            _context.PhysicianNotifications.Remove(row);
-        //            _context.SaveChanges();
-        //        }
-        //    }
-        //}
+       
 
 
         public encounterModel adminEncounterForm(int requestId)
@@ -2741,8 +2680,8 @@ namespace Repository
             }
             else
             {
-                if(e.IsFinalized == new BitArray(new bool[] { false }))
-                {
+               
+                
                     e.IsFinalized = new BitArray(new bool[] { false });
                     e.HistoryIllness = em.HistoryIllness;
                     e.MedicalHistory = em.MedicalHistory;
@@ -2770,7 +2709,7 @@ namespace Repository
                     e.Procedures = em.Procedures;
                     e.FollowUp = em.FollowUp;
                     _context.SaveChanges();
-                }
+                
                
             }
 

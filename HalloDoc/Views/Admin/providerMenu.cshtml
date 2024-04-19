@@ -28,7 +28,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Stop Notification</th>
+                                   
                                     <th scope="col">Provider Name</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">On Call Status</th>
@@ -40,14 +40,7 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input check" type="checkbox" value="@item.PhysicianId" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-
-                                                </label>
-                                            </div>
-                                        </td>
+                                       
 
                                         <td>
                                              @Html.DisplayFor(modelItem => item.FirstName) 
@@ -57,7 +50,7 @@
                                              @Html.DisplayFor(modelItem => item.RoleId) 
                                         </td>
                                         <td>
-                                           @*  @Html.DisplayFor(modelItem => item.RoleId) *@
+                                          
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Status)

@@ -389,39 +389,6 @@
 </script>
 
 
-@* <script>
-    function setupFileInput(fileInputId, customButtonId, customTextId) {
-        let fileInput = document.getElementById(fileInputId);
-        const customButton = document.getElementById(customButtonId);
-        const customText = document.getElementById(customTextId);
-
-        customButton.addEventListener("click", function () {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener("change", function () {
-            var filename = "";
-            for (var i = 0; i < fileInput.files.length; i++) {
-                filename = filename + " " + fileInput.files[i].name;
-            }
-            if (fileInput.files.length) {
-                customText.setAttribute("value", filename);
-                // this.closest('form').submit();
-            } else {
-                customText.setAttribute("value", "Select File");
-            }
-        });
-    }
-
-    setupFileInput("real-file", "custom-button", "custom-text");
-    setupFileInput("real-file1", "custom-button1", "custom-text1");
-    setupFileInput("real-file2", "custom-button2", "custom-text2");
-    setupFileInput("real-file3", "custom-button3", "custom-text3");
-    setupFileInput("real-file4", "custom-button4", "custom-text4");
-    setupFileInput("real-file5", "custom-button5", "custom-text5");
-    setupFileInput("real-file6", "custom-button6", "custom-text6");
-</script> *@
-
 
 
 

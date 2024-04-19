@@ -50,12 +50,12 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-        [CustomeAuthorize("ProviderPhysician")]
+       
         public List<int> getCountNumber()
         {
             List<int> result = new List<int>();
             IEnumerable<RequestandRequestClient> res;
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 res = _providerRepository.getRequestStateData(i, ViewBag.Data);
                 result.Add(res.Count());
@@ -374,10 +374,6 @@ namespace HalloDoc.Controllers
 
             }
 
-
-
-
-
             mailMessage.To.Add(patientEmail);
             ViewBag.Data = HttpContext.Session.GetString("key");
             _providerRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), requestId, ViewBag.Data, filesFolder);
@@ -520,7 +516,6 @@ namespace HalloDoc.Controllers
         public List<Region> getPhysicianRegions()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //List<Region> res = new List<Region>();
             var res = _providerRepository.getPhysicianRegions(ViewBag.Data);
             return res;
         }
@@ -662,7 +657,6 @@ namespace HalloDoc.Controllers
         [HttpPost]
         public IActionResult insertShift(shiftViewModel s, string checktoggle, int[] dayList)
         {
-            //string selected = Request.Form["uncheckedCheckboxes"];
             ViewBag.Data = HttpContext.Session.GetString("key");
             _providerRepository.insertShift(s, checktoggle, dayList, ViewBag.Data);
 

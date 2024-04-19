@@ -38,7 +38,7 @@ namespace HalloDoc.Controllers
         private readonly IAdminRepository _adminRepository;
         private readonly IAuthenticateRepository _authenticate;
 
-        string rolename;
+      
 
         public AdminController(ILogger<AdminController> logger, IAdminRepository adminRepository, IAuthenticateRepository authenticate)
         {
@@ -229,7 +229,7 @@ namespace HalloDoc.Controllers
             {
                 regionId = null;
             }
-            if (regionId != null && regionId != "Select Region")
+            if (regionId != null && regionId != "Select Regions")
             {
                 r = int.Parse(regionId);
             }
@@ -535,10 +535,7 @@ namespace HalloDoc.Controllers
         public IActionResult adminViewUploads(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+            
             var document = _adminRepository.GetDocumentsByRequestId(requestId);
             ViewBag.pname = _adminRepository.getName(requestId.ToString());
             ViewBag.num = _adminRepository.getConfirmationNumber(requestId.ToString());
@@ -934,15 +931,7 @@ namespace HalloDoc.Controllers
 
         }
 
-        [HttpGet]
-        public IActionResult adminEditAccount(string email)
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            Admin a = new Admin();
-            a = _adminRepository.getAdminInfo(email);
-            return View(a);
-
-        }
+       
         [CustomeAuthorize("Admin")]
         [HttpPost]
         public IActionResult adminProfileUpdatePassword(string password)
@@ -990,10 +979,7 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
 
-            //if (row == null)
-            //{
-            //    SendEmailUser(RequestData.Email, res);
-            //}
+           
             return View();
 
         }
@@ -1077,7 +1063,7 @@ namespace HalloDoc.Controllers
         public List<Region> getAdminRegions()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //List<Region> res = new List<Region>();
+         
             var res = _adminRepository.getAdminRegions(ViewBag.Data);
             return res;
         }
@@ -1320,7 +1306,7 @@ namespace HalloDoc.Controllers
         [HttpPost]
         public IActionResult createRole(createRole r, List<string> menu)
         {
-            //string selected = Request.Form["uncheckedCheckboxes"];
+           
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.createRole(r, menu, ViewBag.Data);
 
@@ -1357,7 +1343,7 @@ namespace HalloDoc.Controllers
         [HttpPost]
         public IActionResult editRole(Role r, List<int> menu, int roleId)
         {
-            //string selected = Request.Form["uncheckedCheckboxes"];
+           
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.updateRole(r, menu, roleId, ViewBag.Data);
 
@@ -1394,7 +1380,7 @@ namespace HalloDoc.Controllers
         [HttpPost]
         public IActionResult insertShift(shiftViewModel s, string checktoggle, int[] dayList)
         {
-            //string selected = Request.Form["uncheckedCheckboxes"];
+            
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.insertShift(s, checktoggle, dayList, ViewBag.Data);
 

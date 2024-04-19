@@ -147,9 +147,7 @@
                         </div>
 
                     </div>
-                    <!-- <div class="col-md-3 gy-3">
-                        <button class="btn upload-btn-create-patient position-absolute mb-3"><i class="fa-solid fa-cloud-arrow-up me-2 " style="color: #ffffff;"></i>Upload</button>
-                    </div> -->
+                    
                     <div class="col d-flex justify-content-end mb-2">
                         <button class="btn submit-btn-create-patient me-2" data-toggle="modal" data-target="#confirmation-modal">Submit</button>
                         <button class="btn cancel-btn-create-patient ms-1">Cancel</button>
@@ -164,6 +162,35 @@
         </main>
 
 
+<script>
+
+    let file = document.getElementById("real-file");
+    const customBtn = document.getElementById("custom-button");
+    const customTxt = document.getElementById("custom-text");
+
+    customBtn.addEventListener("click", function () {
+        file.click();
+    });
+
+
+    file.addEventListener("input", () => {
+        //if file selected
+        var i;
+        var filename = "";
+        for (i = 0; i < file.files.length; i++) {
+            filename = filename + " " + file.files[i].name;
+        }
+        if (file.files.length) {
+
+            customTxt.setAttribute("value", filename);
+
+        } else {
+            customTxt.setAttribute("value", "Select File");
+        }
+    });
+
+
+</script>
 
     <script>
         const phoneInputField = document.querySelector("#phone");

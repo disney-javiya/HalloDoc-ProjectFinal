@@ -111,22 +111,7 @@ namespace Repository
             var regions = _context.Regions.Where(x => regionIds.Contains(x.RegionId)).ToList();
             return regions;
         }
-        //public void physicianUpdatePassword(string email, int physicianId, string password)
-        //{
-
-
-        //    var physicianAspId = _context.Physicians.Where(x => x.PhysicianId == physicianId).Select(u => u.AspNetUserId).FirstOrDefault();
-        //    if (physicianAspId != null && password != null)
-        //    {
-
-        //        var physician = _context.AspNetUsers.Where(x => x.Id == physicianAspId).FirstOrDefault();
-        //        var plainText = Encoding.UTF8.GetBytes(password);
-        //        physician.PasswordHash = Convert.ToBase64String(plainText);
-        //        physician.ModifiedDate = DateTime.Now;
-        //        _context.SaveChanges();
-        //    }
-        //}
-
+       
         public void physicianUpdatePassword(string email, string password)
         {
             var aspuser = _context.AspNetUsers.Where(x => x.Email == email).First();

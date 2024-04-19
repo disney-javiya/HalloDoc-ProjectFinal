@@ -107,7 +107,7 @@ namespace Repository
 
         public void InsertPatientInfo(patientInfo RequestData, AspNetUser asp, User data, Request req, RequestClient rc)
         {
-            //AspNetUser asp = new AspNetUser();
+           
             if (asp.UserName == null)
             {
                 asp.UserName = RequestData.FirstName + RequestData.LastName;

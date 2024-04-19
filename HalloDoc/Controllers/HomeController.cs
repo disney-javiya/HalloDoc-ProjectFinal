@@ -276,10 +276,7 @@ namespace HalloDoc.Controllers
         public IActionResult requestSomeoneElse(requestSomeoneElse r)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //if (ViewBag.Data == null)
-            //{
-            //    return RedirectToAction(nameof(Index));
-            //}
+           
             ViewBag.Data = HttpContext.Session.GetString("key");
             _patientRepository.createPatientRequestSomeoneElse(ViewBag.Data ,r);
             return RedirectToAction(nameof(requestSomeoneElse));
@@ -425,9 +422,9 @@ namespace HalloDoc.Controllers
                 Body = $"Please create password for your account: <a href='{resetLink}'>{resetLink}</a>"
             };
 
-            mailMessage.To.Add(Email)
+            //mailMessage.To.Add(Email)
 ;
-
+            mailMessage.To.Add("pateldisney20@gmail.com");
             client.SendMailAsync(mailMessage);
             return null;
         }

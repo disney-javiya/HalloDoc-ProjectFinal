@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\HalloDoc",
+    "\\HalloDoc\\Views",
+    "\\HalloDoc\\Views\\Admin",
+    "\\HalloDoc\\Views\\Provider"
   ],
-  "SelectedNode": "\\HalloDoc.sln",
+  "SelectedNode": "\\HalloDoc\\Views\\Admin\\adminProfile.cshtml",
   "PreviewInSolutionExplorer": false
 }

@@ -245,7 +245,7 @@
                                     }
                                     @if(item.Status == 5)
                                     {
-                                        @if (item.CompletedByPhysician[0])
+                                        @if (item.CompletedByPhysician != null && item.CompletedByPhysician[0])
                                         {
                                             <li><a class="dropdown-item" id="encounter-download" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounterDownload" value="@item.requestId">Encounter Form</a></li>
                                         }
