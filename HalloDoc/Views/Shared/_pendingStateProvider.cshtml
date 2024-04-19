@@ -318,7 +318,7 @@
         $(document).on('click', '#sendagreement-option', function () {
             requestId = $(this).attr("value");
             $.ajax({
-                url: '/Admin/adminSendAgreement',
+                url: '/Provider/providerSendAgreement',
                 type: 'GET',
                 data: { requestId: requestId },
                 success: function (data) {
@@ -334,7 +334,7 @@
             requestId = $(this).attr("value");
 
             $.ajax({
-                url: '/Admin/adminSendAgreement',
+                url: '/Provider/providerSendAgreement',
                 type: 'GET',
                 data: { requestId: requestId },
                 success: function (data) {

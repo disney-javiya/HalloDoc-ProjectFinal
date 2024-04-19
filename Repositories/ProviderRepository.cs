@@ -735,7 +735,7 @@ namespace Repository
             RequestStatusLog rs = new RequestStatusLog();
             RequestNote rn = _context.RequestNotes.Where(x=>x.RequestId == requestId).FirstOrDefault();
             var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
-            if(res.CompletedByPhysician[0] && e.IsFinalized[0])
+            if(res.CompletedByPhysician != null && res.CompletedByPhysician[0] && e.IsFinalized[0])
             {
                 res.Status = 8;
                 _context.SaveChanges();
@@ -746,12 +746,27 @@ namespace Repository
                 rs.CreatedDate = DateTime.Now;
                 _context.RequestStatusLogs.Add(rs);
                 _context.SaveChanges();
+                string name = _context.Physicians.Where(x => x.Email == email).Select(u => u.FirstName).First();
+                if (rn == null)
+                {
+                    RequestNote r = new RequestNote();
+                    r.RequestId = requestId;
+                    r.PhysicianNotes = notes;
+                     name = _context.Physicians.Where(x => x.Email == email).Select(u => u.FirstName).First();
+                    r.CreatedBy = name;
+                    r.CreatedDate = DateTime.Now;
+                    _context.RequestNotes.Add(r);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    rn.PhysicianNotes = notes;
+                    rn.ModifiedDate = DateTime.Now;
 
-                rn.PhysicianNotes = notes;
-                rn.ModifiedDate = DateTime.Now;
-               string name = _context.Physicians.Where(x=>x.Email == email).Select(u=>u.FirstName).First();
-                rn.ModifiedBy = name;
-                _context.SaveChanges();
+                    rn.ModifiedBy = name;
+                    _context.SaveChanges();
+                }
+                
             }
         }
 
@@ -951,5 +966,138 @@ namespace Repository
         }
 
 
+
+
+        public string providerCreateRequest(createAdminRequest RequestData, string email)
+        {
+            AspNetUser asp = new AspNetUser();
+            User data = new User();
+            var newId = "";
+            var row = _context.AspNetUsers.Where(x => x.Email == RequestData.Email).FirstOrDefault();
+            if (row == null)
+            {
+                newId = Guid.NewGuid().ToString();
+                asp.Id = newId;
+                asp.Email = RequestData.Email;
+                asp.UserName = RequestData.FirstName + RequestData.LastName;
+                asp.PhoneNumber = RequestData.Mobile;
+                asp.CreatedDate = DateTime.Now;
+                _context.AspNetUsers.Add(asp);
+                _context.SaveChanges();
+
+                data.AspNetUserId = newId;
+
+
+            }
+            else
+            {
+
+                data.AspNetUserId = row.Id;
+            }
+
+
+            data.Email = RequestData.Email;
+            data.FirstName = RequestData.FirstName;
+            data.LastName = RequestData.LastName;
+            data.Mobile = RequestData.Mobile;
+            data.Street = RequestData.Street;
+            data.City = RequestData.City;
+            data.State = RequestData.State;
+            data.ZipCode = RequestData.ZipCode;
+            System.String sDate = RequestData.DateOfBirth.ToString();
+            DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
+
+            int dy = datevalue.Day;
+            System.String mn = datevalue.Month.ToString();
+            int yy = datevalue.Year;
+
+            data.IntYear = yy;
+            data.StrMonth = mn;
+            data.IntDate = dy;
+
+            var phy = _context.Physicians.Where(x => x.Email == email).FirstOrDefault();
+            data.CreatedBy = phy.FirstName;
+            data.CreatedDate = DateTime.Now;
+            data.Status = 1;
+            _context.Users.Add(data);
+            _context.SaveChanges();
+
+
+            Request req = new Request();
+            req.RequestTypeId = 2;
+            req.UserId = data.UserId;
+            req.FirstName = phy.FirstName;
+            req.LastName = phy.LastName;
+            req.PhoneNumber = phy.Mobile;
+            req.Email = phy.Email;
+            req.Status = 1;
+            int c = _context.Users.Where(x => x.CreatedDate.Date == DateTime.Today).Count();
+            req.ConfirmationNumber = RequestData.State.Substring(0, 2) + DateTime.Now.ToString().Replace("-", "").Substring(0, 4) + RequestData.LastName.Substring(0, 2) + RequestData.FirstName.Substring(0, 2) + c;
+            req.CreatedDate = DateTime.Now;
+
+
+
+            _context.Requests.Add(req);
+            _context.SaveChanges();
+
+
+            RequestClient rc = new RequestClient();
+            rc.RequestId = req.RequestId;
+            rc.FirstName = RequestData.FirstName;
+            rc.LastName = RequestData.LastName;
+            rc.PhoneNumber = RequestData.Mobile;
+            rc.Location = RequestData.State;
+            rc.Address = RequestData.Street + "," + RequestData.City + "," + RequestData.State + " ," + RequestData.ZipCode;
+
+            rc.Email = RequestData.Email;
+            rc.StrMonth = mn;
+            rc.IntDate = dy;
+            rc.IntYear = yy;
+            rc.Street = RequestData.Street;
+            rc.City = RequestData.City;
+            rc.State = RequestData.State;
+            rc.ZipCode = RequestData.ZipCode;
+            var regionid = _context.Regions.Where(x => x.Name == RequestData.City).Select(u => u.RegionId).FirstOrDefault();
+            rc.RegionId = regionid;
+            _context.RequestClients.Add(rc);
+            _context.SaveChanges();
+
+            viewNotes v = new viewNotes();
+            v.AdditionalNote = RequestData.AdditionalNotes;
+
+            providerNotes(req.RequestId, v, email);
+            return newId;
+        }
+
+        public void passwordresetInsert(string Email, string id)
+        {
+            Passwordreset temp = _context.Passwordresets.Where(x => x.Email == Email).FirstOrDefault();
+
+
+
+            if (temp != null)
+            {
+                temp.Token = id.ToString();
+                temp.Createddate = DateTime.Now;
+                temp.Isupdated = new BitArray(1);
+            }
+            else
+            {
+                Passwordreset passwordReset = new Passwordreset();
+                passwordReset.Token = id.ToString();
+                passwordReset.Email = Email;
+                passwordReset.Isupdated = new BitArray(1);
+                passwordReset.Createddate = DateTime.Now;
+                _context.Passwordresets.Add(passwordReset);
+            }
+            _context.SaveChanges();
+
+        }
+
+        public int GetUserByRequestId(string Id)
+        {
+            var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u => u.UserId).FirstOrDefault();
+            return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
+        }
     }
 }

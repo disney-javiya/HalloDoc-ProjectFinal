@@ -1394,6 +1394,7 @@ namespace HalloDoc.Controllers
             return View(res);
         }
         [CustomeAuthorize("Admin")]
+        [HttpGet]
         public IActionResult partnersPage()
         {
 
@@ -1401,6 +1402,14 @@ namespace HalloDoc.Controllers
             List<HealthProfessional> res = _adminRepository.GetHealthProfessionals();
             return View(res);
         }
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult partnersPage(int healthprofessionId, string vendor_name)
+        {
+            List<HealthProfessional> res = _adminRepository.filterPartnersPage(healthprofessionId, vendor_name);
+            return View(res);
+        }
+
         [CustomeAuthorize("Admin")]
         public IActionResult addBusiness()
         {

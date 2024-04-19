@@ -124,6 +124,7 @@ namespace Repository.IRepository
         public List<PhysicianLocation> getAllPhysicianLocation();
         public void addHealthProfessional(HealthProfessional h);
         public void editBusinessPost(int VendorId ,HealthProfessional h);
+        public List<HealthProfessional> filterPartnersPage(int? healthprofessionId, string? vendor_name);
         public void adminDeletePartner(int VendorId, string email);
         public List<BlockRequest> GetAllBlockRequests();
         public List<BlockRequest> filterBlockedHistory(string patientName, DateOnly date, string email, string phone);

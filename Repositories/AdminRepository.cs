@@ -1987,6 +1987,24 @@ namespace Repository
             return   _context.PhysicianLocations.ToList();
         }
 
+
+        public List<HealthProfessional> filterPartnersPage(int? healthprofessionId, string? vendor_name)
+        {
+            if(healthprofessionId != 0 && vendor_name == null) 
+            {
+              return  _context.HealthProfessionals.Where(x=>x.Profession == healthprofessionId && x.IsDeleted != new BitArray(new bool[] {true}) ).ToList();
+            }
+            else if(healthprofessionId == 0 && vendor_name != null)
+            {
+               return _context.HealthProfessionals.Where(x=>x.VendorName.ToLower().Contains(vendor_name.ToLower()) && x.IsDeleted != new BitArray(new bool[] { true })).ToList();
+            }
+            else
+            {
+                return _context.HealthProfessionals.Where(x=>x.Profession == healthprofessionId && x.VendorName.ToLower().Contains(vendor_name.ToLower()) && x.IsDeleted != new BitArray(new bool[] { true })).ToList();
+            }
+        }
+
+
         public void addHealthProfessional(HealthProfessional h)
         {
             HealthProfessional healthProfessional = new HealthProfessional

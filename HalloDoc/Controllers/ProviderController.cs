@@ -53,6 +53,7 @@ namespace HalloDoc.Controllers
        
         public List<int> getCountNumber()
         {
+            ViewBag.Data = HttpContext.Session.GetString("key");
             List<int> result = new List<int>();
             IEnumerable<RequestandRequestClient> res;
             for (int i = 1; i <= 4; i++)
@@ -662,6 +663,77 @@ namespace HalloDoc.Controllers
 
             return RedirectToAction("providerMySchedule");
         }
+
+        [CustomeAuthorize("Physician")]
+        public IActionResult providerCreateRequest()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+
+            return View();
+
+        }
+        [CustomeAuthorize("Physician")]
+        [HttpPost]
+        public IActionResult providerCreateRequest(createAdminRequest RequestData)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            string email = RequestData.Email;
+            var row = _providerRepository.GetUserByEmail(email);
+            var res = _providerRepository.providerCreateRequest(RequestData, ViewBag.Data);
+
+            if (row == null)
+            {
+                SendEmailUser(RequestData.Email, res);
+            }
+            return RedirectToAction("providerDashboard");
+
+        }
+
+        public Action SendEmailUser(System.String Email, string id)
+        {
+
+            AspNetUser aspNetUser = _providerRepository.GetUserByEmail(Email);
+
+
+            string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
+            string senderPassword = "Disney@20";
+            string resetLink = $"{Request.Scheme}://{Request.Host}/Home/createPatientAccount?id={id}";
+
+            _providerRepository.passwordresetInsert(Email, id);
+
+
+
+
+
+            SmtpClient client = new SmtpClient("smtp.office365.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(senderEmail, senderPassword),
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false
+            };
+
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress(senderEmail, "HalloDoc"),
+                Subject = "Set up your Account",
+                IsBodyHtml = true,
+                Body = $"Please create password for your account: <a href='{resetLink}'>{resetLink}</a>"
+            };
+
+            //mailMessage.To.Add(Email)
+            mailMessage.To.Add("pateldisney20@gmail.com");
+;
+
+            client.SendMailAsync(mailMessage);
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            int requestId = _providerRepository.GetUserByRequestId(aspNetUser.Id);
+            _providerRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), requestId, ViewBag.Data, null);
+            return null;
+        }
+
         public IActionResult logOut()
         {
 

@@ -15,15 +15,12 @@
                     </div>
                     <div class="d-flex">
                         <div class="col-md-6  d-flex ">
-                            <input type="text" class="form-control search shadow-none m-2" id="floatingInput" placeholder="Search Vendors">
-                            <select name="healthprofesional" id="healthprofesional" class="form-select m-2" aria-label="Default select example">
-                                <option selected>All HealthProfessional</option>
-                                @foreach (var item in Model)
-                                {
-                                    <option value="@item.VendorId">@item.VendorName</option>
-                                }
+                            <input type="text" id = "vendor_name" class="form-control search shadow-none m-2"  placeholder="Search Vendors">
+                    <select name="profession" id="profession" class="form-select m-2" aria-label="Default select example">
+                        <option selected>Select Profession</option>
 
-                            </select>
+
+                    </select>
                         </div>
 
 
@@ -34,8 +31,8 @@
 
 
 
-                    <div class="data-table-admin-viewuploads">
-                        <table class="table">
+            <div class="data-table-admin-viewuploads" id="tablepartner">
+                <table class="table" >
                             <thead>
                                 <tr>
 
@@ -187,6 +184,74 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+       
+
+            $.ajax({
+                url: '/Admin/GetAllHealthProfessionalType',
+                type: 'GET',
+               
+                success: function (data) {
+
+                    var healthtypeDropdown = $('#profession');
+                    healthtypeDropdown.empty();
+                    healthtypeDropdown.append($('<option></option>').text("Select Healthprofessional"));
+                    $.each(data, function (index, profession) {
+                        healthtypeDropdown.append($('<option></option>').attr('value', profession.healthProfessionalId).text(profession.professionName));
+                    });
+                }
+            });
+
+
+        });
+
+   
+</script>
+
+
+<script>
+    var healthprofessionId;
+    var vendor_name;
+   
+    $(document).ready(function () {
+
+
+
+        $('#profession').change(function () {
+
+            healthprofessionId = $('#profession').val();
+
+            fetchData();
+        });
+        $('#vendor_name').change(function () {
+            vendor_name = $('#vendor_name').val();
+
+            fetchData();
+        });
+        function fetchData() {
+
+            $.ajax({
+                url: "/Admin/partnersPage",
+                method: "POST",
+                data: { "healthprofessionId": healthprofessionId, "vendor_name": vendor_name },
+
+                
+                error: function () {
+
+                }
+            });
+        }; 
+    });
+
+    </script>
+
 
 
 

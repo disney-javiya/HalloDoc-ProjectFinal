@@ -538,7 +538,7 @@ Forgot-password-page
     background: #E42929;
 }
 
-#view-admin-mob-button, #email-admin-mob-button, #uploads-admin-mob-button, #encounter-admin-mob-button, #accept-option1 {
+#view-admin-mob-button, #email-admin-mob-button, #uploads-admin-mob-button, .encounter-admin-mob-button, #accept-option1, #conclude-admin-mob-button {
     background: #228B22;
 }
 

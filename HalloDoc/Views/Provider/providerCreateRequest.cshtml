@@ -1,0 +1,134 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.createAdminRequest
+
+
+
+@{
+    Layout = "_ProviderHeader";
+}
+
+<main>
+    <form method="post" asp-controller="Provider" asp-action="providerCreateRequest" enctype="multipart/form-data">
+        <div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+            <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+
+                <div class="col  d-flex justify-content-between ">
+                    <h4>Submit Information</h4>
+                    <a role="button" class="btn back-btn mt-1" asp-controller="Provider" asp-action="providerDashboard">< Back</a>
+                </div>
+                <div class="col">
+                    <h5>Patient</h5>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+
+                        <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none " id="floatingInput" placeholder=" ">
+                        <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="LastName" type=" text" class="form-control last-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+                    </div>
+                </div>
+                <div class="col-md-6 gy-3 ">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Mobile" class=" form-control contact-create-patient shadow-none" id="phone" type="tel" name="phone" />
+                        <label class="contact-create-patient-text" for="phone"> </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6 gy-3">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" type="email" class="form-control email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com">
+                        <label class="email-create-patient-text" for="floatingInput">Email address</label>
+                    </div>
+                </div>
+                <div class="col-md-6 me-auto">
+                    <div class="form-floating mb-3">
+                        <input asp-for="DateOfBirth" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="dob-create-patient-text" for="floatingInput">Date Of Birth</label>
+                    </div>
+                </div>
+
+
+                <div class="col">
+                    <h5>Location</h5>
+                </div>
+
+
+
+
+
+                <div class="col-md-6 gy-3">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Street" class="form-control street-create-patient  shadow-none" id="floatingInput" placeholder="">
+                        <label class="street-create-patient-text" for="floatingInput">Street</label>
+                    </div>
+                </div>
+                <div class="col-md-6 gy-3">
+                    <div class="form-floating mb-3">
+                        <input asp-for="City" type="text" class="form-control city-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="city-create-patient-text" for="floatingInput">City</label>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="State" type="text" class="form-control state-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="state-create-patient-text" for="floatingInput">State</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="ZipCode" type="text" class="form-control zipcode-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="zipcode-create-patient-text" for="floatingInput">Zipcode</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control room-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <label class="room-create-patient-text" for="floatingInput">Room # / Suite (Optional)</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-floating mb-3">
+                        <a href="" class="map-btn p-2" role="button"><i class="fa-solid fa-location-dot me-1" style="color: #01bce9; font-size: 20px;"></i> Verify</a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-floating mb-3">
+                        <a href="" class="map-btn p-2" role="button"><i class="fa-solid fa-location-dot me-1" style="color: #01bce9; font-size: 20px;"></i> Map</a>
+                    </div>
+                </div>
+                <div class="col-md-12 gy-3">
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="AdditionalNotes" class="form-control symptoms-create-patient shadow-none" placeholder="" id="floatingTextarea"></textarea>
+                        <label class="symptoms-create-patient-text" for="floatingTextarea">Notes (Optional)</label>
+                    </div>
+                </div>
+
+
+                <div class="col d-flex justify-content-end mb-2">
+                    <button type="submit" role="button" class="btn save-btn-patient-profile me-2 p-2">Save</button>
+                    <a role="button" class="btn cancel-btn-patient-profile me-2 p-2">Cancel</a>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+
+<script>
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+</script>
