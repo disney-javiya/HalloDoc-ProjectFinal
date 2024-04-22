@@ -60,8 +60,8 @@
                                     <li><a class="dropdown-item" href="@Url.Action("adminViewNotes", "Admin", new { requestId = @item.requestId})">View Notes</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("sendOrder", "Admin", new { requestId = @item.requestId})">Orders</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("closeCase", "Admin", new { requestId = @item.requestId})">Close Case</a></li>
-                                   
-                                    <li><a class="dropdown-item" href="#">Clear Case</a></li>
+                                    <li><a class="dropdown-item" id="clear-option" role="button" data-bs-toggle="modal" data-bs-target="#myModalClear" value="@item.requestId">Clear Case</a></li>
+                                    
                                     <li><a class="dropdown-item" id="encounter-download" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounterDownload" value="@item.requestId">Encounter Form</a></li>
                                 </ul>
                             </div>
@@ -135,7 +135,7 @@
                         <a class="admin-mob-button p-2 m-1" id="encounter-admin-mob-button" role="button">
                             Encounter
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="clear-admin-mob-button" role="button">
+                        <a class="admin-mob-button p-2 m-1" role="button" id="clear-option1" data-bs-toggle="modal" data-bs-target="#myModalClear" value="@item.requestId">
                             Clear Case
                         </a>
                        
@@ -343,6 +343,52 @@
         var tds = row.querySelectorAll('td');
         tds.forEach(function (td) {
             td.style.background = color;
+        });
+    });
+</script>
+
+<!--For Clear Case-->
+<div class="modal" id="myModalClear">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="clearCaseForm" action="/Admin/adminClearCase" method="POST">
+                <!-- Modal Header -->
+
+                <input type="hidden" id="requestidinput2" name="requestid" />
+                <!-- Modal body -->
+                <div class="modal-body d-flex flex-column justify-content-between align-items-center" style="color:grey;">
+                    <i class="fa-solid fa-circle-exclamation mt-4" style="color: #f8a804; font-size: 50px;"></i>
+                    <h5 class="mt-2">Confirm for clear case</h5>
+                    <p class="mt-2" style="text-align: center; color: #434946;">Are you sure you want to clear this request? Once clear this request then you are not able to see this request.</p>
+
+
+
+
+
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn submit-btn-assigncase">Clear</button>
+                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '#clear-option', function () {
+            requestId = $(this).attr("value");
+        });
+        $(document).on('click', '#clear-option1', function () {
+            requestId = $(this).attr("value");
+        });
+        $('#clearCaseForm').submit(function (event) {
+
+            $('#requestidinput2').val(requestId);
+
+
         });
     });
 </script>

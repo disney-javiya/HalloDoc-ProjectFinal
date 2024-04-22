@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Vml;
+using System.Runtime.InteropServices;
 
 namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 {
@@ -23,6 +25,8 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public string? LastName { get; set; }
 
         [Column(TypeName = "character varying")]
+        [RegularExpression("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$", ErrorMessage = "Password must be Strong")]
+
         [Required(ErrorMessage = "Password is required")]
         public string? PasswordHash { get; set; }
         [Required(ErrorMessage = "Email is required")]
@@ -32,10 +36,10 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         [StringLength(20)]
         public string? Mobile { get; set; }
         [Required(ErrorMessage = "Phone Number is required")]
+        [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
         [StringLength(23)]
-        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
-        ErrorMessage = "Phone is required and must be properly formatted.")]
         public string? PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Street is required")]
         [StringLength(100)]
         public string? Street { get; set; }
@@ -59,10 +63,11 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         [Required(ErrorMessage = "Family Last Name is required")]
         [StringLength(100)]
         public string? FamilyLastName { get; set; }
+
+
         [Required(ErrorMessage = "Family Phone Number is required")]
         [StringLength(23)]
-        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
-        ErrorMessage = "Phone is required and must be properly formatted.")]
+        [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
         public string? FamilyPhoneNumber { get; set; }
         [Required(ErrorMessage = "Family Email is required")]
         [StringLength(50)]
@@ -84,8 +89,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public string? ConciergeLastName { get; set; }
         [Required(ErrorMessage = "Concierge Phone Number is required")]
         [StringLength(23)]
-        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
-        ErrorMessage = "Phone is required and must be properly formatted.")]
+        [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
         public string? ConciergePhoneNumber { get; set; }
         [Required(ErrorMessage = "Concierge Email is required")]
         [StringLength(50)]
@@ -114,11 +118,11 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         [StringLength(100)]
         public string? BusinessLastName { get; set; }
 
+        [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
         [Required(ErrorMessage = "Business Phone number is required")]
         [StringLength(23)]
-        [RegularExpression("^[01]?[- .]?\\(?[2-9]\\d{2}\\)?[- .]?\\d{3}[- .]?\\d{4}$",
-        ErrorMessage = "Phone is required and must be properly formatted.")]
         public string? BusinessPhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Business Email is required")]
         [StringLength(50)]
         public string? BusinessEmail { get; set; }

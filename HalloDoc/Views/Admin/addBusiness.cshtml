@@ -17,20 +17,20 @@
 
                        
                             <h4>Submit Information</h4>
-                            <div class="col-md-6 ">
+                            <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input asp-for="VendorName"  type="text" class="form-control b-contact last-name-create-patient shadow-none m-2" id="floatingInput" placeholder="">
+                                    <input asp-for="VendorName"  type="text" class="form-control b-contact last-name-create-patient shadow-none" id="floatingInput" placeholder="">
                                     <label class="last-name-create-patient-text" for="floatingInput">Business Name</label>
                                     <span asp-validation-for="VendorName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
-                            <select name="Profession" id="healthprofesional" class="form-select m-2" aria-label="Default select example">
+                                <select name="Profession" id="healthprofesional" class="form-select mb-3 p-3" aria-label="Default select example">
                                 <option selected>All HealthProfessional</option>
                                 
 
                             </select>
-                    <span asp-validation-for="Profession" class="text-danger"></span>
+                                <span id="professionvalidation" class="text-danger"></span>
                             </div>
                        
 
@@ -49,7 +49,7 @@
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6 gy-3 ">
+                        <div class="col-md-6">
                             <div class="form-floating mb-3">
                                 <input asp-for="Email" type="email" class="form-control email email-create-patient shadow-none" id="floatingInput" placeholder="name@example.com">
                                 <label class="email-create-patient-text" for="floatingInput">Email address</label>
@@ -99,7 +99,7 @@
 
 
                         <div class="col d-flex justify-content-end mb-2">
-                            <button type="submit" class="btn submit-btn-create-patient me-2">Submit</button>
+                            <button type="submit" id="submitAddBusiness" class="btn submit-btn-create-patient me-2">Submit</button>
                             <button class="btn ms-1" style="border: 1px solid #01bce9; color: #01bce9;">Cancel</button>
                         </div>
 
@@ -131,3 +131,13 @@
 
 
     </script>
+    <script>
+        $('#submitAddBusiness').click(function (e) {
+        const profession = $('#healthprofesional').val();
+            $("#professionvalidation").text(" ");
+        if (profession == "Select Profession") {
+            $("#professionvalidation").text("Enter Profession First!!").css("color", "red");
+            e.preventDefault();
+        }
+        });
+    </script> 

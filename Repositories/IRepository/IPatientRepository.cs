@@ -17,7 +17,7 @@ namespace Repository.IRepository
         //public string CreateFamilyRequest(familyCreateRequest RequestData);
         //public string CreateConciergeRequest(conciergeCreateRequest RequestData);
         //public string CreateBusinessRequest(businessCreateRequest RequestData);
-
+        public string getRoleName(AspNetUser asp);
         public void InsertPatientInfo(patientInfo RequestData, AspNetUser asp, User data, Request req, RequestClient rc);
         public void CreateRequest(patientInfo RequestData);
         public string CreateFamilyRequest(patientInfo RequestData);

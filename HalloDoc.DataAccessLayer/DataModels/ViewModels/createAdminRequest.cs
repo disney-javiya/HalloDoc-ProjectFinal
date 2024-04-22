@@ -24,12 +24,14 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
         [Column(TypeName = "character varying")]
         [Required]
+        [RegularExpression("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$", ErrorMessage = "Password must be Strong")]
         public string? PasswordHash { get; set; }
         [Required]
         [StringLength(50)]
         public string Email { get; set; } = null!;
 
         [StringLength(20)]
+        [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
         public string? Mobile { get; set; }
         [Required]
         [StringLength(100)]

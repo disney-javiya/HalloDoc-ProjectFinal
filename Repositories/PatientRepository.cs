@@ -47,7 +47,13 @@ namespace Repository
         {
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
-
+        public string getRoleName(AspNetUser asp)
+        {
+            string rolename = "";
+            string roleid = _context.AspNetUserRoles.Where(x => x.UserId == asp.Id).Select(x => x.RoleId).FirstOrDefault();
+            rolename = _context.AspNetRoles.Where(x => x.Id == roleid).Select(x => x.Name).FirstOrDefault();
+            return rolename;
+        }
         public void agreementApproved(int requestId, int? adminId, int? physicianId)
         {
 

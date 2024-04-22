@@ -122,7 +122,7 @@ namespace Repository.IRepository
 
         public void insertShift(shiftViewModel s, string checktoggle, int[] dayList, string email);
         public List<PhysicianLocation> getAllPhysicianLocation();
-        public void addHealthProfessional(HealthProfessional h);
+        public void addHealthProfessional(HealthProfessional h, string Profession);
         public void editBusinessPost(int VendorId ,HealthProfessional h);
         public List<HealthProfessional> filterPartnersPage(int? healthprofessionId, string? vendor_name);
         public void adminDeletePartner(int VendorId, string email);

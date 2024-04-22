@@ -59,5 +59,13 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public DateTime DateService { get; set; }
 
         public RequestNote? reqNotes { get; set; }
+
+
+
+
+        public int TotalPages { get; set; }
+        public int CurrentPage { get; set; }
+        public bool PreviousPage { get; set; }
+        public bool NextPage { get; set; }
     }
 }

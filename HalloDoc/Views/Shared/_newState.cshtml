@@ -441,7 +441,7 @@
 
 
                     <input type="hidden" id="requestIdInput" name="requestId" />
-                    <select name="reason" class="form-select m-2" aria-label="Default select example">
+                    <select name="reason" id="reason" class="form-select m-2" aria-label="Default select example">
                         <option selected>Reason for Cancellation</option>
                         @foreach (var item in Model.result)
                         {
@@ -459,7 +459,7 @@
                             }
                         }
                     </select>
-                   
+                    <span id="case"></span>
                     <div class="form-floating m-2">
                         <textarea name="additionalNotes" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
                         <label class="symptoms-create-patient-text" for="floatingTextarea">Provide Additional Notes</label>
@@ -470,6 +470,22 @@
                     <button type="submit" class="btn submit-btn-cancelcase">Confirm</button>
                     <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                 </div>
+
+                <script>
+                    $('.submit-btn-cancelcase').click(function (e) {
+
+
+                        const reason = $('#reason').val();
+                      
+                        if (reason == "Reason for Cancellation") {
+                            $("#case").append("Enter Reason First!!").css("color", "red");
+                            e.preventDefault();
+                        }                      
+                      
+                    });
+
+
+                </script>
             </form>
         </div>
     </div>
@@ -516,14 +532,14 @@
                             }
                         }
                     </select>
-
+                    <span id="regionvalidation"></span>
                     <!-- For Physician-->
                     <select name="physician" id="physician" class="form-select m-2" aria-label="Default select example">
                         <option selected>Select Physician</option>
 
 
                     </select>
-
+                    <span id="physicianvalidation"></span>
                     <div class="form-floating m-2">
                         <textarea name="additionalNotesAssign" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
                         <label class="symptoms-create-patient-text" for="floatingTextarea">Description</label>
@@ -531,8 +547,8 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn submit-btn-assigncase">Submit</button>
-                    <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="submit-btn-assigncase" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="button"  class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>

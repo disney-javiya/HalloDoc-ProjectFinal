@@ -1072,16 +1072,7 @@ namespace Repository
                     }
                 }
 
-                
-
-
-                
-
             }
-
-
-
-
 
         }
 
@@ -1108,9 +1099,6 @@ namespace Repository
                 _context.SaveChanges();
 
             }
-
-
-
 
         }
         public void createPhysicianAccount(Physician p, IFormFile photo, string password, string role, List<int> region, string email, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc)
@@ -2005,7 +1993,7 @@ namespace Repository
         }
 
 
-        public void addHealthProfessional(HealthProfessional h)
+        public void addHealthProfessional(HealthProfessional h, string Profession)
         {
             HealthProfessional healthProfessional = new HealthProfessional
             {
@@ -2021,17 +2009,22 @@ namespace Repository
                 Zip = h.Zip,
                 Email = h.Email
             };
-           int hid = _context.HealthProfessionalTypes.Where(x => x.HealthProfessionalId == h.Profession).Select(u => u.HealthProfessionalId).First();
-            healthProfessional.Profession = hid;
-            int rid = _context.Regions.Where(x => x.Name == h.City).Select(u => u.RegionId).First();
-            healthProfessional.RegionId = rid;
-            healthProfessional.CreatedDate = DateTime.Now;
+            if(Profession != "Select Profession")
+            {
+                int profession = int.Parse(Profession);
+                int hid = _context.HealthProfessionalTypes.Where(x => x.HealthProfessionalId == profession).Select(u => u.HealthProfessionalId).First();
+                healthProfessional.Profession = hid;
+                int rid = _context.Regions.Where(x => x.Name == h.City).Select(u => u.RegionId).First();
+                healthProfessional.RegionId = rid;
+                healthProfessional.CreatedDate = DateTime.Now;
+
+                healthProfessional.IsDeleted = new BitArray(new bool[] { false });
+
+
+                _context.HealthProfessionals.Add(healthProfessional);
+                _context.SaveChanges();
+            }
            
-            healthProfessional.IsDeleted = new BitArray(new bool[] { false });
-           
-           
-            _context.HealthProfessionals.Add(healthProfessional);
-            _context.SaveChanges();
         }
 
         public void editBusinessPost(int VendorId, HealthProfessional h)

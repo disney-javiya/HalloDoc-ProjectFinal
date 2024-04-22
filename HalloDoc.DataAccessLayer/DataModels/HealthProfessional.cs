@@ -39,7 +39,10 @@ public partial class HealthProfessional
 
     [Column(TypeName = "timestamp without time zone")]
     public DateTime? ModifiedDate { get; set; }
+
+
     [Required]
+    [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
     [StringLength(100)]
     public string? PhoneNumber { get; set; }
 

@@ -10,6 +10,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
     {
         public List<RequestandRequestClient> result {  get; set; }
 
+        public List<searchRecords> records { get; set; }
         public int TotalPages { get; set; }
         public int CurrentPage { get; set; }
         public bool PreviousPage { get; set; }

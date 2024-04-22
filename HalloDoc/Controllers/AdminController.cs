@@ -29,6 +29,7 @@ using System.Configuration.Provider;
 using System.Web.Helpers;
 using System.Globalization;
 using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace HalloDoc.Controllers
 {
@@ -818,7 +819,7 @@ namespace HalloDoc.Controllers
 
                 string senderPassword = "Disney@20";
                 int req = int.Parse(requestId);
-                string agreementLink = $"{Request.Scheme}://{Request.Host}/Home/reviewAgreement?requestId={req}&adminId={admin.AdminId}";
+                string agreementLink = $"{Request.Scheme}://{Request.Host}/Home/reviewAgreement?requestId={req}&adminId={admin.AdminId}?return=1";
 
                 SmtpClient client = new SmtpClient("smtp.office365.com")
                 {
@@ -1418,11 +1419,11 @@ namespace HalloDoc.Controllers
         }
         [CustomeAuthorize("Admin")]
         [HttpPost]
-        public IActionResult addBusiness(HealthProfessional h)
+        public IActionResult addBusiness(HealthProfessional h , string Profession)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            _adminRepository.addHealthProfessional(h);
-            return View("addBusiness");
+            _adminRepository.addHealthProfessional(h , Profession);
+            return RedirectToAction("addBusiness");
         }
         [CustomeAuthorize("Admin")]
         [HttpGet]
@@ -1529,11 +1530,25 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin")]
         [HttpGet]
  
-        public IActionResult searchRecords()
+        public IActionResult searchRecords(int pagenumber=1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            var res = _adminRepository.searchRecords(ViewBag.Data);
-            return View(res);
+            dashboardTableModel model = new dashboardTableModel();
+            model.records = _adminRepository.searchRecords(ViewBag.Data);
+           
+            var count = model.records.Count();
+            if (count > 0)
+            {
+                model.records = model.records.Skip((pagenumber - 1) * 3).Take(3).ToList();
+              
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+            //var res = _adminRepository.searchRecords(ViewBag.Data);
+            return View(model);
         }
         [CustomeAuthorize("Admin")]
         [HttpPost]

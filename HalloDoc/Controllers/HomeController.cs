@@ -77,9 +77,16 @@ namespace HalloDoc.Controllers
                 Id = data.Id
             };
 
-            var jwttoken = _authenticate.GenerateJwtToken(loginuser, "Patient");
+     
+
+            string rolename = _patientRepository.getRoleName(loginuser);
+
+            var jwttoken = _authenticate.GenerateJwtToken(loginuser, rolename);
             Response.Cookies.Append("jwt", jwttoken);
+           
             HttpContext.Session.SetString("key", user.Email);
+
+
            
             return RedirectToAction("patientDashboard");
         }
@@ -550,13 +557,16 @@ namespace HalloDoc.Controllers
 
 
 
-        public IActionResult DownloadFiles(List<int> fileIds, int? requestId)
+        public IActionResult DownloadFiles(string fileIds, int? requestId)
         {
             IEnumerable<RequestWiseFile> files;
 
             if (!fileIds.IsNullOrEmpty())
             {
-                files = _patientRepository.GetFilesByIds(fileIds);
+                var ids = fileIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                     .Select(int.Parse)
+                     .ToList();
+                files = _patientRepository.GetFilesByIds(ids);
             }
             else if (requestId != null)
             {
@@ -587,8 +597,9 @@ namespace HalloDoc.Controllers
         }
 
 
+
         /*-----------------------------------Review Agreement--------------------------------------------------*/
-       
+
         public IActionResult reviewAgreement()
         {
             return View();

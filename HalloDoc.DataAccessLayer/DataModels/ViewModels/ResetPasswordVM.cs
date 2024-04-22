@@ -15,6 +15,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public string? Email { get; set; }
 
         [StringLength(256)]
+        [RegularExpression("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$", ErrorMessage = "Password must be Strong")]
         [Required(ErrorMessage = "Password is Required")]
         public string? Password { get; set; }
 
