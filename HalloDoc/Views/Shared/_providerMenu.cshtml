@@ -1,0 +1,91 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
+
+<script src="/js/admin.js"></script>
+<script src="/js/pagination.js"></script>
+<script>
+    function changePage(page) {
+        $.ajax({
+            url: "/Admin/providerMenuTable",
+
+            data: { 'regionId': regionId, 'pagenumber': page },
+
+            success: function (data) {
+                $('#providermenu-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
+
+<div class="data-table-admin-viewuploads">
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th scope="col">Provider Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">On Call Status</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.physicians)
+            {
+                <tr>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.RoleId)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a class="providermenu-btn p-1" role="button" id="contact-option" data-bs-toggle="modal" data-bs-target="#myModal" value="@item.PhysicianId">Contact</a>
+                        <a class="providermenu-btn p-1" role="button" href="@Url.Action("editPhysicianAccount", "Admin", new { physicianId = item.PhysicianId})">Edit</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+<div aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-3">
+        @if (Model.TotalPages >= 1)
+        {
+            <!-- Previous page -->
+            <li class="page-item @(Model.PreviousPage ? " " : "disabled")">
+                <a class="page-link" href="javascript:void(0)" onclick="changePage(@Model.CurrentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true"><i class="bi bi-caret-left-fill text-info"></i> </span>
+                </a>
+            </li>
+
+            <!-- Page numbers -->
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : " ")">
+                    <a class="page-link" id="plink-@i" href="javascript:void(0)" onclick="changePage(@i)">@i</a>
+                </li>
+            }
+
+            <!-- Next page -->
+            <li class="page-item @(Model.NextPage ? " " : "disabled")">
+                <a class="page-link" href="javascript:void(0)" onclick="changePage(@Model.CurrentPage+1)" aria-label="Next">
+                    <span aria-hidden="true"> <i class="bi bi-caret-right-fill text-info"></i> </span>
+                </a>
+            </li>
+        }
+    </ul>
+</div> 

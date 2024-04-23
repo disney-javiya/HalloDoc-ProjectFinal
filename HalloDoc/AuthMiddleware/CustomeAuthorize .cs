@@ -36,12 +36,14 @@ namespace HalloDoc.AuthMiddleware
 
             if (token == null || !jwtTokenService.ValidateToken(token, out JwtSecurityToken jwtToken))
             {
-                context.Result = new RedirectToRouteResult(new Microsoft.AspNetCore.Routing.RouteValueDictionary(new
-                {
-                    Controller = "Home",
-                    Action = "Index",
-                }));
-                return;
+                string returnURL = context.HttpContext.Request.Path + context.HttpContext.Request.QueryString;
+                //context.Result = new RedirectToRouteResult(new Microsoft.AspNetCore.Routing.RouteValueDictionary(new
+                //{
+                //    Controller = "Home",
+                //    Action = "Index",
+                //}));
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index", returnUrl = returnURL }));
+                return; 
             }
 
             var roleClaim = jwtToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;

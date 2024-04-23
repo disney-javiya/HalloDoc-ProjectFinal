@@ -1,9 +1,38 @@
-﻿@model IEnumerable<HalloDoc.DataAccessLayer.DataModels.Physician>
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
 
 
 @{
     Layout = "_AdminHeader";
 }
+<script>
+
+    var regionId;
+    $(document).ready(function () {
+        fetchProviderMenuData();
+    });
+
+
+
+</script>
+<script>
+    function fetchProviderMenuData() {
+       
+
+        regionId = $('#region').val()
+        $.ajax({
+            url: "/Admin/providerMenuTable",
+
+            data: { 'regionId': regionId, 'pagenumber': 1 },
+
+            success: function (data) {
+                $('#providermenu-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
 
         <main>
 
@@ -14,69 +43,20 @@
                
                     </div>
                     <div class="d-flex providersearchtab">
-                        <div class="col-md-4 form-floating m-1">
-                            <input type="text" class="form-control search shadow-none" id="floatingInput" placeholder="All">
-                            <label class="searchprovider" for="floatingInput"><i class="fa-solid fa-magnifying-glass me-1"></i> All</label>
+                        <div class="col-md-4 form-floating mb-3">
+                    <select name="region" id="region" class="form-select p-1 m-1" aria-label="Default select example">
+                        <option selected>Select Regions</option>
+
+
+                    </select>
                         </div>
                         <a role="button" style="height:fit-content;" href="/Admin/createPhysicianAccount" class="create-provider-btn p-1 ms-auto mb-2">Create Provider Account</a>
                     </div>
-                  
-                   
 
 
-                    <div class="data-table-admin-viewuploads">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                   
-                                    <th scope="col">Provider Name</th>
-                                    <th scope="col">Role</th>
-                                    <th scope="col">On Call Status</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                       
-
-                                        <td>
-                                             @Html.DisplayFor(modelItem => item.FirstName) 
-                                        </td>
-                                        <td>
-                                            
-                                             @Html.DisplayFor(modelItem => item.RoleId) 
-                                        </td>
-                                        <td>
-                                          
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Status)
-                                        </td>
-                                        <td>
-                                            <a class="providermenu-btn p-1" role="button" id="contact-option" data-bs-toggle="modal" data-bs-target="#myModal" value="@item.PhysicianId">Contact</a>
-                                            <a class="providermenu-btn p-1" role="button" href="@Url.Action("editPhysicianAccount", "Admin", new { physicianId = item.PhysicianId})">Edit</a>
-                                        </td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-
-
-
+            <div id="providermenu-table">
+            </div>
             <button id="saveChangesBtn" class="btn btn-primary col-md-3 ms-auto" style="display: none;">Save Changes</button>
-
-
-
-
-
-
                 </div>
             </div>
         </main>
@@ -95,7 +75,7 @@
         @if (Model != null)
         {
 
-            foreach (var item in Model)
+            foreach (var item in Model.physicians)
             {
                 <div class="card" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="BackgroundColormobile" value="@item.PhysicianId">
                     <div class="card-body d-flex flex-column justify-content-around">
@@ -194,11 +174,38 @@
 
 
 
-
-
-
-
 <script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+          
+            success: function (data) {
+
+                var regionDropdown = $('#region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').text("Select Regions"));
+                $.each(data, function (index, region) {
+                    regionDropdown.append($('<option></option>').attr('value', region.regionId).text(region.name));
+                });
+            }
+        });
+          
+
+
+
+    });
+</script>
+ <script>
+
+    $('#region').change(function () {
+       
+        fetchProviderMenuData();
+    });
+</script> 
+
+@* <script>
     $(document).ready(function () {
         
         $.ajax({
@@ -216,8 +223,8 @@
             }
         });
     });
-</script>
-<script>
+</script> *@
+@* <script>
     $(document).ready(function () {
         var changesMade = false;
 
@@ -265,7 +272,7 @@
 
 
 </script>
-
+ *@
 
 
 

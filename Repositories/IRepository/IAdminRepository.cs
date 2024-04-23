@@ -39,7 +39,7 @@ namespace Repository.IRepository
 
         public string getConfirmationNumber(string requestId);
         public viewNotes getNotes(int requestId, string email);
-        public List<Physician> GetPhysicians(int regionId);
+        public List<Physician> GetPhysicians(int? regionId);
         public void adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email);
 
         public void adminBlockNote(string requestId, string additionalNotesBlock, string email);
@@ -92,6 +92,7 @@ namespace Repository.IRepository
         public void adminUpdateProfileBilling(string email, Admin a);
         public void createPhysicianAccount(Physician p, IFormFile photo, string password, string role, List<int> region, string email, IFormFile? agreementDoc, IFormFile? backgroundDoc, IFormFile? hippaDoc, IFormFile? disclosureDoc, IFormFile? licenseDoc);
         public List<Physician> GetAllPhysicians();
+        //public List<Physician> getPhysiciansbyRegion(int? regionId);
         public List<Region> getPhysicianRegions(int physicianId);
         public Physician getPhysicianDetails(int physicianId);
         public void physicianUpdateStatus(string email, int physicianId, Physician p);
@@ -127,10 +128,10 @@ namespace Repository.IRepository
         public List<HealthProfessional> filterPartnersPage(int? healthprofessionId, string? vendor_name);
         public void adminDeletePartner(int VendorId, string email);
         public List<BlockRequest> GetAllBlockRequests();
-        public List<BlockRequest> filterBlockedHistory(string patientName, DateOnly date, string email, string phone);
+        public List<BlockRequest> filterBlockedHistory(string? patientName, DateOnly? date, string? email, string? phone);
         public void unblockPatient(int RequestId, string email);
         public List<User> patientHistory();
-        public List<User> filterPatientHistory(string patientFirstName, string patientLastName, string email, string phone);
+        public List<User> filterPatientHistory(string? patientFirstName, string? patientLastName, string? email, string? phone);
         public List<Request> explorePatientHistory(int UserId);
         public List<searchRecords> searchRecords(string email);
         public List<searchRecords> filterSearchRecords(string sessionemail, int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone);
@@ -140,10 +141,10 @@ namespace Repository.IRepository
         public List<EmailLog> emailLogs();
 
 
-        public List<EmailLog> emailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate);
+        public List<EmailLog> filterEmailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate);
         public List<Smslog> SMSLogs();
 
-        public List<Smslog> SMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate);
+        public List<Smslog> filterSMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate);
 
         public List<ShiftDetailsModel> getshiftDetail();
         public ShiftDetailsModel getViewShiftData(int id);
@@ -167,7 +168,7 @@ namespace Repository.IRepository
         public List<Physician> getPhysicianOnCallList(int reg);
 
         public List<userAccessModel> userAccess();
-        public List<userAccessModel> userAccessSearch(int region);
+        public List<userAccessModel> userAccessSearch(string? accounttype);
         public List<int> getPhysicianNotification();
         public void deleteRequest(int requestId);
 

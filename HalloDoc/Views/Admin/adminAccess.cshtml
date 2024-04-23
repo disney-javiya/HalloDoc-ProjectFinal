@@ -1,8 +1,35 @@
-﻿@model IEnumerable<HalloDoc.DataAccessLayer.DataModels.Role> 
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
+
 
 @{
     Layout = "_AdminHeader";
 }
+<script>
+
+   
+    $(document).ready(function () {
+        fetchAdminAccessData();
+    });
+</script>
+<script>
+    function fetchAdminAccessData() {
+
+
+     
+        $.ajax({
+            url: "/Admin/adminAccessTable",
+
+            data: { 'pagenumber': 1 },
+
+            success: function (data) {
+                $('#adminAccess-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
 
         <main>
 
@@ -18,61 +45,11 @@
                     </div>
 
 
+                    <div id="adminAccess-table">
+                
 
 
-                    <div class="data-table-admin-viewuploads">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                   
-                                    <th scope="col"> Name</th>
-                                    <th scope="col">Account Type</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(Model != null)
-                                {
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-
-
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AccountType)
-
-                                            </td>
-
-
-                                            <td>
-                                                <a class="providermenu-btn p-1" role="button" href="@Url.Action("editRole", "Admin", new { roleId = @item.RoleId})">Edit</a>
-                                                <a class="providermenu-btn p-1" role="button" id="delete-option" value="@item.RoleId" data-bs-toggle="modal" data-bs-target="#myModal">Delete</a>
-
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                
-
-                            </tbody>
-                        </table>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </main>
@@ -88,7 +65,7 @@
         @if (Model != null)
         {
 
-            foreach (var item in Model)
+            foreach (var item in Model.roles)
             {
                 <div class="card" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="BackgroundColormobile" value="@item.RoleId">
                     <div class="card-body d-flex flex-column justify-content-around">

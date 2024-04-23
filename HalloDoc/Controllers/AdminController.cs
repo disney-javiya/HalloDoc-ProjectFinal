@@ -30,6 +30,7 @@ using System.Web.Helpers;
 using System.Globalization;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace HalloDoc.Controllers
 {
@@ -83,7 +84,12 @@ namespace HalloDoc.Controllers
 
             if (rolename == "Admin")
             {
-                return View("adminDashboard");
+                string returnUrl = HttpContext.Request.Query["returnUrl"];
+                if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                else
+                    return View("adminDashboard");
+                //return View("adminDashboard");
             }
             if (rolename == "Physician")
             {
@@ -1073,11 +1079,47 @@ namespace HalloDoc.Controllers
         public IActionResult providerMenu()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<Physician> res = new List<Physician>();
-            res = _adminRepository.GetAllPhysicians();
+            //List<Physician> res = new List<Physician>();
+            //res = _adminRepository.GetAllPhysicians();
 
-            return View(res);
+            return View();
         }
+
+        [CustomeAuthorize("Admin")]
+
+
+        public IActionResult providerMenuTable(int? regionId,  int pagenumber = 1)
+        {
+            
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            dashboardTableModel model = new dashboardTableModel();
+            if (regionId != null )
+            {
+                model.physicians = _adminRepository.GetPhysicians(regionId);
+            }
+            else
+            {
+                model.physicians = _adminRepository.GetAllPhysicians();
+            }
+
+
+            var count = model.physicians.Count();
+            if (count > 0)
+            {
+                model.physicians = model.physicians.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_providerMenu", model);
+        }
+
+
+
         [CustomeAuthorize("Admin")]
         public IActionResult createPhysicianAccount()
         {
@@ -1289,14 +1331,40 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin")]
         public IActionResult adminAccess()
         {
+            
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<Role> res = new List<Role>();
-            res = _adminRepository.GetAllRoles();
-
-            return View(res);
+            return View();
         }
+
         [CustomeAuthorize("Admin")]
-        public IActionResult createRole()
+
+
+        public IActionResult adminAccessTable( int pagenumber = 1)
+        {
+
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            dashboardTableModel model = new dashboardTableModel();
+            model.roles = _adminRepository.GetAllRoles();
+           
+
+            var count = model.roles.Count();
+            if (count > 0)
+            {
+                model.roles = model.roles.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_adminAccess", model);
+        }
+
+
+        [CustomeAuthorize("Admin")]
+        public IActionResult createRole()  
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
 
@@ -1395,21 +1463,48 @@ namespace HalloDoc.Controllers
             return View(res);
         }
         [CustomeAuthorize("Admin")]
-        [HttpGet]
+      
         public IActionResult partnersPage()
         {
 
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<HealthProfessional> res = _adminRepository.GetHealthProfessionals();
-            return View(res);
+            return View();
         }
+
+
         [CustomeAuthorize("Admin")]
-        [HttpPost]
-        public IActionResult partnersPage(int healthprofessionId, string vendor_name)
+        public IActionResult partnersPageTable(int? healthprofessionId, string? vendor_name, int pagenumber = 1)
         {
-            List<HealthProfessional> res = _adminRepository.filterPartnersPage(healthprofessionId, vendor_name);
-            return View(res);
+
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            dashboardTableModel model = new dashboardTableModel();
+            if (healthprofessionId != null || vendor_name != null)
+            {
+                model.healthProfessionals = _adminRepository.filterPartnersPage(healthprofessionId, vendor_name);
+            }
+            else
+            {
+                model.healthProfessionals = _adminRepository.GetHealthProfessionals();
+            }
+
+
+            var count = model.healthProfessionals.Count();
+            if (count > 0)
+            {
+                model.healthProfessionals = model.healthProfessionals.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_partnersPage", model);
         }
+
+
+  
 
         [CustomeAuthorize("Admin")]
         public IActionResult addBusiness()
@@ -1449,13 +1544,45 @@ namespace HalloDoc.Controllers
             return RedirectToAction("partnersPage");
         }
         [CustomeAuthorize("Admin")]
-        [HttpGet]
+      
         public IActionResult blockedHistory()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<BlockRequest> res = _adminRepository.GetAllBlockRequests();
-            return View(res);
+           
+            return View();
         }
+
+        public IActionResult blockedHistoryTable(string? patientName, DateOnly? date, string? email, string? phone, int pagenumber = 1)
+        {
+            
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            dashboardTableModel model = new dashboardTableModel();
+            if (patientName != null || date != null || email != null || phone != null)
+            {
+                model.blockRequests = _adminRepository.filterBlockedHistory(patientName, date, email, phone);
+            }
+            else
+            {
+                model.blockRequests = _adminRepository.GetAllBlockRequests();
+            }
+
+
+            var count = model.blockRequests.Count();
+            if (count > 0)
+            {
+                model.blockRequests = model.blockRequests.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_blockedHistory", model);
+        }
+
+
         [CustomeAuthorize("Admin")]
         [HttpPost]
     
@@ -1472,15 +1599,7 @@ namespace HalloDoc.Controllers
             _adminRepository.unblockPatient(RequestId, ViewBag.Data);
             return RedirectToAction("blockedHistory");
         }
-        [CustomeAuthorize("Admin")]
-        [HttpGet]
- 
-        public IActionResult patientHistory()
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            List<User> res = _adminRepository.patientHistory();
-            return View(res);
-        }
+       
 
         public IActionResult clearBtnSearch(string id)
         {
@@ -1493,6 +1612,11 @@ namespace HalloDoc.Controllers
             {
                 return RedirectToAction("searchRecords");
                
+            }
+            else if (id == "clearBtnUserAccess")
+            {
+                return RedirectToAction("userAccess");
+
             }
             else if(id == "clearBtnSMSLogs")
             {
@@ -1512,14 +1636,43 @@ namespace HalloDoc.Controllers
 
         }
         [CustomeAuthorize("Admin")]
-        [HttpPost]
-
-        public IActionResult patientHistory(string patientFirstName, string patientLastName, string email, string phone)
+    
+        public IActionResult patientHistory()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<User> res = _adminRepository.filterPatientHistory(patientFirstName, patientLastName, email, phone);
-            return View(res);
+            return View();
         }
+
+        public IActionResult patientHistoryTable(string? patientFirstName, string? patientLastName, string? email, string? phone, int pagenumber = 1)
+        {
+
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            dashboardTableModel model = new dashboardTableModel();
+            if (patientFirstName != null || patientLastName != null || email != null || phone != null)
+            {
+                model.users = _adminRepository.filterPatientHistory(patientFirstName, patientLastName, email, phone);
+            }
+            else
+            {
+                model.users = _adminRepository.patientHistory();
+            }
+
+
+            var count = model.users.Count();
+            if (count > 0)
+            {
+                model.users = model.users.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_patientHistory", model);
+        }
+
         [CustomeAuthorize("Admin")]
         public IActionResult explorePatientHistory(int UserId)
         {
@@ -1527,20 +1680,35 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.explorePatientHistory(UserId);
             return View(res);
         }
-        [CustomeAuthorize("Admin")]
-        [HttpGet]
- 
-        public IActionResult searchRecords(int pagenumber=1)
+
+        public IActionResult searchRecords()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            return View();
+        }
+       
+
+      
+   
+        public IActionResult searchRecordsTable(int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone, int pagenumber=1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             dashboardTableModel model = new dashboardTableModel();
-            model.records = _adminRepository.searchRecords(ViewBag.Data);
+            if (requestStatus != 0 || patientName != null || requestType != 0 || fromDate != null || toDate !=null || providerName !=null || email!=null || phone !=null)
+            {
+                model.records = _adminRepository.filterSearchRecords(ViewBag.Data, requestStatus, patientName, requestType, fromDate, toDate, providerName, email, phone);
+            }
+            else
+            {
+                model.records = _adminRepository.searchRecords(ViewBag.Data);
+            }
            
+
             var count = model.records.Count();
             if (count > 0)
             {
                 model.records = model.records.Skip((pagenumber - 1) * 3).Take(3).ToList();
-              
+
                 model.TotalPages = (int)Math.Ceiling((double)count / 3);
                 model.CurrentPage = pagenumber;
                 model.PreviousPage = pagenumber > 1;
@@ -1548,55 +1716,97 @@ namespace HalloDoc.Controllers
             }
 
             //var res = _adminRepository.searchRecords(ViewBag.Data);
-            return View(model);
+            return PartialView("_searchRecords", model);
         }
-        [CustomeAuthorize("Admin")]
-        [HttpPost]
-        public IActionResult searchRecords(int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone)
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            List<searchRecords> res = _adminRepository.filterSearchRecords(ViewBag.Data, requestStatus, patientName, requestType, fromDate, toDate, providerName, email, phone);
-            return View(res);
-        }
+
+
+
+        
 
         public IActionResult deleteRequest(int requestId)
         {
+            ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.deleteRequest(requestId);
             return View("searchRecords");
         }
         [CustomeAuthorize("Admin")]
-        [HttpGet]
+       
    
         public IActionResult emailLogs()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            var res = _adminRepository.emailLogs();
-            return View(res);
+           
+            return View();
         }
-        [CustomeAuthorize("Admin")]
-        [HttpPost]
-       
-        public IActionResult emailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate)
+
+
+        public IActionResult emailLogsTable(int? role, string? recieverName, string? email,  DateOnly? createdDate, DateOnly? sentDate, int pagenumber = 1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            var res = _adminRepository.emailLogs(role, recieverName, email, createdDate, sentDate);
-            return View(res);
+            dashboardTableModel model = new dashboardTableModel();
+            if (role!=null || recieverName != null || email != null  || createdDate != null || sentDate != null)
+            {
+                model.emailLogs = _adminRepository.filterEmailLogs(role, recieverName, email, createdDate, sentDate);
+            }
+            else
+            {
+                model.emailLogs = _adminRepository.emailLogs();
+            }
+
+
+            var count = model.emailLogs.Count();
+            if (count > 0)
+            {
+                model.emailLogs = model.emailLogs.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+          
+            return PartialView("_emailLogs", model);
         }
+
+
+      
         [CustomeAuthorize("Admin")]
         public IActionResult SMSLogs()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            var res = _adminRepository.SMSLogs();
-            return View(res);
+            //var res = _adminRepository.SMSLogs();
+            return View();
         }
         [CustomeAuthorize("Admin")]
-        [HttpPost]
-  
-        public IActionResult SMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate)
+        public IActionResult SMSLogsTable(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate, int pagenumber=1)
         {
+           
             ViewBag.Data = HttpContext.Session.GetString("key");
-            var res = _adminRepository.SMSLogs(role, recieverName, mobile, createdDate, sentDate);
-            return View(res);
+            dashboardTableModel model = new dashboardTableModel();
+            if (role!= null || recieverName != null || mobile != null || createdDate != null || sentDate != null)
+            {
+                model.SMSLogs = _adminRepository.filterSMSLogs(role, recieverName, mobile, createdDate, sentDate);
+            }
+            else
+            {
+                model.SMSLogs = _adminRepository.SMSLogs();
+            }
+
+
+            var count = model.SMSLogs.Count();
+            if (count > 0)
+            {
+                model.SMSLogs = model.SMSLogs.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_SMSLogs", model);
         }
         [CustomeAuthorize("Admin")]
         public IActionResult ProviderSchedulingDayWise()
@@ -1703,20 +1913,44 @@ namespace HalloDoc.Controllers
             return View(s);
         }
         [CustomeAuthorize("Admin")]
-        [HttpGet]
         public IActionResult userAccess()
         {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            List<userAccessModel> a = _adminRepository.userAccess();
-            return View(a);
+            ViewBag.Data = HttpContext.Session.GetString("key");       
+            return View();
         }
-        [HttpPost]
-        public IActionResult userAccess(int region)
+
+
+        [CustomeAuthorize("Admin")]
+        public IActionResult userAccessTable(string? accounttype, int pagenumber = 1)
         {
+
             ViewBag.Data = HttpContext.Session.GetString("key");
-            List<userAccessModel> a = _adminRepository.userAccessSearch(region);
-            return View(a);
+            dashboardTableModel model = new dashboardTableModel();
+            if (accounttype != null && accounttype != "Select Account Type")
+            {
+                model.userAccess = _adminRepository.userAccessSearch(accounttype);
+            }
+            else
+            {
+                model.userAccess = _adminRepository.userAccess();
+            }
+
+
+            var count = model.userAccess.Count();
+            if (count > 0)
+            {
+                model.userAccess = model.userAccess.Skip((pagenumber - 1) * 3).Take(3).ToList();
+
+                model.TotalPages = (int)Math.Ceiling((double)count / 3);
+                model.CurrentPage = pagenumber;
+                model.PreviousPage = pagenumber > 1;
+                model.NextPage = pagenumber < model.TotalPages;
+            }
+
+
+            return PartialView("_userAccess", model);
         }
+
 
         [CustomeAuthorize("Admin")]
         public List<int> getPhysicianNotification()

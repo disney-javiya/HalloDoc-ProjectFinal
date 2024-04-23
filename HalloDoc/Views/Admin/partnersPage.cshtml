@@ -1,10 +1,39 @@
-﻿@model List<HalloDoc.DataAccessLayer.DataModels.HealthProfessional>
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
 
 
 @{
     Layout = "_AdminHeader";
 }
+<script>
+    var healthprofessionId;
+    var vendor_name;
+    $(document).ready(function () {
+        fetchPartnersPageData();
+    });
 
+
+
+</script>
+<script>
+    function fetchPartnersPageData() {
+
+
+        healthprofessionId = $('#profession').val();
+        vendor_name = $('#vendor_name').val();
+        $.ajax({
+            url: "/Admin/partnersPageTable",
+
+            data: { 'healthprofessionId': healthprofessionId, 'vendor_name': vendor_name, 'pagenumber': 1 },
+
+            success: function (data) {
+                $('#partnerspage-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
         <main>
 
             <div class="main-viewdocuments d-flex flex-column partnerspage">
@@ -28,77 +57,7 @@
                         <a role="button" style="height:fit-content;" asp-controller="Admin" asp-action="addBusiness" class="back-btn p-1 ms-auto mb-2">Add Business</a>
                     </div>
 
-
-
-
-            <div class="data-table-admin-viewuploads" id="tablepartner">
-                <table class="table" >
-                            <thead>
-                                <tr>
-
-                                    <th scope="col"> Profession</th>
-                                    <th scope="col">Business Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Fax Number</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Business Contact</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null)
-                                {
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-
-
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Profession)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.VendorName)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Email)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.FaxNumber)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.BusinessContact)
-
-                                            </td>
-                                            <td>
-                                                <a class="providermenu-btn p-1" role="button" href="@Url.Action("editBusiness", "Admin", new { VendorId = @item.VendorId})">Edit</a>
-                                                <a class="providermenu-btn p-1" role="button" id="delete-option" value="@item.VendorId" data-bs-toggle="modal" data-bs-target="#myModal">Delete</a>
-
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-
-
-
-
-
-
-
+                <div id="partnerspage-table"></div>
 
 
 
@@ -117,7 +76,7 @@
         @if (Model != null)
         {
 
-            foreach (var item in Model)
+            foreach (var item in Model.healthProfessionals)
             {
                 <div class="card" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="BackgroundColormobile" value="@item.VendorId">
                     <div class="card-body d-flex flex-column justify-content-around">
@@ -213,6 +172,19 @@
         });
 
    
+</script>
+<script>
+
+    $('#profession').change(function () {
+
+        fetchPartnersPageData();
+
+    });
+    $('#vendor_name').change(function () {
+
+        fetchPartnersPageData();
+
+    });
 </script>
 
 

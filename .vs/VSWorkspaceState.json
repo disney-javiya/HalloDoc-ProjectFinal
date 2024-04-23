@@ -2,10 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\HalloDoc",
+    "\\HalloDoc\\Controllers",
     "\\HalloDoc\\Views",
     "\\HalloDoc\\Views\\Admin",
-    "\\HalloDoc\\Views\\Provider"
+    "\\HalloDoc\\Views\\Provider",
+    "\\Repositories",
+    "\\Repositories\\IRepository"
   ],
-  "SelectedNode": "\\HalloDoc.sln",
+  "SelectedNode": "\\Repositories\\IRepository\\IAdminRepository.cs",
   "PreviewInSolutionExplorer": false
 }

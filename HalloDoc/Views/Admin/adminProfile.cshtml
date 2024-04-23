@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 gy-3">
-                        <select asp-for="Status" class="form-select m-0 p-2 ainfo" aria-label="Default select example" disabled>
+                        <select asp-for="Status" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
                             <option selected>Status</option>
          
                             <option value="2">Active</option>
@@ -41,16 +41,22 @@
 
                     <div class="col-md-6 gy-3" style=" color: lightgray;">
 
-                        <select asp-for="RoleId" id="role" class="form-select m-2 p-2 ainfo" aria-label="Default select example" disabled>
-                           
+                        <select asp-for="RoleId" id="role" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
+                    <option selected>Role</option>
 
 
                         </select>
                     </div>
 
+            <div class="col d-flex justify-content-start m-2">
+                <a role="button" class="btn submit-btn-create-patient me-2" id="edit3">Edit</a>
+
+
+            </div>
+
                     <div class="col d-flex justify-content-end m-2">
 
-                    <a role="button" class="btn submit-btn-create-patient me-2 p-2" id="edit3">Edit</a>
+                  
                     <a class="btn back-btn m-2 w-25 ms-auto" role="button" id="reset">Reset Password</a>
                     <button type="submit" role="button" class="btn save-btn-patient-profile  me-2 p-2" id="submit3" style="display: none;">Save</button>
                     <a role="button" class="btn cancel-btn-patient-profile  me-2 p-2" id="cancel3" style="display: none;">Cancel</a>
@@ -224,7 +230,7 @@
 
                     var roleDropdown = $('#role');
                     roleDropdown.empty();
-                    roleDropdown.append($('<option></option>').text(""));
+                    roleDropdown.append($('<option></option>').text("Role"));
                     $.each(data, function (index, RoleId) {
 
                         roleDropdown.append($('<option></option>').attr('value', RoleId.roleId).text(RoleId.name));
@@ -301,6 +307,10 @@
             e1.forEach(field => {
                 field.setAttribute("disabled", true);
             });
+        for (let i = 0; i < checks.length; i++) {
+            checks[i].setAttribute("disabled", true);
+
+        }
             editBtn1.style.display = "inline-block";
             saveBtn1.style.display = "none";
             cancelBtn1.style.display = "none";

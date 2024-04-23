@@ -222,7 +222,7 @@ namespace Repository
             return number;
         }
 
-        public List<Physician> GetPhysicians(int regionId)
+        public List<Physician> GetPhysicians(int? regionId)
         {
             return _context.Physicians.Where(x => x.RegionId == regionId).ToList();
         }
@@ -1201,6 +1201,11 @@ namespace Repository
         {
             return _context.Physicians.Where(x=>x.IsDeleted == new BitArray(new bool[] {false})).ToList();
         }
+        //public List<Physician> getPhysiciansbyRegion(int? regionId)
+        //{
+        //    return _context.Physicians.Where(x => x.IsDeleted == new BitArray(new bool[] { false }) && x.RegionId == regionId).ToList();
+        //}
+
         public Physician getPhysicianDetails(int physicianId)
         {
            
@@ -2229,7 +2234,7 @@ namespace Repository
             _context.SaveChanges();
         }
 
-        public List<User> filterPatientHistory(string patientFirstName, string patientLastName, string email, string phone)
+        public List<User> filterPatientHistory(string? patientFirstName, string? patientLastName, string? email, string? phone)
         {
             List<User> res = patientHistory();
             if(patientLastName != null)
@@ -2265,7 +2270,7 @@ namespace Repository
             return res;
         }
 
-        public List<BlockRequest> filterBlockedHistory(string patientName, DateOnly date, string email, string phone)
+        public List<BlockRequest> filterBlockedHistory(string? patientName, DateOnly? date, string? email, string? phone)
         {
             List<BlockRequest> res = GetAllBlockRequests();
             if (patientName != null)
@@ -2339,7 +2344,7 @@ namespace Repository
         {
             return _context.EmailLogs.ToList();
         }
-        public List<EmailLog> emailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate)
+        public List<EmailLog> filterEmailLogs(int? role, string? recieverName, string? email, DateOnly? createdDate, DateOnly? sentDate)
         {
             if(recieverName != null)
             {
@@ -2377,7 +2382,7 @@ namespace Repository
             return _context.Smslogs.ToList();
         }
 
-        public List<Smslog> SMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate)
+        public List<Smslog> filterSMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate)
         {
             if (recieverName != null)
             {
@@ -2539,39 +2544,15 @@ namespace Repository
             return u.ToList();
         }
 
-        public List<userAccessModel> userAccessSearch(int region)        {
-            if(region == 0)
+        public List<userAccessModel> userAccessSearch(string? accounttype)        {
+            
+            List<userAccessModel> query = userAccess();
+          
+            if(accounttype != null)
             {
-                return userAccess();
+                query = query.Where(x => x.AccountType.ToLower() == accounttype.ToLower()).ToList();
             }
-            var query = from admin in _context.Admins
-                        join asp in _context.AspNetUsers on admin.AspNetUserId equals asp.Id where admin.RegionId == region
-                        select new userAccessModel
-                        {
-                            Id = admin.AdminId,
-                            AccountType = "Admin",
-                            AccountPOC = asp.UserName,
-                            Phone = asp.PhoneNumber,
-                            Status = admin.Status,
-                            RegionId = admin.RegionId
-                        };
-            var query2 = from phy in _context.Physicians
-                         join asp in _context.AspNetUsers on phy.AspNetUserId equals asp.Id
-                         where phy.RegionId == region
-                         select new userAccessModel
-                         {
-                             AdminId = phy.PhysicianId,
-                             AccountType = "Physician",
-                             AccountPOC = asp.UserName,
-                             Phone = asp.PhoneNumber,
-                             Status = phy.Status,
-                             RegionId = phy.RegionId
-                         };
-
-            List<userAccessModel> u = query.ToList();
-            u.AddRange(query2.ToList());
-
-            return u.ToList();
+            return query;
         }
         public List<int> getPhysicianNotification()
         {

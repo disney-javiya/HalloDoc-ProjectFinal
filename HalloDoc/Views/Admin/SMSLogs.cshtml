@@ -1,10 +1,45 @@
-﻿@model List<HalloDoc.DataAccessLayer.DataModels.Smslog>
-
-
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
 @{
     Layout = "_AdminHeader";
 }
+<script>
+    var role;
+    var recieverName;
+    var email;
+    var createdDate;
+    var sentDate;
 
+
+    $(document).ready(function () {
+        fetchSMSLogData();
+    });
+
+
+
+</script>
+<script>
+    function fetchSMSLogData() {
+        role = $('#role').val();
+        recieverName = $('#recieverName').val();
+        mobile = $('#mobile').val();
+        createdDate = $('#createdDate').val();
+        sentDate = $('#sentDate').val();
+
+
+        $.ajax({
+            url: "/Admin/SMSLogsTable",
+
+            data: { 'role': role, 'recieverName': recieverName, 'mobile': mobile, 'createdDate': createdDate, 'sentDate': sentDate, 'pagenumber': 1 },
+
+            success: function (data) {
+                $('#smslogs-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
         <main>
             
             <div class="main-viewdocuments d-flex flex-column">
@@ -13,11 +48,11 @@
                         <h3>SMS Logs (Twilio)</h3>
                         <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="adminDashboard"> < Back</a>
                     </div>
-                    <form action="/Admin/SMSLogs" method="POST">
+                   @*  <form action="/Admin/SMSLogs" method="POST"> *@
                         <div class="row d-flex justify-content-between">
                             <div class="col-md-3 gy-3">
                                 <div class=" mb-3">
-                                    <select name="role" id="requestType" class="form-select ">
+                                    <select name="role" id="role" class="form-select ">
                                         <option selected>Search by role</option>
                                         <option value="1">All</option>
 
@@ -27,7 +62,7 @@
                             </div>
                             <div class="col-md-3 gy-3">
                                 <div class="form-floating mb-3">
-                                    <input name="recieverName" type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                                    <input name="recieverName" type="text" class="form-control first-name-create-patient shadow-none" id="recieverName" placeholder="">
                                     <label class="first-name-create-patient-text" for="floatingInput">Reciever Name</label>
 
                                 </div>
@@ -40,14 +75,14 @@
                             </div>
                             <div class="col-md-3 gy-3">
                                 <div class="form-floating mb-3">
-                                    <input name="createdDate" type="date" class="form-control dob-create-patient shadow-none" id="toDate" placeholder="">
+                                    <input name="createdDate" type="date" class="form-control dob-create-patient shadow-none" id="createdDate" placeholder="">
                                     <label class="dob-create-patient-text" for="floatingInput">Created Date</label>
 
                                 </div>
                             </div>
                             <div class="col-md-3 gy-3">
                                 <div class="form-floating mb-3">
-                                    <input name="sentDate" type="date" class="form-control dob-create-patient shadow-none" id="toDate" placeholder="">
+                                    <input name="sentDate" type="date" class="form-control dob-create-patient shadow-none" id="sentDate" placeholder="">
                                     <label class="dob-create-patient-text" for="floatingInput">Sent Date</label>
 
                                 </div>
@@ -56,77 +91,14 @@
                         </div>
                         <div class="d-flex justify-content-end m-2">
                     <a role="button" href="@Url.Action("clearBtnSearch", "Admin", new { id = "clearBtnSMSLogs"})" class="btn back-btn me-2">Clear</a>
-                            <button role="button" type="submit" class="btn submit-btn-create-patient">Search</button>
+                <button role="button" type="submit" onclick="fetchSMSLogData()" class="btn submit-btn-create-patient">Search</button>
                         </div>
 
-                    </form>
+                    @* </form> *@
 
-                    <div class="data-table-admin-viewuploads">
-                        <table class="table">
-                            <thead>
-                                <tr>
+            <div id="smslogs-table">
+            </div>
 
-                                    <th scope="col">Recipient</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">Role Name</th>
-                                    <th scope="col">Mobile Number</th>
-                                    <th scope="col">Created Date</th>
-                                    <th scope="col">Sent Date</th>
-                                    <th scope="col">Sent</th>
-                                   
-                                    <th scope="col">Confirmation Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null)
-                                {
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-
-
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RequestId)
-
-                                            </td>
-                                            <td>
-                                              -
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RoleId)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.MobileNumber)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreateDate)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.SentDate)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsSmssent)
-
-                                            </td>
-                                           
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ConfirmationNumber)
-
-                                            </td>
-
-                                        </tr>
-                                    }
-                                }
-
-
-                            </tbody>
-                        </table>
-                    </div>
 
 
                 </div>

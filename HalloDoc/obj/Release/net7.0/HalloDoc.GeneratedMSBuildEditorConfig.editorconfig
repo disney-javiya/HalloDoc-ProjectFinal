@@ -332,8 +332,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9hY3RpdmVTdGF0ZVByb3ZpZGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_adminAccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9hZG1pbkFjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_AdminHeader.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkhlYWRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_blockedHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9ibG9ja2VkSGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_concludeState.cshtml]
@@ -344,12 +352,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9jb25jbHVkZVN0YXRlUHJvdmlkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_emailLogs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9lbWFpbExvZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_newState.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9uZXdTdGF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_newStateProvider.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9uZXdTdGF0ZVByb3ZpZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_partnersPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wYXJ0bmVyc1BhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_patientHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wYXRpZW50SGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_pendingState.cshtml]
@@ -364,12 +384,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qcm92aWRlckhlYWRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_providerMenu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9wcm92aWRlck1lbnUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_searchRecords.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9zZWFyY2hSZWNvcmRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_SMSLogs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TTVNMb2dzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_tocloseState.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF90b2Nsb3NlU3RhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_unpaidState.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF91bnBhaWRTdGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_userAccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF91c2VyQWNjZXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Shared/_ValidationScriptsPartial.cshtml]

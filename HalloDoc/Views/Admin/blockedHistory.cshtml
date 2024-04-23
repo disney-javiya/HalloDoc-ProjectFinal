@@ -1,10 +1,42 @@
-﻿@model List<HalloDoc.DataAccessLayer.DataModels.BlockRequest>
-
-
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
 @{
     Layout = "_AdminHeader";
 }
+<script>
+    var patientName;
+    var date;
+    var email;
+    var phone;
+    
 
+
+    $(document).ready(function () {
+        fetchBlockedHistoryData();
+    });
+
+
+
+</script>
+<script>
+    function fetchBlockedHistoryData() {
+        patientName = $('#patientName').val();
+        date = $('#date').val();
+        email = $('#email').val();
+        phone = $('#phone').val();
+        $.ajax({
+            url: "/Admin/blockedHistoryTable",
+
+            data: { 'patientName': patientName, 'date': date, 'email': email, 'phone': phone, 'pagenumber': 1 },
+
+            success: function (data) {
+                $('#blockedhistory-table').html(data);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
         <main>
 
             <div class="main-viewdocuments d-flex flex-column">
@@ -13,18 +45,18 @@
                         <h3>Block History</h3>
 
                     </div>
-                    <form action="/Admin/blockedHistory" method="POST">
+                  
                         <div class="row d-flex justify-content-between">
                         <div class="col-md-3 gy-3">
                             <div class="form-floating mb-3">
-                                <input name="patientName"  type="text" class="form-control first-name-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <input name="patientName" type="text" class="form-control first-name-create-patient shadow-none" id="patientName" placeholder="">
                                 <label class="first-name-create-patient-text" for="floatingInput">Name</label>
                                 
                             </div>
                         </div>
                         <div class="col-md-3 gy-3">
                             <div class="form-floating mb-3">
-                                <input name="date" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <input name="date" type="date" class="form-control dob-create-patient shadow-none" id="date" placeholder="">
                                 <label class="dob-create-patient-text" for="floatingInput">Date</label>
                                 
                             </div>
@@ -45,82 +77,12 @@
                     </div>
                     <div class="d-flex justify-content-end m-2">
                     <a role="button" href="@Url.Action("clearBtnSearch", "Admin", new { id = "clearBtnBlockedHistory"})" class="btn back-btn me-2">Clear</a>
-                        <button role="button" type="submit" class="btn submit-btn-create-patient">Search</button>
-                    </div>
-
-                    </form>
-
-                    <div class="data-table-admin-viewuploads">
-                        <table class="table">
-                            <thead>
-                                <tr>
-
-                                    <th scope="col"> Patient Name</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Created Date</th>
-                                    <th scope="col">Notes</th>
-                                    <th scope="col">Is Active</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null)
-                                {
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-
-
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RequestId)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Email)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CreatedDate)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Reason)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.IsActive)
-
-                                            </td>
-                                            <td>
-                                                <a class="providermenu-btn p-1" role="button" href="@Url.Action("unblockPatient", "Admin", new { RequestId = @item.RequestId})">Unblock</a>
-                                              
-
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-
-
-                            </tbody>
-                        </table>
+                        <button role="button" type="submit" onclick="fetchBlockedHistoryData()" class="btn submit-btn-create-patient">Search</button>
                     </div>
 
 
-
-
-
-
-
-
-
-
-
-
+            <div id="blockedhistory-table">
+            </div>
                 </div>
             </div>
         </main>
