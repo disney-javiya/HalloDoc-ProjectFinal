@@ -175,5 +175,7 @@ namespace Repository.IRepository
         //public void updatePhysicianNotification(List<int> phy_ids);
         public encounterModel adminEncounterForm(int requestId);
         public void adminEncounterFormPost(int requestId, encounterModel em);
+        public encounterModel getEncounterDetails(int requestId);
+        public byte[] GeneratePDF(encounterModel encounter);
     }
 }

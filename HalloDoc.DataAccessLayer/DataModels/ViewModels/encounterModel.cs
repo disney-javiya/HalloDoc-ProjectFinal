@@ -24,10 +24,11 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public string? phone { get; set; }
 
         public string? Email { get; set; }
-       
+        public string? Address { get; set; }
+
         public BitArray? IsFinalized { get; set; }
 
-      
+        public int? year { get; set; }
         public string? HistoryIllness { get; set; }
 
        

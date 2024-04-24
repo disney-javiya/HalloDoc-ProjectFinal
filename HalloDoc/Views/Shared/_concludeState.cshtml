@@ -139,9 +139,18 @@
                         <a class="admin-mob-button p-2 m-1" id="uploads-admin-mob-button" role="button" href="@Url.Action("adminViewUploads", "Admin", new { requestId = @item.requestId})">
                             View Uploads
                         </a>
-                        <a class="admin-mob-button p-2 m-1" id="encounter-admin-mob-button" role="button">
-                            Encounter
-                        </a>
+                        @if (item.Status == 5 || item.Status == 4)
+                        {
+                            @if (item.CompletedByPhysician != null && item.CompletedByPhysician[0])
+                            {
+                                <a class="admin-mob-button encounter-admin-mob-button p-2 m-1" id="encounter-download1" role="button" data-bs-toggle="modal" data-bs-target="#myModalEncounterDownload" value="@item.requestId">Encounter Form</a>
+                            }
+                            else
+                            {
+                                <a class="admin-mob-button p-2 m-1" href="@Url.Action("encounterForm", "Admin", new { requestId = @item.requestId})">Encounter Form</a>
+                            }
+
+                        }
                     </div>
                    
                     <div class=" d-flex flex-row ">
@@ -212,7 +221,7 @@
                 <div class="modal-body" style="color:grey;">
                     <p class="m-3">Encounter Form is finalised successfuly!</p>
 
-                    <input type="hidden" id="requestidinput2" name="requestid" />
+                    <input type="hidden" id="requestidinput2" name="requestId" />
 
                     <button class="btn submit-btn-assigncase">Download</button>
 
@@ -229,7 +238,26 @@
 </div>
 
 
+<script>
+    var requestId = null;
 
+
+    $(document).on('click', '#encounter-download', function () {
+
+        requestId = $(this).attr("value");
+    });
+    $(document).on('click', '#encounter-download1', function () {
+
+        requestId = $(this).attr("value");
+    });
+
+    $('#encounterDownloadForm').submit(function (event) {
+
+        $('#requestidinput2').val(requestId);
+
+
+    });
+</script>
 <script>
     function changePage(page) {
 

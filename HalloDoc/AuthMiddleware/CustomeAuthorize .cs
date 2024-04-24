@@ -42,7 +42,25 @@ namespace HalloDoc.AuthMiddleware
                 //    Controller = "Home",
                 //    Action = "Index",
                 //}));
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index", returnUrl = returnURL }));
+                if (_role == "Admin" || _role == "Physician")
+                {
+                    context.Result = new RedirectToRouteResult(new Microsoft.AspNetCore.Routing.RouteValueDictionary(new
+                    {
+                        Controller = "Admin",
+                        Action = "Index",
+                        returnUrl = returnURL
+                    }));
+                }
+                else
+                {
+                    context.Result = new RedirectToRouteResult(new Microsoft.AspNetCore.Routing.RouteValueDictionary(new
+                    {
+                        Controller = "Home",
+                        Action = "Index",
+                        returnUrl = returnURL
+                    }));
+                }
+                //context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index", returnUrl = returnURL }));
                 return; 
             }
 

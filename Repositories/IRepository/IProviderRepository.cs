@@ -53,6 +53,8 @@ namespace Repository.IRepository
         public void providerEncounterCase(int requestId, string calltype, string email);
         public encounterModel providerEncounterForm(int requestId);
         public void providerEncounterFormPost(int requestId, encounterModel em);
+        public encounterModel getEncounterDetails(int requestId);
+        public byte[] GeneratePDF(encounterModel encounter);
         public void transferToConcludeState(int requestId);
 
         public void providerIsFinal(int requestId);

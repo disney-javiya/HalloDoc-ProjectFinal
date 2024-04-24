@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Repository;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Diagnostics.Metrics;
 
 namespace HalloDoc.Controllers
 {
@@ -500,6 +501,19 @@ namespace HalloDoc.Controllers
             _providerRepository.providerEncounterCase(requestId, calltype, ViewBag.Data);
             return View("providerDashboard");
         }
+
+        public IActionResult downloadEncounterForm(int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            encounterModel en = _providerRepository.getEncounterDetails(requestId);
+         
+            
+           
+            byte[] pdfdata = _providerRepository.GeneratePDF(en);
+            return File(pdfdata, "application/pdf", "MedicalReport.pdf");
+        }
+
+
         [CustomeAuthorize("Physician")]
         public IActionResult providerProfile()
         {

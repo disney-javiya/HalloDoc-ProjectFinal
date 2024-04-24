@@ -1,0 +1,14 @@
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.deps.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.runtimeconfig.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.csproj.AssemblyReference.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.AssemblyInfoInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.AssemblyInfo.cs
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.csproj.CoreCompileInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\refint\AssignmentDataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\AssignmentDataAccessLayer.genruntimeconfig.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentDataAccessLayer\obj\Debug\net7.0\ref\AssignmentDataAccessLayer.dll

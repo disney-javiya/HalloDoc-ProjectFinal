@@ -83,12 +83,19 @@ namespace HalloDoc.Controllers
 
             var jwttoken = _authenticate.GenerateJwtToken(loginuser, rolename);
             Response.Cookies.Append("jwt", jwttoken);
-           
+
             HttpContext.Session.SetString("key", user.Email);
 
 
-           
-            return RedirectToAction("patientDashboard");
+            string returnUrl = HttpContext.Request.Query["returnUrl"];
+            if (!System.String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("patientDashboard");
+
+
+
+
         }
 
 

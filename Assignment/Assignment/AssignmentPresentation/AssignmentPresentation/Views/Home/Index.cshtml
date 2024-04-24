@@ -1,0 +1,300 @@
+﻿@model AssignmentDataAccessLayer.DataModels.ViewModel.MainModel
+
+@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex flex-column  full-content" id="detail-table">
+        <header>
+            <partial name="_Header"/>
+        </header>
+        <main>
+            <div class="main-dashboad d-flex flex-column m-3">
+
+                <div class="col-md-12 form-floating">
+                    <input type="text" class="form-control search shadow-none" id="floatingInput" placeholder="Search">
+                    <label class="" for="floatingInput"><i class="fa-solid fa-magnifying-glass me-1"></i> Search Project Name</label>
+                </div>
+                <a role="button" id="clear-btn" asp-controller="Home" asp-action="Index" class="btn p-2  m-2 justify-content-end" style="background:#9C775F; width:10%; color:white; border-radius:3px;">Clear</a>
+                <div id="">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ProjectID</th>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">Assignee</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Due Date</th>
+                                <th scope="col">Domain</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.projects)
+                            {
+                                <tr>
+                                    <td>
+                                       
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProjectName)
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Assignee)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DueDate)
+                                    </td>
+                                    <td>
+                                       
+                                        @Html.DisplayFor(modelItem => item.Domain)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td>
+                                        <a role="button" data-bs-toggle="modal" data-bs-target="#myModal" id="edit-btn" class="btn p-2" style="background:#9C775F; color:white; border-radius:3px;" value="@item.Id">Edit</a>
+                                        <a role="button" data-bs-toggle="modal" data-bs-target="#myModalDelete" id="delete-btn" class="btn p-2" style="background:#51524F; color:white; border-radius:3px;" value="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                
+            </div>
+           
+
+
+
+        </main>
+
+    </div>
+
+
+
+
+
+    <!--For Edit-->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editProjectForm" asp-controller="Home" asp-action="EditDetailsPost" method="POST">
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="background:#9C775F; color:white;">
+                        <h4 class="modal-title">Task Form</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                  
+                    <!-- Modal body -->
+                    <div class="modal-body" style="color:grey;">
+                        <input type="hidden" id="editinput" name="projectId"/>
+                        <div class="row d-flex m-1">
+                            <div class="col-6">
+                                <input type="text" name="ProjectName" id="ProjectName" class="form-control validation shadow-none p-3" placeholder="Task Name">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="Assignee" id="Assignee" class="form-control validation shadow-none p-3" placeholder="Assignee">
+                            </div>
+                        </div>
+                        <div class="row d-flex m-1">
+                            <div class="col-6">
+                                <input type="text" name="Description" id="Description" class="form-control validation shadow-none p-3" placeholder="Description">
+                            </div>
+                            <div class="col-6">
+                                <input type="date" name="DueDate" id="DueDate" class="form-control validation shadow-none p-3" placeholder="Due Date">
+                            </div>
+                        </div>
+                        <div class="row d-flex m-1">
+                            <div class="col-6">
+                                <select class="form-select  p-3" name="City" id="City" aria-label="Default select example">
+                                    <option selected>City</option>
+
+                                    <option value="Ahmedabad">Ahmedabad</option>
+                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                </select>
+                                <span id="city-validation"></span>
+                            </div>
+                            <div class="col-6">
+                                <select name="DomainName" id="DomainName" class="form-select p-3" aria-label="Default select example">
+     
+                                </select>
+                            </div>
+
+                            
+                        </div>
+                        <span id="validation"></span>
+                        
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" id="edit-submit" class="w-50 btn btn-primary">Save</button>
+                        <button type="button" class="btn" style="width:45%" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--For Delete-->
+    <div class="modal" id="myModalDelete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteProjectForm" asp-controller="Home" asp-action="DeletePost" method="POST">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="background:#9C775F; color:white;">
+                        <h4 class="modal-title">Delete Confirmation</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="color:grey;">
+
+
+                        <input type="hidden" id="deleteinput" name="projectId"/>
+                        <h5> Are you sure you want to delete this?</h5>
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="w-50 btn btn-primary">Confirm</button>
+                        <button type="button" class="btn" style="width:45%" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '/Home/GetAllDomains',
+                type: 'GET',
+
+                success: function (data) {
+
+                    var domainDropdown = $('#DomainName');
+                    domainDropdown.empty();
+                   
+                    $.each(data, function (index, domain) {
+                       
+                        domainDropdown.append($('<option></option>').attr('value', domain.name).text(domain.name));
+                    });
+                }
+            });
+
+
+
+
+        });
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            var projectId;
+            $(document).on('click', '#edit-btn', function () {
+
+                projectId = $(this).attr("value");
+                $.ajax({
+                    url: '/Home/getProjectDetail',
+                    type: 'GET',
+                    data: { projectId: projectId },
+                    success: function (data) {
+                       
+                        $("#ProjectName").val(data.projectName);
+                        $("#Assignee").val(data.assignee);
+                        $("#Description").val(data.description);
+                        $("#DueDate").val(data.dueDate);
+                        $("#City").val(data.city);
+                        // $("#DomainName").val(data.domainName);
+                        $("#DomainName").val(data.domain);
+
+
+                    }
+                });
+
+            });
+            $('#editProjectForm').submit(function (event) {
+
+                $('#editinput').val(projectId);
+
+
+            });
+
+
+            $(document).on('click', '#delete-btn', function () {
+
+                projectId = $(this).attr("value");
+
+            });
+            $('#deleteProjectForm').submit(function (event) {
+
+                $('#deleteinput').val(projectId);
+
+
+            });
+        });
+        $('.search').change(function () {
+           var projectName = $('.search').val();
+
+            $.ajax({
+                url: '/Home/Index',
+                type: 'GET',
+                data: { projectName: projectName },
+                success: function (data) {
+
+                    $('#detail-table').html(data);
+
+
+                }
+            });
+         });
+    </script>
+
+</body>
+</html>

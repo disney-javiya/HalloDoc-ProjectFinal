@@ -1,6 +1,7 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Assignment",
     "\\HalloDoc",
     "\\HalloDoc\\Controllers",
     "\\HalloDoc\\Views",
@@ -9,6 +10,5 @@
     "\\Repositories",
     "\\Repositories\\IRepository"
   ],
-  "SelectedNode": "\\Repositories\\IRepository\\IAdminRepository.cs",
   "PreviewInSolutionExplorer": false
 }

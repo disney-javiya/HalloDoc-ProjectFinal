@@ -1,0 +1,93 @@
+﻿<div class="row d-flex flex-column m-3 justify-content-center" >
+    <div class="gy-3 p-1" style="background: #9C775F">
+        <h3 style="text-align:center; color:white;">Project Management System</h3>
+    </div>
+    <div class="p-2" style="background: #51524F">
+        <a role="button" data-bs-toggle="modal" id="add-btn" data-bs-target="#myModalAdd" class="p-1" style="text-decoration:none; color: black; background:white; border-radius:3px; ">ADD PROJECT</a>
+   </div>
+</div>
+
+<!--For Add Project-->
+<div class="modal" id="myModalAdd">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addProjectForm" asp-controller="Home" asp-action="AddProjectPost" method="POST">
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#9C775F; color:white;">
+                    <h4 class="modal-title">Task Form</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="color:grey;">
+                    <input type="hidden" id="addinput" name="projectId" />
+                    <div class="row d-flex m-1">
+                        <div class="col-6">
+                            <input type="text" name="projectname" id="projectname" class="form-control shadow-none p-3" placeholder="Task Name">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="assignee" id="assignee" class="form-control shadow-none p-3" placeholder="Assignee">
+                        </div>
+                    </div>
+                    <div class="row d-flex m-1">
+                        <div class="col-6">
+                            <input type="text" name="description" id="description" class="form-control shadow-none p-3" placeholder="Description">
+                        </div>
+                        <div class="col-6">
+                            <input type="date" name="dueDate" id="dueDate" class="form-control shadow-none p-3" placeholder="Due Date">
+                        </div>
+                    </div>
+                    <div class="row d-flex m-1">
+                        <div class="col-6">
+                            <select class="form-select p-3" name="city" id="city" aria-label="Default select example">
+                                <option selected>City</option>
+
+                                <option value="Ahmedabad">Ahmedabad</option>
+                                <option value="Bangalore">Bangalore</option>
+                                <option value="Mumbai">Mumbai</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <select name="DomainName" id="DomainNameAdd" class="form-select p-3" aria-label="Default select example">
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="w-50 btn btn-primary">Save</button>
+                    <button type="button" class="btn" style="width:45%" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Home/GetAllDomains',
+            type: 'GET',
+
+            success: function (data) {
+
+                var domainDropdown = $('#DomainNameAdd');
+                domainDropdown.empty();
+
+                $.each(data, function (index, domain) {
+
+                    domainDropdown.append($('<option></option>').attr('value', domain.name).text(domain.name));
+                });
+            }
+        });
+
+
+
+
+    });
+</script>

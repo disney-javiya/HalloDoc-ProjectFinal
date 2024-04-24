@@ -81,10 +81,10 @@ namespace HalloDoc.Controllers
             
             HttpContext.Session.SetString("key", user.Email);
             ViewBag.Data = HttpContext.Session.GetString("key");
-
+            string returnUrl = HttpContext.Request.Query["returnUrl"];
             if (rolename == "Admin")
             {
-                string returnUrl = HttpContext.Request.Query["returnUrl"];
+                
                 if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
                 else
@@ -93,8 +93,13 @@ namespace HalloDoc.Controllers
             }
             if (rolename == "Physician")
             {
+                //string returnUrl = HttpContext.Request.Query["returnUrl"];
+                if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                else
+                    return RedirectToAction("providerDashboard", "Provider");
 
-                return RedirectToAction("providerDashboard", "Provider");
+                //return RedirectToAction("providerDashboard", "Provider");
             }
 
             return View();
@@ -1066,6 +1071,19 @@ namespace HalloDoc.Controllers
             _adminRepository.adminEncounterFormPost(requestId, em);
             return RedirectToAction("encounterForm", new { requestId = requestId });
         }
+
+
+        public IActionResult downloadEncounterForm(int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            encounterModel en = _adminRepository.getEncounterDetails(requestId);
+
+
+
+            byte[] pdfdata = _adminRepository.GeneratePDF(en);
+            return File(pdfdata, "application/pdf", "MedicalReport.pdf");
+        }
+
         [HttpGet]
         public List<Region> getAdminRegions()
         {
@@ -1642,7 +1660,7 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult patientHistoryTable(string? patientFirstName, string? patientLastName, string? email, string? phone, int pagenumber = 1)
         {
 
@@ -1680,16 +1698,16 @@ namespace HalloDoc.Controllers
             var res = _adminRepository.explorePatientHistory(UserId);
             return View(res);
         }
-
+        [CustomeAuthorize("Admin")]
         public IActionResult searchRecords()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-       
 
-      
-   
+
+
+        [CustomeAuthorize("Admin")]
         public IActionResult searchRecordsTable(int? requestStatus, string? patientName, int? requestType, DateOnly? fromDate, DateOnly? toDate, string? providerName, string? email, string? phone, int pagenumber=1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1738,7 +1756,7 @@ namespace HalloDoc.Controllers
            
             return View();
         }
-
+        [CustomeAuthorize("Admin")]
 
         public IActionResult emailLogsTable(int? role, string? recieverName, string? email,  DateOnly? createdDate, DateOnly? sentDate, int pagenumber = 1)
         {

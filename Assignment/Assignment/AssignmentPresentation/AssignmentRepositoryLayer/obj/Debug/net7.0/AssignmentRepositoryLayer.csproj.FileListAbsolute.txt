@@ -1,0 +1,17 @@
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentRepositoryLayer.deps.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentRepositoryLayer.runtimeconfig.json
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentRepositoryLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentRepositoryLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\bin\Debug\net7.0\AssignmentDataAccessLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.csproj.AssemblyReference.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.AssemblyInfoInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.AssemblyInfo.cs
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.csproj.CoreCompileInputs.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.csproj.CopyComplete
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\refint\AssignmentRepositoryLayer.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.pdb
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\AssignmentRepositoryLayer.genruntimeconfig.cache
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\Assignment\Assignment\AssignmentPresentation\AssignmentRepositoryLayer\obj\Debug\net7.0\ref\AssignmentRepositoryLayer.dll
