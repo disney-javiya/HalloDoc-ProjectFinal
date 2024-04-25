@@ -1,14 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Assignment",
     "\\HalloDoc",
     "\\HalloDoc\\Controllers",
     "\\HalloDoc\\Views",
     "\\HalloDoc\\Views\\Admin",
     "\\HalloDoc\\Views\\Provider",
+    "\\HalloDoc\\Views\\Shared",
     "\\Repositories",
     "\\Repositories\\IRepository"
   ],
+  "SelectedNode": "\\HalloDoc\\Views\\Shared\\_newState.cshtml",
   "PreviewInSolutionExplorer": false
 }

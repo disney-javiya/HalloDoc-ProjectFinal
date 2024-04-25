@@ -11,7 +11,7 @@
             <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="userAccess"> < Back</a>
 
         </div>
-        <form method="post" class="row row-cols-1 " action="@Url.Action("adminProfileUpdateStatus", "Admin")" enctype="multipart/form-data">
+        <form method="post" class="row row-cols-1 " action="@Url.Action("adminEditProfileUpdateStatus", "Admin"  ,new {email = Context.Request.Query["email"]})" enctype="multipart/form-data">
             <div class="col">
                 <h5>Account Information</h5>
             </div>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-md-6 gy-3">
-                <select asp-for="Status" class="form-select m-0 p-2 ainfo" aria-label="Default select example" disabled>
+                <select asp-for="Status" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
                     <option selected>Status</option>
 
                     <option value="2">Active</option>
@@ -39,15 +39,24 @@
 
             </div>
 
-            <div class="col-md-4 gy-3 mb-3" style=" color: lightgray;">
+            <div class="col-md-6 gy-3" style=" color: lightgray;">
 
-                <select asp-for="RoleId" id="role" class="form-select m-2 p-2 ainfo" aria-label="Default select example" disabled>
+                <select asp-for="RoleId" id="role" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
+                    <option selected>Role</option>
+
+
                 </select>
+            </div>
+
+            <div class="col d-flex justify-content-start m-2">
+                <a role="button" class="btn submit-btn-create-patient me-2" id="edit3">Edit</a>
+
+
             </div>
 
             <div class="col d-flex justify-content-end m-2">
 
-                <a role="button" class="btn submit-btn-create-patient me-2 p-2" id="edit3">Edit</a>
+
                 <a class="btn back-btn m-2 w-25 ms-auto" role="button" id="reset">Reset Password</a>
                 <button type="submit" role="button" class="btn save-btn-patient-profile  me-2 p-2" id="submit3" style="display: none;">Save</button>
                 <a role="button" class="btn cancel-btn-patient-profile  me-2 p-2" id="cancel3" style="display: none;">Cancel</a>
@@ -56,7 +65,7 @@
 
 
 
-        <form method="post" class="row row-cols-1 " asp-controller="Admin" asp-action="adminProfile" enctype="multipart/form-data">
+        <form method="post" class="row row-cols-1 "action="@Url.Action("adminEditProfile", "Admin" ,new {email = Context.Request.Query["email"]})" enctype="multipart/form-data">
             <div class="col">
                 <h5>Administrator Information</h5>
             </div>
@@ -118,7 +127,7 @@
             </div>
         </form>
 
-        <form method="post" class="row row-cols-1 " asp-controller="Admin" asp-action="adminProfileBilling" enctype="multipart/form-data">
+        <form method="post" class="row row-cols-1 " action="@Url.Action("adminEditProfileBilling", "Admin" ,new {email = Context.Request.Query["email"]})" enctype="multipart/form-data">
             <div class="col">
                 <h5>Mailing & Billing Information</h5>
             </div>
@@ -221,7 +230,7 @@
 
                 var roleDropdown = $('#role');
                 roleDropdown.empty();
-                roleDropdown.append($('<option></option>').text(@Model.RoleId));
+                roleDropdown.append($('<option></option>').text("Role"));
                 $.each(data, function (index, RoleId) {
 
                     roleDropdown.append($('<option></option>').attr('value', RoleId.roleId).text(RoleId.name));
@@ -236,9 +245,12 @@
 </script>
 <script>
     $(document).ready(function () {
-
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const email = urlParams.get('email');
         $.ajax({
-            url: '/Admin/getAdminRegions',
+            url: '/Admin/getAdminRegionsbyEmail',
+            data: {'email': email},
             method: 'GET',
             success: function (data) {
 
@@ -376,7 +388,9 @@
 
     $('#reset').click(function () {
 
-
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const email = urlParams.get('email');
         const password = $('#password').val();
         if (password == "") {
             $("#pwd").append("Enter Password First!!").css("color", "red");
@@ -384,9 +398,9 @@
         alert(password);
         if (password != "") {
             $.ajax({
-                url: '/Admin/adminProfileUpdatePassword',
+                url: '/Admin/adminEditProfileUpdatePassword',
                 method: 'POST',
-                data: { 'password': password },
+                data: { 'password': password , 'email': email},
                 success: function (data) {
                 }
             });

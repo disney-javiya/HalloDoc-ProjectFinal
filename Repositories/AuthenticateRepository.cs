@@ -1,5 +1,7 @@
-﻿using HalloDoc.DataAccessLayer.DataContext;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HalloDoc.DataAccessLayer.DataContext;
 using HalloDoc.DataAccessLayer.DataModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository.IRepository;
@@ -88,5 +90,10 @@ namespace Repository
                 return false;
             }
         }
+
+        //public string getCurrentUserId()
+        //{
+        //    _context.AspNetUsers.Where(x=>x.Email == )
+        //}
     }
 }

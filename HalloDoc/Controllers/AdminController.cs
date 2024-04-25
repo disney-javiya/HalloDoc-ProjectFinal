@@ -89,7 +89,6 @@ namespace HalloDoc.Controllers
                     return Redirect(returnUrl);
                 else
                     return View("adminDashboard");
-                //return View("adminDashboard");
             }
             if (rolename == "Physician")
             {
@@ -98,8 +97,6 @@ namespace HalloDoc.Controllers
                     return Redirect(returnUrl);
                 else
                     return RedirectToAction("providerDashboard", "Provider");
-
-                //return RedirectToAction("providerDashboard", "Provider");
             }
 
             return View();
@@ -330,7 +327,7 @@ namespace HalloDoc.Controllers
             int t = int.Parse(type);
             int tid = 0;
             int r = 0;
-            if (typeid != null)
+            if (typeid != null && typeid != "all")
             {
                 tid = int.Parse(typeid);
             }
@@ -428,15 +425,6 @@ namespace HalloDoc.Controllers
 
 
         }
-
-
-
-
-
-
-
-
-
 
 
         [CustomeAuthorize("Admin")]
@@ -1090,6 +1078,15 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
          
             var res = _adminRepository.getAdminRegions(ViewBag.Data);
+            return res;
+        }
+
+        [HttpGet]
+        public List<Region> getAdminRegionsbyEmail(string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            var res = _adminRepository.getAdminRegions(email);
             return res;
         }
 
@@ -1937,6 +1934,62 @@ namespace HalloDoc.Controllers
             return View();
         }
 
+        [CustomeAuthorize("Admin")]
+        [HttpGet]
+        public IActionResult adminEditAccount(string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            Admin a = new Admin();
+            a = _adminRepository.getAdminInfo(email);
+            return View(a);
+
+        }
+
+
+
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult adminEditProfileUpdatePassword(string password, string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _adminRepository.adminProfileUpdatePassword(email, password);
+            return RedirectToAction("adminEditAccount");
+
+        }
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult adminEditProfileUpdateStatus(Admin a, string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _adminRepository.adminProfileUpdateStatus(email, a);
+            return RedirectToAction("adminEditAccount", new { email = a.Email });
+
+        }
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult adminEditProfile(Admin a, string? uncheckedCheckboxes, string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _adminRepository.adminUpdateProfile(email, a, uncheckedCheckboxes);
+            return RedirectToAction("adminEditAccount", new { email = a.Email });
+
+        }
+
+        [CustomeAuthorize("Admin")]
+        [HttpPost]
+        public IActionResult adminEditProfileBilling(Admin a, string email)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            _adminRepository.adminUpdateProfileBilling(email, a);
+            return RedirectToAction("adminEditAccount", new { email = a.Email });
+
+        }
+
+
 
         [CustomeAuthorize("Admin")]
         public IActionResult userAccessTable(string? accounttype, int pagenumber = 1)
@@ -1978,8 +2031,12 @@ namespace HalloDoc.Controllers
             return phy_ids;
         }
        
+        public bool IsUserExists(string email)
+        {
+          bool isExists =  _adminRepository.IsUserExists(email);
+            return isExists;
+        }
 
-       
         public IActionResult logOut()
         {
 

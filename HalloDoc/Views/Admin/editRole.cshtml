@@ -21,7 +21,7 @@
                     <form method="post" class="row row-cols-1 " action="@Url.Action("editRole", "Admin",new { roleId =  Context.Request.Query["roleId"]})" enctype="multipart/form-data">
                         <div class="col-md-6 gy-3">
                             <div class="form-floating mb-3">
-                                <input asp-for="Name" type="text" class="form-control rname first-name-create-patient shadow-none e1" id="floatingInput" value="@Model.RoleId" placeholder="">
+                                <input asp-for="Name" type="text" class="form-control rname first-name-create-patient shadow-none e1" id="floatingInput"  placeholder="">
                                 <label class="first-name-create-patient-text" for="floatingInput">Role Name</label>
 
                             </div>
@@ -105,7 +105,10 @@
     <script>
         $(document).ready(function () {
             var accountType = $('#accountType').val();
-            var roleId = $('.rname').val();
+            // var roleId = $('.rname').val();
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const roleId = urlParams.get('roleId');
            
             $.ajax({
                 url: '/Admin/menuByAccountType',

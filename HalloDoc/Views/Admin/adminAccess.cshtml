@@ -93,18 +93,22 @@
 
 
 <script>
-    $(document).on('click', '#delete-option', function () {
+    $(document).ready(function () {
+        var roleId;
+        $(document).on('click', '#delete-option', function () {
 
-        roleId = $(this).attr("value");
+             roleId = $(this).attr("value");
 
+        });
+        $('#deleteConfirmationForm').submit(function (event) {
+
+            $('#roleinput1').val(roleId);
+
+
+        });
     });
-
-    $('#deleteConfirmationForm').submit(function (event) {
-
-        $('#roleinput1').val(roleId);
-
-
-    });
+    
+    
 </script>
 
     <!--For Delete-->
@@ -124,7 +128,7 @@
 
                      
                         <input type="hidden" id="roleinput1" name="roleId" />
-                        <b> ARe you sure you want to delete this role type?</b>
+                        <b> Are you sure you want to delete this role type?</b>
                        
                     </div>
                     <!-- Modal footer -->

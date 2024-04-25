@@ -606,13 +606,13 @@ namespace HalloDoc.Controllers
 
 
         /*-----------------------------------Review Agreement--------------------------------------------------*/
-
+        [CustomeAuthorize("Patient")]
         public IActionResult reviewAgreement()
         {
             return View();
         }
 
-      
+        [CustomeAuthorize("Patient")]
         public IActionResult reviewAgreementPost(string requestId, string adminId, string physicianId)
         {
             int req = int.Parse(requestId);

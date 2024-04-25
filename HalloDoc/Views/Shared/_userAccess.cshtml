@@ -27,7 +27,7 @@
                 <th scope="col">AccountPOC</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Status</th>
-                <th scope="col">Open Requests</th>
+                
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -55,10 +55,7 @@
                             @Html.DisplayFor(modelItem => item.Status)
 
                         </td>
-                        <td>
-                            @*   @Html.DisplayFor(modelItem => item.Reason) *@
-
-                        </td>
+                       
 
                         <td>
                             @if (item.AccountType == "Admin")

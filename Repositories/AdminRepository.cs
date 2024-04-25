@@ -1478,8 +1478,8 @@ namespace Repository
                 }
                 if (backgroundDoc != null && backgroundDoc.Length > 0)
                 {
-                    string fileName = "BackgroundDoc" + System.IO.Path.GetFileName(backgroundDoc.FileName);
-                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
+                    string fileName = "BackgroundDoc" + System.IO.Path.GetExtension(backgroundDoc?.FileName);/* System.IO.Path.GetFileName(backgroundDoc.FileName);*/
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
 
                     if (Directory.Exists(path))
                     {
@@ -1506,8 +1506,8 @@ namespace Repository
                 }
                 if (hippaDoc != null && hippaDoc.Length > 0)
                 {
-                    string fileName = "Hippa" + System.IO.Path.GetFileName(hippaDoc.FileName);
-                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
+                    string fileName = "Hippa" + System.IO.Path.GetExtension(hippaDoc?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
 
                     if (Directory.Exists(path))
                     {
@@ -1530,12 +1530,12 @@ namespace Repository
                     {
                         hippaDoc.CopyTo(stream);
                     }
-                    
+                    physician.IsTrainingDoc = new BitArray(new bool[] { true });
                 }
                 if (disclosureDoc != null && disclosureDoc.Length > 0)
                 {
-                    string fileName = "DisclosureDoc" + System.IO.Path.GetFileName(disclosureDoc.FileName);
-                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
+                    string fileName = "DisclosureDoc" + System.IO.Path.GetExtension(disclosureDoc?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
 
                     if (Directory.Exists(path))
                     {
@@ -1562,8 +1562,8 @@ namespace Repository
                 }
                 if (licenseDoc != null && licenseDoc.Length > 0)
                 {
-                    string fileName = "LicenseDoc" + System.IO.Path.GetFileName(licenseDoc.FileName);
-                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AdminFiles");
+                    string fileName = "LicenseDoc" + System.IO.Path.GetExtension(licenseDoc?.FileName);
+                    string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/AdminFiles/{physicianId}");
 
                     if (Directory.Exists(path))
                     {
@@ -2947,6 +2947,12 @@ namespace Repository
                 
                 }
            
+        }
+
+
+        public bool IsUserExists(string email)
+        {
+           return  _context.AspNetUsers.Where(x=>x.Email == email).Any();
         }
 
 

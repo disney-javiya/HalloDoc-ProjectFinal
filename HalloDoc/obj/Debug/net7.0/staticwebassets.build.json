@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RsyI4f2/MN9PPHYbF1bcurTgBsBOOLfxXFqHpUw6bxQ=",
+  "Hash": "eD+vGgjD/govOWvMRvdYP2NOSGUxRT2OqF8vGO52cTQ=",
   "Source": "HalloDoc",
   "BasePath": "_content/HalloDoc",
   "Mode": "Default",
@@ -102,12 +102,12 @@
       "OriginalItemSpec": "wwwroot\\AdminFiles\\1\\Photo.jpg"
     },
     {
-      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\10\\Photo.jpg",
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\10\\Agreement.png",
       "SourceId": "HalloDoc",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
       "BasePath": "_content/HalloDoc",
-      "RelativePath": "AdminFiles/10/Photo.jpg",
+      "RelativePath": "AdminFiles/10/Agreement.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -116,15 +116,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\AdminFiles\\10\\Photo.jpg"
+      "OriginalItemSpec": "wwwroot\\AdminFiles\\10\\Agreement.png"
     },
     {
-      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\11116016_415-modified.jpg",
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\15\\Agreement.jpg",
       "SourceId": "HalloDoc",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
       "BasePath": "_content/HalloDoc",
-      "RelativePath": "AdminFiles/11116016_415-modified.jpg",
+      "RelativePath": "AdminFiles/15/Agreement.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -133,7 +133,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\AdminFiles\\11116016_415-modified.jpg"
+      "OriginalItemSpec": "wwwroot\\AdminFiles\\15\\Agreement.jpg"
     },
     {
       "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\17\\Signature",
@@ -323,12 +323,12 @@
       "OriginalItemSpec": "wwwroot\\AdminFiles\\6\\Signature.png"
     },
     {
-      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\CreateAdmin.png",
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\8\\Agreement.png",
       "SourceId": "HalloDoc",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
       "BasePath": "_content/HalloDoc",
-      "RelativePath": "AdminFiles/CreateAdmin.png",
+      "RelativePath": "AdminFiles/8/Agreement.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -337,15 +337,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\AdminFiles\\CreateAdmin.png"
+      "OriginalItemSpec": "wwwroot\\AdminFiles\\8\\Agreement.png"
     },
     {
-      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\Fig56. Patient site 1.png",
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\9\\Agreement.png",
       "SourceId": "HalloDoc",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
       "BasePath": "_content/HalloDoc",
-      "RelativePath": "AdminFiles/Fig56. Patient site 1.png",
+      "RelativePath": "AdminFiles/9/Agreement.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -354,15 +354,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\AdminFiles\\Fig56. Patient site 1.png"
+      "OriginalItemSpec": "wwwroot\\AdminFiles\\9\\Agreement.png"
     },
     {
-      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\user.png",
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\BackgroundDoc.png",
       "SourceId": "HalloDoc",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
       "BasePath": "_content/HalloDoc",
-      "RelativePath": "AdminFiles/user.png",
+      "RelativePath": "AdminFiles/BackgroundDoc.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -371,7 +371,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\AdminFiles\\user.png"
+      "OriginalItemSpec": "wwwroot\\AdminFiles\\BackgroundDoc.png"
     },
     {
       "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\css\\site.css",

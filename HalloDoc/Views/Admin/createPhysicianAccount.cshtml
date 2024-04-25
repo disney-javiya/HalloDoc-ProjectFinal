@@ -32,8 +32,6 @@
                     </div>
 
 
-                   
-
                     <div class="col-md-4 gy-3 mb-3" style=" color: lightgray;">
                        
                         <select name="role" id="role" class="form-select m-2 p-2 ainfo" aria-label="Default select example">
@@ -42,15 +40,6 @@
 
                         </select>
                     </div>
-
-
-                
-
-
-
-           
-
-
 
 
                
@@ -75,9 +64,10 @@
 
                     <div class="col-md-6 gy-3">
                         <div class="form-floating mb-3">
-                            <input asp-for="Email" type="email" class="form-control email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com" >
+                            <input asp-for="Email" type="email" class="form-control phyEmail email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com" >
                             <label class="email-create-patient-text" for="floatingInput">Email address</label>
                             <span asp-validation-for="Email" class="text-danger"></span>
+                            <span id="emailvalidate"></span>
                         </div>
                     </div>
 
@@ -105,9 +95,6 @@
                         </div>
                     </div>
 
-            
-
-
 
                     <div class="col-md-12 d-flex flex-row">
                         <div id="checkbox-container" class="col-md-6 gy-3 ">
@@ -116,13 +103,7 @@
                     </div>
                     </div>
              
-
-
-
-
-
-
-               
+           
                     <div class="col">
                         <h5>Mailing & Billing Information</h5>
                     </div>
@@ -174,13 +155,6 @@
                     </div>
 
 
-
-
-
-
-
-
-
                 
                     <div class="col">
                         <h5>Provider Profile</h5>
@@ -215,11 +189,6 @@
                             <label class="symptoms-create-patient-text" for="floatingTextarea">Admin Notes</label>
                         </div>
                     </div>
-
-
-
-
-
 
 
                     <hr>
@@ -301,7 +270,7 @@
                            
                         </div>
                 
-                    <button role="button" style="height:fit-content; border:none;" type="submit" class="create-provider-btn w-25 p-1 ms-auto mb-3">Create Account</button>
+                    <button role="button" style="height:fit-content; border:none;" type="submit" id="createBtn" class="create-provider-btn w-25 p-1 ms-auto mb-3">Create Account</button>
             </div>
         </div>
         </form>
@@ -421,3 +390,18 @@
             });
         });
     </script>
+    <script>
+    $('#createBtn').click(function (e) {
+        var email = $('.phyEmail').val();
+            $.ajax({
+                url: '/Admin/isUserExists',
+                data: {'email' : email},
+                success: function (data) { 
+                    if (data == true) {
+                        $("#emailvalidate").text("Email already Exists!").css("color", "red");
+                    }
+                e.preventDefault();
+            }
+            });
+        });
+</script>

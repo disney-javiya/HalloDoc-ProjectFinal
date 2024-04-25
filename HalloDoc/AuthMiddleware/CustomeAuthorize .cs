@@ -19,6 +19,7 @@ namespace HalloDoc.AuthMiddleware
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            
             var jwtTokenService = context.HttpContext.RequestServices.GetService<IAuthenticateRepository>();
 
             if (jwtTokenService == null)
@@ -60,12 +61,12 @@ namespace HalloDoc.AuthMiddleware
                         returnUrl = returnURL
                     }));
                 }
-                //context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index", returnUrl = returnURL }));
-                return; 
+               
+                return;
             }
 
             var roleClaim = jwtToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
+            var Id = jwtToken?.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
 
             if (roleClaim == null)
             {
@@ -79,7 +80,7 @@ namespace HalloDoc.AuthMiddleware
 
             if (roleClaim != _role || string.IsNullOrWhiteSpace(_role))
             {
-
+                
                 context.Result = new RedirectToRouteResult(new Microsoft.AspNetCore.Routing.RouteValueDictionary(new
                 {
                     Controller = "Home",
@@ -90,3 +91,5 @@ namespace HalloDoc.AuthMiddleware
         }
     }
 }
+
+

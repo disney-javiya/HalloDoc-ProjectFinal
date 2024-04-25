@@ -114,21 +114,5 @@
 </div>
 
 
-@* <script>
-    $(document).ready(function () {
-        $.ajax({
-            url: '/Admin/getAllRegions',
-            type: 'GET',
-            success: function (data) {
 
-                var regionDropdown = $('.region');
-                regionDropdown.empty();
-                regionDropdown.append($('<option></option>').text("Select Region"));
-                $.each(data, function (index, RegionId) {
-                    regionDropdown.append($('<option></option>').attr('value', RegionId.regionId).text(RegionId.name));
-                });
-            }
-        });
-    });
-</script> *@
 
