@@ -209,7 +209,7 @@
 
                     <!-- For Region -->
                     <select name="region" id="region" class="form-select m-2 region" aria-label="Default select example">
-                        <option selected>Search Region</option>
+                        <option value="" selected>Search Region</option>
 
                         @foreach (var item in Model.result)
                         {
@@ -226,14 +226,14 @@
                             }
                         }
                     </select>
-
+                    <span id="regionValidation"></span>
                     <!-- For Physician-->
-                    <select name="physician" id="physician" class="form-select m-2" aria-label="Default select example">
-                        <option selected>Select Physician</option>
+                    <select name="physician" id="physician" class="form-select physician m-2" aria-label="Default select example">
+                        <option value="" selected>Select Physician</option>
 
 
                     </select>
-
+                    <span id="physicianValidation"></span>
                     <div class="form-floating m-2">
                         <textarea name="additionalNotesTransfer" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
                         <label class="symptoms-create-patient-text" for="floatingTextarea">Description</label>
@@ -241,9 +241,27 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="submit" id="submit-transfer" class="btn submit-btn-assigncase">Submit</button>
                     <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                 </div>
+                <script>
+                    $('#submit-transfer').click(function (e) {
+
+
+                        var physician = $('.physician').val();
+                        var region = $('.region').val();
+                        if (region == "" || region == "Search Region") {
+                            $('#regionValidation').text("Required field!").css("color", "red");
+                            e.preventDefault();
+                        }
+                        if (physician == "" || physician == "Select Physician") {
+                            $('#physicianValidation').text("Required field!").css("color", "red");
+                            e.preventDefault();
+                        }
+
+
+                    });
+                </script>
             </form>
         </div>
     </div>
@@ -434,7 +452,7 @@
 
                     var physicianDropdown = $('#physician');
                     physicianDropdown.empty();
-                    physicianDropdown.append($('<option></option>').text("Select Physicians"));
+                    physicianDropdown.append($('<option></option>').text("Select Physician"));
                     $.each(data, function (index, physician) {
 
                         physicianDropdown.append($('<option></option>').attr('value', physician.physicianId).text(physician.firstName));

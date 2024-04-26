@@ -1,6 +1,4 @@
 ﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.dashboardTableModel
-
-
 @{
     Layout = "_AdminHeader";
 }
@@ -26,7 +24,6 @@
         email = $('#email').val();
         createdDate = $('#createdDate').val();
         sentDate = $('#sentDate').val();
-      
 
         $.ajax({
             url: "/Admin/emailLogsTable",
@@ -52,7 +49,7 @@
                         <a class="btn back-btn mt-1" role="button" asp-controller="Admin" asp-action="adminDashboard"> < Back</a>
                     </div>
                     
-                    @* <form action="/Admin/emailLogs" method="POST"> *@
+                   
                         <div class="row d-flex justify-content-between">
                             <div class="col-md-3 gy-3">
                                 <div class=" mb-3">
@@ -97,23 +94,9 @@
                     <a role="button" href="@Url.Action("clearBtnSearch", "Admin", new { id = "clearBtnEmailLogs"})" class="btn back-btn me-2">Clear</a>
                             <button role="button" onclick="fetchEmailLogData()" type="submit" class="btn submit-btn-create-patient">Search</button>
                         </div>
-@* 
-                    </form> *@
-            <div id="emaillogs-table">
-            </div>
 
-                   
-
-
-
-
-
-
-
-
-
-
-
+                    <div id="emaillogs-table">
+                     </div>
 
                 </div>
             </div>

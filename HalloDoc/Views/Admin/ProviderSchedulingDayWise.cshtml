@@ -86,32 +86,33 @@
                     </div>
 
 
-                    <div class="modal-body" style="color:grey;">
-                        <select asp-for="RegionId" class="form-select mb-3 region" aria-label="Default select example">
-                            <option selected>Select Region</option>
+                <div class="modal-body" style="color:grey;">
+                    <select asp-for="RegionId" class="form-select mb-3 region" aria-label="Default select example">
+                        <option value="" selected>Select Region</option>
 
 
-                        </select>
+                    </select>
+                    <span id="regionValidation"></span>
+
+                    <select asp-for="Physicianid" id="physician" class="form-select physician mb-3" aria-label="Default select example">
+                        <option value="" selected>Select Physician</option>
 
 
-                        <select asp-for="Physicianid" id="physician" class="form-select mb-3" aria-label="Default select example">
-                            <option selected>Select Physician</option>
-
-
-                        </select>
+                    </select>
+                    <span id="physicianValidation"></span>
 
                         <div class="form-floating mb-3">
-                            <input asp-for="Shiftdate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <input asp-for="Shiftdate" type="date" class="form-control shiftDate dob-create-patient shadow-none" id="floatingInput" placeholder="">
                             <label class="dob-create-patient-text" for="floatingInput">Shift Date</label>
-
+                        <span id="shiftDateValidation"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Starttime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                            <input asp-for="Starttime" type="time" class="form-control startTime dob-create-patient shadow-none" placeholder="">
                             <label class="dob-create-patient-text">Start</label>
-
+                        <span id="startTimeValidation"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Endtime" type="time" class="form-control dob-create-patient shadow-none" placeholder="">
+                            <input asp-for="Endtime" type="time" class="form-control endTime dob-create-patient shadow-none" placeholder="">
                             <label class="dob-create-patient-text">End</label>
 
                         </div>
@@ -149,7 +150,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                        <button type="submit" id="createShiftSubmit" class="btn submit-btn-assigncase">Submit</button>
                         <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -158,7 +159,36 @@
     </div> 
 
 
+    <script>
+        $('#createShiftSubmit').click(function (e) {
+           
+            var startTime = $('.startTime').val();
+            var endTime = $('.endTime').val();
+            var physician = $('.physician').val();
+            var region = $('.region').val();
+            var shiftDate = $('.shiftDate').val();
+        if (shiftDate == "") {
+            $('#shiftDateValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (region == "" || region == "Select Region") {
+            $('#regionValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (physician == "") {
+            $('#physicianValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
 
+        if (startTime >= endTime) {
+
+            $('#startTimeValidation').text("Start Time cant be greater then end time!").css("color", "red");
+            e.preventDefault();
+
+        }
+        });
+    </script>
+    
 
     <script>
         $(document).ready(function () {

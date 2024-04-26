@@ -287,3 +287,14 @@
 
     </script>
 
+<script>
+    $('.check').change(function () {
+        var checked = $('.check').filter(":checked").length == $('.check').length;
+        if (checked) {
+            $('#checkAll').prop('checked', true);
+        } else {
+            $('#checkAll').prop('checked', false);
+
+        }
+    });
+</script>

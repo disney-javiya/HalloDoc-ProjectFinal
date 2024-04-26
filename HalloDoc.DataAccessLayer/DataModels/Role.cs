@@ -12,10 +12,10 @@ public partial class Role
 {
     [Key]
     public int RoleId { get; set; }
-
+   
     [StringLength(50)]
     public string Name { get; set; } = null!;
-
+  
     public short AccountType { get; set; }
 
     [StringLength(128)]

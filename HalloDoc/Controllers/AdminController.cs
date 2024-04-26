@@ -331,11 +331,18 @@ namespace HalloDoc.Controllers
             {
                 tid = int.Parse(typeid);
             }
-            if (regionId != null)
+            if(typeid == "all")
+            {
+                typeid = null;
+            }
+            if (regionId != null && regionId != "Select Regions")
             {
                 r = int.Parse(regionId);
             }
-
+            if (regionId == "Select Regions")
+            {
+                regionId = null;
+            }
             IEnumerable<RequestandRequestClient> res = _adminRepository.getRequestStateData(t);
             List<RequestandRequestClient> result;
             if (regionId != null && patient_name == null && typeid == null)
@@ -1012,10 +1019,6 @@ namespace HalloDoc.Controllers
 
             _adminRepository.passwordresetInsert(Email, id);
 
-
-
-
-
             SmtpClient client = new SmtpClient("smtp.office365.com")
             {
                 Port = 587,
@@ -1066,7 +1069,11 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
             encounterModel en = _adminRepository.getEncounterDetails(requestId);
 
+            if(en == null)
+            {
 
+                return null; 
+            }
 
             byte[] pdfdata = _adminRepository.GeneratePDF(en);
             return File(pdfdata, "application/pdf", "MedicalReport.pdf");
@@ -1094,9 +1101,7 @@ namespace HalloDoc.Controllers
         public IActionResult providerMenu()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //List<Physician> res = new List<Physician>();
-            //res = _adminRepository.GetAllPhysicians();
-
+            
             return View();
         }
 
@@ -1257,17 +1262,10 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.deletePhysicianAccount(ViewBag.Data, physicianId);
-
-
-
             return RedirectToAction("providerMenu");
-
-
-
-
         }
 
-        [CustomeAuthorize("Admin")]
+       
         public IActionResult contactProvider(string physicianId, string ctype, string messagebody)
         {
             int pid = int.Parse(physicianId);
@@ -1345,8 +1343,7 @@ namespace HalloDoc.Controllers
         }
         [CustomeAuthorize("Admin")]
         public IActionResult adminAccess()
-        {
-            
+        {           
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
@@ -1382,8 +1379,6 @@ namespace HalloDoc.Controllers
         public IActionResult createRole()  
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-
-
             return View();
         }
         [CustomeAuthorize("Admin")]
@@ -1393,7 +1388,6 @@ namespace HalloDoc.Controllers
            
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.createRole(r, menu, ViewBag.Data);
-
             return RedirectToAction("adminAccess");
         }
 
@@ -1562,8 +1556,7 @@ namespace HalloDoc.Controllers
       
         public IActionResult blockedHistory()
         {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-           
+            ViewBag.Data = HttpContext.Session.GetString("key");         
             return View();
         }
 
@@ -1586,7 +1579,6 @@ namespace HalloDoc.Controllers
             if (count > 0)
             {
                 model.blockRequests = model.blockRequests.Skip((pagenumber - 1) * 3).Take(3).ToList();
-
                 model.TotalPages = (int)Math.Ceiling((double)count / 3);
                 model.CurrentPage = pagenumber;
                 model.PreviousPage = pagenumber > 1;
@@ -1728,9 +1720,7 @@ namespace HalloDoc.Controllers
                 model.CurrentPage = pagenumber;
                 model.PreviousPage = pagenumber > 1;
                 model.NextPage = pagenumber < model.TotalPages;
-            }
-
-            //var res = _adminRepository.searchRecords(ViewBag.Data);
+            }            
             return PartialView("_searchRecords", model);
         }
 
@@ -1768,19 +1758,16 @@ namespace HalloDoc.Controllers
                 model.emailLogs = _adminRepository.emailLogs();
             }
 
-
+            model.requestClients = _adminRepository.GetAllRequestClient();
             var count = model.emailLogs.Count();
             if (count > 0)
             {
                 model.emailLogs = model.emailLogs.Skip((pagenumber - 1) * 3).Take(3).ToList();
-
                 model.TotalPages = (int)Math.Ceiling((double)count / 3);
                 model.CurrentPage = pagenumber;
                 model.PreviousPage = pagenumber > 1;
                 model.NextPage = pagenumber < model.TotalPages;
-            }
-
-          
+            }         
             return PartialView("_emailLogs", model);
         }
 
@@ -1790,7 +1777,6 @@ namespace HalloDoc.Controllers
         public IActionResult SMSLogs()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            //var res = _adminRepository.SMSLogs();
             return View();
         }
         [CustomeAuthorize("Admin")]
@@ -1808,7 +1794,7 @@ namespace HalloDoc.Controllers
                 model.SMSLogs = _adminRepository.SMSLogs();
             }
 
-
+            model.requestClients = _adminRepository.GetAllRequestClient();
             var count = model.SMSLogs.Count();
             if (count > 0)
             {
@@ -1819,8 +1805,6 @@ namespace HalloDoc.Controllers
                 model.PreviousPage = pagenumber > 1;
                 model.NextPage = pagenumber < model.TotalPages;
             }
-
-
             return PartialView("_SMSLogs", model);
         }
         [CustomeAuthorize("Admin")]
@@ -1852,7 +1836,6 @@ namespace HalloDoc.Controllers
             model.physicians = _adminRepository.GetAllPhysicians();
             model.regions = _adminRepository.getAllRegions();
             model.shiftDetails = _adminRepository.getshiftDetail();
-
             return model;
         }
         public IActionResult _ViewShiftModal()
@@ -1882,7 +1865,6 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.DeleteShiftDetails(id, ViewBag.Data);
-;
             return RedirectToAction(nameof(ProviderSchedulingDayWise));
         }
         [CustomeAuthorize("Admin")]
@@ -2036,7 +2018,11 @@ namespace HalloDoc.Controllers
           bool isExists =  _adminRepository.IsUserExists(email);
             return isExists;
         }
-
+        public string GetRequestName(int RequestId)
+        {
+          string name =  _adminRepository.GetRequestName(RequestId);
+            return name;
+        }
         public IActionResult logOut()
         {
 

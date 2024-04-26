@@ -22,7 +22,7 @@
     });
 </script>
 <script>
-    function fetchSearchData() {
+    function fetchSearchData(e) {
         requestStatus = $('#requestStatus').val();
         patientName = $('#patientName').val();
         requestType = $('#requestType').val();
@@ -32,6 +32,11 @@
         email = $('#email').val();
         phone = $('#phone').val();
 
+        if(fromDate > toDate)
+        {
+            $('#fromDateValidation').text("From date can't be greater than to date!").css("color", "red");
+            e.preventDefault();
+        }
         $.ajax({
             url: "/Admin/searchRecordsTable",
 
@@ -55,7 +60,7 @@
                         <h3>Search Records</h3>
                      
                     </div>
-          @*   <form action="/Admin/searchRecords" method="POST"> *@
+        
                 <div class="row d-flex justify-content-between">
                         <div class="col-md-3 gy-3">
                             <div class=" mb-3">
@@ -98,7 +103,7 @@
                             <div class="form-floating mb-3">
                                 <input name="fromDate" id="fromDate" type="date" class="form-control dob-create-patient shadow-none" placeholder="">
                                 <label class="dob-create-patient-text" for="floatingInput">From Date Of Service</label>
-
+                                <span id="fromDateValidation"></span>
                             </div>
                         </div>
                         <div class="col-md-3 gy-3">
@@ -134,7 +139,7 @@
                     <a role="button" href="@Url.Action("clearBtnSearch", "Admin", new { id = "clearBtnSearchRecords"})" class="btn back-btn me-2">Clear</a>
                     <button role="button" id="searchbtn" onclick="fetchSearchData()" type="submit" class="btn submit-btn-create-patient">Search</button>
                     </div>
-                  @*   </form> *@
+          
 
 
             <div  id="searchrecords-table">

@@ -29,9 +29,6 @@ namespace Repository
         public string GenerateJwtToken(AspNetUser user, string role)
         {
 
-
-            
-
             var claims = new List<Claim> {
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, role),

@@ -80,7 +80,10 @@ namespace Repository
             return _context.Requests.Where(r => r.RequestId == requestId).Select(r => r.ConfirmationNumber).FirstOrDefault();
         }
 
-
+        public List<RequestClient> GetAllRequestClient()
+        {
+          return  _context.RequestClients.ToList();
+        }
 
 
         public viewNotes getNotes(int requestId, string email)
@@ -1287,29 +1290,33 @@ namespace Repository
                 physician.ModifiedBy = aid;
                 physician.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
-                string[] boxes = uncheckedCheckboxes.Split(',');
+               
 
-
-                if (boxes != null)
+                if(uncheckedCheckboxes != null)
                 {
-
-                    foreach (var box in boxes)
+                    string[] boxes = uncheckedCheckboxes.Split(',');
+                    if (boxes != null)
                     {
-                        if (box != "")
+
+                        foreach (var box in boxes)
                         {
-                            int regionid = int.Parse(box);
-                            var row = _context.PhysicianRegions.Where(x => x.PhysicianId == physicianId && x.RegionId == regionid).FirstOrDefault();
-                            if (row != null)
+                            if (box != "")
                             {
-                                _context.PhysicianRegions.Remove(row);
-                                _context.SaveChanges();
+                                int regionid = int.Parse(box);
+                                var row = _context.PhysicianRegions.Where(x => x.PhysicianId == physicianId && x.RegionId == regionid).FirstOrDefault();
+                                if (row != null)
+                                {
+                                    _context.PhysicianRegions.Remove(row);
+                                    _context.SaveChanges();
 
+                                }
                             }
+
+
                         }
-
-
                     }
                 }
+                
 
 
             }
@@ -1608,7 +1615,7 @@ namespace Repository
 
         public List<Role> GetPhysiciansRoles()
         {
-           List<Role> r = _context.Roles.Where(x => x.AccountType == 2).ToList();
+           List<Role> r = _context.Roles.Where(x => x.AccountType == 2 && x.IsDeleted != new BitArray(new bool[] {true})).ToList();
             return r;
         }
 
@@ -1617,7 +1624,7 @@ namespace Repository
          var res =   _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
             if(res != null)
             {
-                res.IsDeleted = new BitArray(new bool[]  { true });
+                res.IsDeleted = new BitArray(new bool[] { true });
                 var aspid = _context.AspNetUsers.Where(x=>x.Email == email).Select(u=>u.Id).FirstOrDefault();
                 res.ModifiedBy = aspid;
                 res.ModifiedDate = DateTime.Now;
@@ -1855,7 +1862,7 @@ namespace Repository
 
         public List<Role> GetAdminsRoles()
         {
-            List<Role> r = _context.Roles.Where(x => x.AccountType == 1).ToList();
+            List<Role> r = _context.Roles.Where(x => x.AccountType == 1 && x.IsDeleted != new BitArray(new bool[] {true})).ToList();
             return r;
         }
         public void insertShift(shiftViewModel s, string checktoggle, int[] dayList, string email)
@@ -2029,7 +2036,6 @@ namespace Repository
                 healthProfessional.CreatedDate = DateTime.Now;
 
                 healthProfessional.IsDeleted = new BitArray(new bool[] { false });
-
 
                 _context.HealthProfessionals.Add(healthProfessional);
                 _context.SaveChanges();
@@ -2361,10 +2367,21 @@ namespace Repository
             {
                 res = res.Where(x => x.RoleId == role).ToList();
             }
-            //if (recieverName != null)
-            //{
-            //    res = res.Where(x => x.)
-            //}
+            if (recieverName != null)
+            {
+               var rc = _context.RequestClients.Where(x=>x.FirstName.ToLower().Contains(recieverName.ToLower())).Select(x=>x.RequestId).ToList();
+                List<EmailLog> ans = new List<EmailLog>();
+               foreach(var i  in rc)
+                {
+                     var a = res.Where(x => x.RequestId == i).FirstOrDefault();
+                    if (a != null)
+                    {
+                        ans.Add(a);
+                    }
+                   
+                }
+                res = ans.ToList();
+            }
             if (email != null)
             {
                 res = res.Where(x=>x.EmailId == email).ToList();
@@ -2398,10 +2415,21 @@ namespace Repository
             {
                 res = res.Where(x => x.RoleId == role).ToList();
             }
-            //if(recieverName != null)
-            //{
-            //    res = res.Where(x=>x.)
-            //}
+            if (recieverName != null)
+            {
+                var rc = _context.RequestClients.Where(x => x.FirstName.ToLower().Contains(recieverName.ToLower())).Select(x => x.RequestId).ToList();
+                List<Smslog> ans = new List<Smslog>();
+                foreach (var i in rc)
+                {
+                    var a = res.Where(x => x.RequestId == i).FirstOrDefault();
+                    if (a != null)
+                    {
+                        ans.Add(a);
+                    }
+
+                }
+                res = ans.ToList();
+            }
             if (mobile != null)
             {
                 res = res.Where(x => x.MobileNumber == mobile).ToList();
@@ -2955,6 +2983,11 @@ namespace Repository
            return  _context.AspNetUsers.Where(x=>x.Email == email).Any();
         }
 
+        public string GetRequestName(int RequestId)
+        {
+           string name = _context.RequestClients.Where(x => x.RequestId == RequestId).Select(x => x.FirstName).FirstOrDefault();
+            return name;
+        }
 
     }
 }

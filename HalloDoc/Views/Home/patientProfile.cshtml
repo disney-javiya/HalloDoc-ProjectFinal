@@ -116,25 +116,21 @@
                     </div>
 
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
                                 <input asp-for="State" type="text" class="form-control state-create-patient shadow-none" id="floatingInput" placeholder=""  disabled>
                             <label class="state-create-patient-text" for="floatingInput">State</label>
                                 <span asp-validation-for="State" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
                                 <input asp-for="ZipCode" type="text" class="form-control zipcode-create-patient shadow-none" id="floatingInput" placeholder="" disabled>
                             <label class="zipcode-create-patient-text" for="floatingInput">Zipcode</label>
                                 <span asp-validation-for="ZipCode" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <a href="" class="map-btn p-2" role="button"><i class="fa-solid fa-location-dot me-1" style="color: #01bce9; font-size: 20px;"></i> Map</a>
-                        </div>
-                    </div>
+                 
 
                     <div class="col d-flex justify-content-end mb-2">
                         <button type="button" class="btn edit-btn-patient-profile me-2 p-2">Edit</button>

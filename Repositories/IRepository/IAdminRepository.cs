@@ -178,5 +178,7 @@ namespace Repository.IRepository
         public encounterModel getEncounterDetails(int requestId);
         public byte[] GeneratePDF(encounterModel encounter);
         public bool IsUserExists(string email);
+        public string GetRequestName(int RequestId);
+        public List<RequestClient> GetAllRequestClient();
     }
 }

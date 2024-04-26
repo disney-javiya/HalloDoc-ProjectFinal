@@ -7,7 +7,7 @@
         $.ajax({
             url: "/Admin/emailLogsTable",
           
-            data: { 'role' : role 'recieverName': recieverName, 'email': email, 'createdDate': createdDate, 'sentDate': sentDate, 'pagenumber': page },
+            data: { 'role' : role ,'recieverName': recieverName, 'email': email, 'createdDate': createdDate, 'sentDate': sentDate, 'pagenumber': page },
 
             success: function (data) {
                 $('#emaillogs-table').html(data);
@@ -45,7 +45,12 @@
 
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.RequestId)
+                           @*  @Html.DisplayFor(modelItem => item.RequestId) *@
+                            @{
+                                string name = Model.requestClients.Where(x => x.RequestId == item.RequestId).Select(x => x.FirstName).FirstOrDefault();
+                            }
+                            @name
+
 
                         </td>
                         <td>

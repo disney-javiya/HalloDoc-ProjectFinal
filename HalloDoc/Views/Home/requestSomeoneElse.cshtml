@@ -66,10 +66,6 @@
                     </div>
 
 
-
-
-
-
                     <div class="col">
                         <h5>Patient Location</h5>
                     </div>
@@ -111,11 +107,11 @@
                             <label class="room-create-patient-text" for="floatingInput">Room # / Suite (Optional)</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    @* <div class="col-md-4">
                         <div class="form-floating mb-3">
                             <a href="" class="map-btn p-2" role="button"><i class="fa-solid fa-location-dot me-1" style="color: #01bce9; font-size: 20px;"></i> Map</a>
                         </div>
-                    </div>
+                    </div> *@
 
                     <div class="col">
                         <h5>Relation</h5>
@@ -153,9 +149,6 @@
                         <button class="btn cancel-btn-create-patient ms-1">Cancel</button>
                     </div>
 
-
-
-
                 </div>
             </div>
             </form>
@@ -174,7 +167,7 @@
 
 
     file.addEventListener("input", () => {
-        //if file selected
+       
         var i;
         var filename = "";
         for (i = 0; i < file.files.length; i++) {

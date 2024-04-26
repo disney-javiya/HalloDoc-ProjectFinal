@@ -21,6 +21,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public List<Smslog> SMSLogs { get; set; }
         public List<Role> roles { get; set; }
         public List<userAccessModel> userAccess { get; set; }
+        public List<RequestClient> requestClients { get; set; }
         public int TotalPages { get; set; }
         public int CurrentPage { get; set; }
         public bool PreviousPage { get; set; }

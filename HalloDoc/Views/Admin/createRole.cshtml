@@ -24,18 +24,18 @@
                         <div class="form-floating mb-3">
                             <input  asp-for="Name" type="text" class="form-control first-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="first-name-create-patient-text" for="floatingInput">Role Name</label>
-                           
+                           <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="col-md-6 gy-3">
                         <select asp-for="AccountType" class="form-select mb-3 p-3 ainfo" aria-label="Default select example" id="accountType">
-                            <option selected>Account Type</option>
+                            <option value="" selected>Account Type</option>
                             <option value="1">Admin</option>
                             <option value="2">Physician</option>
                             <option value="3">All</option>
                         </select>
-
+                    <span asp-validation-for="AccountType" class="text-danger"></span>
                     </div>
             
                         <div id="checkbox-container" class="col-md-6 gy-3">

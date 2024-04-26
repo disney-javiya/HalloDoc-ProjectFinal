@@ -170,15 +170,26 @@
                     <input type="hidden" id="requestidinput1" name="requestid" />
 
                     <div class="form-floating m-2">
-                        <textarea name="additionalNotesTransfer" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
+                        <textarea name="additionalNotesTransfer" class="form-control transferagain-note symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
                         <label class="symptoms-create-patient-text" for="floatingTextarea">Description</label>
                     </div>
+                    <span id="noteValidation"></span>
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="submit" id="submit-transfer" class="btn submit-btn-assigncase">Submit</button>
                     <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                 </div>
+                <script>
+                    $('#submit-transfer').click(function (e) {
+                        var note = $('.transferagain-note').val();                     
+                        if (note == "" ) {
+                            $('#noteValidation').text("Required field!").css("color", "red");
+                            e.preventDefault();
+                        }
+
+                    });
+                </script>
             </form>
         </div>
     </div>

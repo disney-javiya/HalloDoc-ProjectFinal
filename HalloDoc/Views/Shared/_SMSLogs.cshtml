@@ -44,10 +44,14 @@
                     <tr>
 
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequestId)
-
-                        </td>
+                         <td>
+                            @{
+                                string name = Model.requestClients.Where(x => x.RequestId == item.RequestId).Select(x => x.FirstName).FirstOrDefault();
+                            }
+                            @name
+                           
+                        </td> 
+                      
                         <td>
                             -
 

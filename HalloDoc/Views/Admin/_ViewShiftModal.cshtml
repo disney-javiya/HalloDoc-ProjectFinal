@@ -46,22 +46,24 @@
 
                         <div class="col-12">
                             <div class="form-floating mb-3 inp custom-date-input">
-                                <input asp-for=ShiftDetailData.ShiftDate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
+                                <input asp-for=ShiftDetailData.ShiftDate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control shiftDate input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
                                 <label for="floatingInput-4" class="view-shift-label">Shift Date</label>
                             </div>
+                            <span id="shiftDateValidation"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-floating mb-3 inp custom-clock-input">
-                                <input type="time" asp-for=ShiftDetailData.StartTime class="form-control input-1 view-shift-inp" id="floatingInput-4"
+                                <input type="time" asp-for=ShiftDetailData.StartTime class="form-control startTime input-1 view-shift-inp" id="floatingInput-4"
                                        placeholder="Start" disabled>
                                 <label for="floatingInput-4" class="view-shift-label">Start</label>
                             </div>
+                            <span id="startTimeValidation"></span>
                         </div>
                         <div class="col-6">
                             <div class="form-floating mb-3 inp custom-clock-input">
-                                <input type="time" asp-for=ShiftDetailData.EndTime class="form-control input-1 view-shift-inp" id="floatingInput-4"
+                                <input type="time" asp-for=ShiftDetailData.EndTime class="form-control endTime input-1 view-shift-inp" id="floatingInput-4"
                                        placeholder="End" disabled>
                                 <label for="floatingInput-4" class="view-shift-label">End</label>
                             </div>
@@ -101,4 +103,25 @@
             formelements[i].disabled = false;
         }
     }
+</script>
+<script>
+    $('#save').click(function (e) {
+
+        var startTime = $('.startTime').val();
+        var endTime = $('.endTime').val();
+        
+        var shiftDate = $('.shiftDate').val();
+        if (shiftDate == "") {
+            $('#shiftDateValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+       
+
+        if (startTime >= endTime) {
+
+            $('#startTimeValidation').text("Start Time cant be greater then end time!").css("color", "red");
+            e.preventDefault();
+
+        }
+    });
 </script>

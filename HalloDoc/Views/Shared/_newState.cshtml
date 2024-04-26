@@ -527,14 +527,15 @@
                             }
                         }
                     </select>
-                    <span id="regionvalidation"></span>
+                    
+                    <span id="regionValidation"></span>
                     <!-- For Physician-->
-                    <select name="physician" id="physician" class="form-select m-2" aria-label="Default select example">
+                    <select name="physician" id="physician" class="form-select m-2 physician" aria-label="Default select example">
                         <option selected>Select Physician</option>
 
 
                     </select>
-                    <span id="physicianvalidation"></span>
+                    <span id="physicianValidation"></span>
                     <div class="form-floating m-2">
                         <textarea name="additionalNotesAssign" class="form-control symptoms-create-patient additionalnote shadow-none" placeholder="" id="floatingTextarea" style="height: 100px"></textarea>
                         <label class="symptoms-create-patient-text" for="floatingTextarea">Description</label>
@@ -542,9 +543,29 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" id="submit-btn-assigncase" class="btn submit-btn-assigncase">Submit</button>
+                    <button type="submit"  id="submit-btn-assigncase" class="btn submit-btn-assigncase">Submit</button>
                     <button type="button"  class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                 </div>
+
+                <script>
+                    $('#submit-btn-assigncase').click(function (e) {
+
+
+                        var physician = $('.physician').val();
+                        var region = $('.region').val();
+
+                        if (region == "" || region == "Select Region") {
+                            $('#regionValidation').text("Required field!").css("color", "red");
+                            e.preventDefault();
+                        }
+                        if (physician == "" || physician == "Select Physicians") {
+                            $('#physicianValidation').text("Required field!").css("color", "red");
+                            e.preventDefault();
+                        }
+
+
+                    });
+                </script>
             </form>
         </div>
     </div>
@@ -587,5 +608,4 @@
         </div>
     </div>
 </div>
-
 

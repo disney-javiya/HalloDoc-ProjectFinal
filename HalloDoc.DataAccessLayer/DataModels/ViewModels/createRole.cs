@@ -15,8 +15,9 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public int RoleId { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string Name { get; set; } = null!;
-
+        [Required]
         public short AccountType { get; set; }
 
         [StringLength(128)]
