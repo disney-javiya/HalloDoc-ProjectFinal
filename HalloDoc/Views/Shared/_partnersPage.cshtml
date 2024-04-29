@@ -41,7 +41,11 @@
 
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.Profession)
+                          @*   @Html.DisplayFor(modelItem => item.Profession) *@
+                            @{
+                                string profession = Model.healthProfessionaltype.Where(x => x.HealthProfessionalId == item.Profession).Select(x => x.ProfessionName).FirstOrDefault();
+                            }
+                            @profession
 
                         </td>
                         <td>

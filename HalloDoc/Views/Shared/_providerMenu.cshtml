@@ -42,13 +42,34 @@
                     </td>
                     <td>
 
-                        @Html.DisplayFor(modelItem => item.RoleId)
+                        @*  @Html.DisplayFor(modelItem => item.RoleId)  *@
+                        @{
+                            string role_name = Model.roles.Where(x => x.RoleId == item.RoleId).Select(x => x.Name).FirstOrDefault();
+                        }
+                        @role_name
                     </td>
                     <td>
                         -
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                       @*  @Html.DisplayFor(modelItem => item.Status) *@
+                        @{
+                            short? status = item.Status;
+                            switch (status)
+                            {
+                                case 1:
+                                    <p>Pending</p>
+                                    break;
+                                case 2:
+                                    <p>Active</p>
+                                    break;
+                                case 3:
+                                    <p>Inactive</p>
+                                    break;
+
+                            }
+                        }
+                       
                     </td>
                     <td>
                         <a class="providermenu-btn p-1" role="button" id="contact-option" data-bs-toggle="modal" data-bs-target="#myModal" value="@item.PhysicianId">Contact</a>

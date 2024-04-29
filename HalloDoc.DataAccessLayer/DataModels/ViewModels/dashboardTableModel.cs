@@ -16,7 +16,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public List<BlockRequest> blockRequests { get; set; }
         public List<Physician> physicians { get; set; }
         public List<HealthProfessional> healthProfessionals { get; set; }
-
+        public List<HealthProfessionalType> healthProfessionaltype { get; set; }
         public List<User> users { get; set; }
         public List<Smslog> SMSLogs { get; set; }
         public List<Role> roles { get; set; }

@@ -27,18 +27,19 @@
                         <div class="form-floating mb-3">
                             <input type="password" name="password" id="password" class="form-control  password-create-patient shadow-none" id="floatingInput" placeholder="">
                             <label class="password-create-patient-text" for="floatingInput">Password</label>
-
+                        <span id="passwordValidation"></span>
                         </div>
                     </div>
 
 
                     <div class="col-md-4 gy-3 mb-3" style=" color: lightgray;">
                        
-                        <select name="role" id="role" class="form-select m-2 p-2 ainfo" aria-label="Default select example">
+                        <select name="role" id="role" class="form-select m-2 p-3 ainfo" aria-label="Default select example">
                             <option selected>Select Role</option>
 
 
                         </select>
+                        <span class="roleValidation"></span>
                     </div>
 
 
@@ -51,14 +52,14 @@
                         <div class="form-floating mb-3">
                             <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                    <span class="firstNameValidation"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input asp-for="LastName" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
-                            <span asp-validation-for="LastName" class="text-danger"></span>
+                    <span class="lastNameValidation"></span>
                         </div>
                     </div>
 
@@ -66,8 +67,8 @@
                         <div class="form-floating mb-3">
                             <input asp-for="Email" type="email" class="form-control phyEmail email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com" >
                             <label class="email-create-patient-text" for="floatingInput">Email address</label>
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                            <span id="emailvalidate"></span>
+                    <span class="emailValidation"></span>
+                            
                         </div>
                     </div>
 
@@ -77,21 +78,19 @@
 
                             <input asp-for="Mobile" class=" form-control contact-create-patient shadow-none e1" id="phone" type="tel"  />
                             <label class="contact-create-patient-text" for="phone"> </label>
-                            <span asp-validation-for="Mobile" class="text-danger"></span>
+                    <span class="contactValidation"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input asp-for="MedicalLicense" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="last-name-create-patient-text" for="floatingInput">Medical License #</label>
-                            <span asp-validation-for="MedicalLicense" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input asp-for="Npinumber" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="last-name-create-patient-text" for="floatingInput">NPI Number</label>
-                            <span asp-validation-for="Npinumber" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -110,9 +109,9 @@
 
                     <div class="col-md-6 gy-3">
                         <div class="form-floating mb-3">
-                            <input asp-for="Address1" type="text" class="form-control street-create-patient  shadow-none info" id="floatingInput" placeholder="" >
+                            <input asp-for="Address1" type="text" class="form-control address street-create-patient  shadow-none info" id="floatingInput" placeholder="" >
                             <label class="street-create-patient-text" for="floatingInput">Address 1</label>
-                            <span asp-validation-for="Address1" class="text-danger"></span>
+                    <span class="addressValidation"></span>
                         </div>
                     </div>
 
@@ -121,13 +120,14 @@
                             <input asp-for="Address2" type="text" class="form-control street-create-patient  shadow-none info" id="floatingInput" placeholder="" >
                             <label class="street-create-patient-text" for="floatingInput">Address 2</label>
 
+
                         </div>
                     </div>
                     <div class="col-md-6 gy-3">
                         <div class="form-floating mb-3">
                             <input asp-for="City" type="text" class="form-control city-create-patient shadow-none info" id="floatingInput" placeholder="" >
                             <label class="city-create-patient-text" for="floatingInput">City</label>
-                            <span asp-validation-for="City" class="text-danger"></span>
+                    <span class="cityValidation"></span>
                         </div>
                     </div>
 
@@ -136,21 +136,21 @@
                         <div class="form-floating mb-3">
                             <input  type="text" class="form-control state-create-patient shadow-none info" id="floatingInput" placeholder="" >
                             <label class="state-create-patient-text" for="floatingInput">State</label>
-                            
+                    <span class="stateValidation"></span>
                         </div>
                     </div>
                     <div class="col-md-6 gy-3">
                         <div class="form-floating mb-3">
                             <input asp-for="Zip" type="text" class="form-control zipcode-create-patient shadow-none info" id="floatingInput" placeholder="" >
                             <label class="zipcode-create-patient-text" for="floatingInput">Zipcode</label>
-                            <span asp-validation-for="Zip" class="text-danger"></span>
+                    <span class="zipcodeValidation"></span>
                         </div>
                     </div>
                     <div class="col-md-6 gy-3 ">
                         <div class="form-floating mb-3">
                             <input asp-for="AltPhone" class=" form-control contact-create-patient shadow-none info" id="phone1" type="tel" />
                             <label class="contact-create-patient-text" for="phone1"> </label>
-                            <span asp-validation-for="AltPhone" class="text-danger"></span>
+                           
                         </div>
                     </div>
 
@@ -163,7 +163,7 @@
                         <div class="form-floating mb-3">
                             <input asp-for="BusinessName" type="text" class="form-control binfo first-name-create-patient shadow-none" id="floatingInput" placeholder="" >
                             <label class="first-name-create-patient-text" for="floatingInput">Business Name</label>
-
+                            <span asp-validation-for="BusinessName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 gy-3">
@@ -275,6 +275,64 @@
         </div>
         </form>
 
+
+<script>
+    $('#createBtn').click(function (e) {
+        var password = $('#password').val();
+        var role = $('#role').val();
+        var firstName = $('.first-name-create-patient').val();
+        var lastName = $('.last-name-create-patient').val();
+
+        var email = $('.phyEmail').val();
+        var contact = $('.contact-create-patient').val();
+        var address = $('.address').val();
+        var city = $('.city-create-patient').val();
+        var state = $('.state-create-patient').val();
+        var zip = $('.zipcode-create-patient').val();
+        if (password == "") {
+            $('#passwordValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (role == "" || role == "Select Roles") {
+            $('.roleValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (firstName == "") {
+            $('.firstNameValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (lastName == "") {
+            $('.lastNameValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (email == "") {
+            $('.emailValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (contact == "") {
+            $('.contactValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (address == "") {
+            $('.addressValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (city == "") {
+            $('.cityValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (state == "") {
+            $('.stateValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+        if (zip == "") {
+            $('.zipcodeValidation').text("Required field!").css("color", "red");
+            e.preventDefault();
+        }
+    });
+
+
+</script>
 
 
     <script>

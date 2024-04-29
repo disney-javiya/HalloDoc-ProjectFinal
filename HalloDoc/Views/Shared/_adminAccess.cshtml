@@ -41,7 +41,21 @@
 
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AccountType)
+                           @*  @Html.DisplayFor(modelItem => item.AccountType) *@
+                            @{
+                                short? accountType = item.AccountType;
+                                switch (accountType)
+                                {
+                                    case 1:
+                                        <p>Admin</p>
+                                        break;
+                                    case 2:
+                                        <p>Physician</p>
+                                        break;
+                                  
+
+                                }
+                            }
 
                         </td>
 

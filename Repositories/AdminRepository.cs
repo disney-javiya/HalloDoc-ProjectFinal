@@ -439,8 +439,11 @@ namespace Repository
         {
             return _context.Regions.ToList();
         }
-        public List<ShiftDetailsModel> getshiftDetail()        {            var data = from sd in _context.ShiftDetails                       join                       s in _context.Shifts on sd.ShiftId equals s.ShiftId                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId                       join reg in _context.Regions on sd.RegionId equals reg.RegionId where sd.IsDeleted == new BitArray(new bool[] {false})                       select new ShiftDetailsModel                       {                           PhysicianName = phy.FirstName + " " + phy.LastName,                           Physicianid = phy.PhysicianId,                           RegionName = reg.Name,                           Status = sd.Status,                           Starttime = sd.StartTime,                           Endtime = sd.EndTime,                           Shiftdate =DateOnly.FromDateTime(sd.ShiftDate),
-                                                       Shiftdetailid = sd.ShiftDetailId,                       };            return data.ToList();        }
+        public List<ShiftDetailsModel> getshiftDetail(int? regionId)        {            var data = from sd in _context.ShiftDetails                       join                       s in _context.Shifts on sd.ShiftId equals s.ShiftId                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId                       join reg in _context.Regions on sd.RegionId equals reg.RegionId where sd.IsDeleted == new BitArray(new bool[] {false})                       select new ShiftDetailsModel                       {                           PhysicianName = phy.FirstName + " " + phy.LastName,                           Physicianid = phy.PhysicianId,                           RegionName = reg.Name,                           Status = sd.Status,                           Starttime = sd.StartTime,                           Endtime = sd.EndTime,                           Shiftdate =DateOnly.FromDateTime(sd.ShiftDate),
+                                                       Shiftdetailid = sd.ShiftDetailId,                       };            if(regionId != 0)
+            {
+                data = data.Where(x=>x.RegionId == regionId);
+            }            return data.ToList();        }
 
         public List<RequestandRequestClient> getFilterByRegions(IEnumerable<RequestandRequestClient> r, int regionId)
         {
@@ -2286,11 +2289,26 @@ namespace Repository
             List<BlockRequest> res = GetAllBlockRequests();
             if (patientName != null)
             {
-                patientName = patientName.ToLower();
+                
+                var rc = _context.RequestClients.Where(x => x.FirstName.ToLower().Contains(patientName.ToLower())).Select(x => x.RequestId).ToList();
+                List<BlockRequest> ans = new List<BlockRequest>();
+                foreach (var i in rc)
+                {
+                    var a = res.Where(x => int.Parse(x.RequestId) == i).FirstOrDefault();
+                    if (a != null)
+                    {
+                        ans.Add(a);
+                    }
+
+                }
+                res = ans.ToList();
             }
 
 
-
+            if (patientName != null)
+            {
+               
+            }
 
             if (date != null)
             {
@@ -2525,11 +2543,6 @@ namespace Repository
 
 
         public List<Physician> getPhysicianOnCallList(int reg)        {            var time = TimeOnly.FromDateTime(DateTime.Now);            if (reg != 0)                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();            else                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();        }
-
-
-
-
-
 
 
         public ShiftDetailsModel SchedulingMonth(int monthNum) 

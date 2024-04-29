@@ -61,14 +61,8 @@ namespace HalloDoc.Controllers
 
             if (data == null)
             {
-
-                TempData["Error"] = true;
-
-
-
+                TempData["isNotValidateUser"] = true;
                 return View("Index", user);
-
-
             }
             AspNetUser loginuser = new()
             {
@@ -76,9 +70,6 @@ namespace HalloDoc.Controllers
                 UserName = data.UserName,
                 Id = data.Id
             };
-
-     
-
             string rolename = _patientRepository.getRoleName(loginuser);
 
             var jwttoken = _authenticate.GenerateJwtToken(loginuser, rolename);
@@ -92,9 +83,6 @@ namespace HalloDoc.Controllers
                 return Redirect(returnUrl);
             else
                 return RedirectToAction("patientDashboard");
-
-
-
 
         }
 
@@ -558,11 +546,6 @@ namespace HalloDoc.Controllers
             _patientRepository.UploadFiles(requestId, files);
             return RedirectToAction("ViewDocuments", new { requestId = requestId });
         }
-
-
-
-
-
 
         public IActionResult DownloadFiles(string fileIds, int? requestId)
         {

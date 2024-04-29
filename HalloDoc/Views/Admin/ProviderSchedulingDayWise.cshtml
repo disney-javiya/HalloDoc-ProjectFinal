@@ -21,7 +21,7 @@
             <div class=" container rounded bg-white shadow py-3 ">
                 <div class="d-flex align-items-center justify-content-between my-3">
                     <div class="col-md-4 col-sm-12">
-                        <select class="form-select form-select-lg" id="Regions">
+                        <select class="form-select form-select-lg" id="region">
 
                             <option selected><i class="fa fa-search text-muted position-absolute" style="padding-top:10px; padding-left:10px;"></i>All Regions</option>
 
@@ -156,8 +156,30 @@
                 </form>
             </div>
         </div>
-    </div> 
+    </div>
+<script>
+    $(document).ready(function () {
 
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+
+            success: function (data) {
+
+                var regionDropdown = $('#region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').text("Select Regions"));
+                $.each(data, function (index, region) {
+                    regionDropdown.append($('<option></option>').attr('value', region.regionId).text(region.name));
+                });
+            }
+        });
+
+
+
+
+    });
+</script>
 
     <script>
         $('#createShiftSubmit').click(function (e) {

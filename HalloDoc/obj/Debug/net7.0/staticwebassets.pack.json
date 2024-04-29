@@ -93,6 +93,10 @@
       "PackagePath": "staticwebassets\\Files\\11116016_415_prev_ui.png"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\Assignment 5-PMS.pdf",
+      "PackagePath": "staticwebassets\\Files\\Assignment 5-PMS.pdf"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\Assignment-1234.pdf",
       "PackagePath": "staticwebassets\\Files\\Assignment-1234.pdf"
     },
@@ -127,6 +131,10 @@
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\MVC.pdf",
       "PackagePath": "staticwebassets\\Files\\MVC.pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\MedicalReport.pdf",
+      "PackagePath": "staticwebassets\\Files\\MedicalReport.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\Plan_till_1Feb2024.pdf",

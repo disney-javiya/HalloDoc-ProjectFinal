@@ -31,6 +31,7 @@ using System.Globalization;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Bibliography;
+using System.Drawing;
 
 namespace HalloDoc.Controllers
 {
@@ -64,6 +65,7 @@ namespace HalloDoc.Controllers
             if (data == null)
             {
                 ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                TempData["isNotValidateUser"] = true;
                 return View(user);
             }
             AspNetUser loginuser = new()
@@ -1100,8 +1102,7 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin")]
         public IActionResult providerMenu()
         {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            
+            ViewBag.Data = HttpContext.Session.GetString("key");        
             return View();
         }
 
@@ -1122,7 +1123,7 @@ namespace HalloDoc.Controllers
                 model.physicians = _adminRepository.GetAllPhysicians();
             }
 
-
+            model.roles = _adminRepository.GetAllRoles();
             var count = model.physicians.Count();
             if (count > 0)
             {
@@ -1160,7 +1161,6 @@ namespace HalloDoc.Controllers
         public IActionResult editPhysicianAccount(int physicianId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-
             var res = _adminRepository.getPhysicianDetails(physicianId);
             return View(res);
         }
@@ -1225,12 +1225,7 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.physicianUpdateBusiness(ViewBag.Data, physicianId, p, files, photo, signature);
-
-
-
             return RedirectToAction("editPhysicianAccount", new { physicianId = physicianId });
-
-
 
 
         }
@@ -1240,13 +1235,7 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             _adminRepository.physicianUpdateUpload(ViewBag.Data, physicianId, agreementDoc, backgroundDoc, hippaDoc, disclosureDoc, licenseDoc);
-
-
-
             return RedirectToAction("editPhysicianAccount", new { physicianId = physicianId });
-
-
-
 
         }
 
@@ -1496,7 +1485,7 @@ namespace HalloDoc.Controllers
                 model.healthProfessionals = _adminRepository.GetHealthProfessionals();
             }
 
-
+            model.healthProfessionaltype = _adminRepository.GetAllHealthProfessionalType();
             var count = model.healthProfessionals.Count();
             if (count > 0)
             {
@@ -1565,6 +1554,7 @@ namespace HalloDoc.Controllers
             
             ViewBag.Data = HttpContext.Session.GetString("key");
             dashboardTableModel model = new dashboardTableModel();
+            model.requestClients = _adminRepository.GetAllRequestClient();
             if (patientName != null || date != null || email != null || phone != null)
             {
                 model.blockRequests = _adminRepository.filterBlockedHistory(patientName, date, email, phone);
@@ -1808,34 +1798,37 @@ namespace HalloDoc.Controllers
             return PartialView("_SMSLogs", model);
         }
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingDayWise()
+        public IActionResult ProviderSchedulingDayWise(int? regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            ShiftDetailsModel model = getSchedulingData();
+            ShiftDetailsModel model = getSchedulingData(regionId);
+           
             return View(model);
         }
 
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingWeekWise()
+        public IActionResult ProviderSchedulingWeekWise(int? regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            ShiftDetailsModel model = getSchedulingData();
+            ShiftDetailsModel model = getSchedulingData(regionId);
+
             return View(model);
         }
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingMonthWise()
+        public IActionResult ProviderSchedulingMonthWise(int? regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            ShiftDetailsModel model = getSchedulingData();
+            ShiftDetailsModel model = getSchedulingData(regionId);
             return View(model);
         }
 
-        public ShiftDetailsModel getSchedulingData()
+        public ShiftDetailsModel getSchedulingData(int? regionId)
         {
             ShiftDetailsModel model = new();
             model.physicians = _adminRepository.GetAllPhysicians();
             model.regions = _adminRepository.getAllRegions();
-            model.shiftDetails = _adminRepository.getshiftDetail();
+            model.shiftDetails = _adminRepository.getshiftDetail(regionId);
+           
             return model;
         }
         public IActionResult _ViewShiftModal()
