@@ -23,6 +23,7 @@ using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using Twilio.TwiML.Voice;
+
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -30,6 +31,7 @@ using Paragraph = iText.Layout.Element.Paragraph;
 using iText.Layout.Properties;
 using Table = iText.Layout.Element.Table;
 using Cell = iText.Layout.Element.Cell;
+
 
 namespace Repository
 {
@@ -439,12 +441,8 @@ namespace Repository
         {
             return _context.Regions.ToList();
         }
-        public List<ShiftDetailsModel> getshiftDetail(int? regionId)        {            var data = from sd in _context.ShiftDetails                       join                       s in _context.Shifts on sd.ShiftId equals s.ShiftId                       join phy in _context.Physicians on s.PhysicianId equals phy.PhysicianId                       join reg in _context.Regions on sd.RegionId equals reg.RegionId where sd.IsDeleted == new BitArray(new bool[] {false})                       select new ShiftDetailsModel                       {                           PhysicianName = phy.FirstName + " " + phy.LastName,                           Physicianid = phy.PhysicianId,                           RegionName = reg.Name,                           Status = sd.Status,                           Starttime = sd.StartTime,                           Endtime = sd.EndTime,                           Shiftdate =DateOnly.FromDateTime(sd.ShiftDate),
-                                                       Shiftdetailid = sd.ShiftDetailId,                       };            if(regionId != 0)
-            {
-                data = data.Where(x=>x.RegionId == regionId);
-            }            return data.ToList();        }
 
+        public List<ShiftDetailsModel> getshiftDetail(int reg)        {            if (reg == 0)                return _context.ShiftDetails.Where(e => e.IsDeleted != new BitArray(1, true))                   .Include(e => e.Shift)                   .ThenInclude(e => e.Physician).ThenInclude(e => e.Region).Select(e =>                       new ShiftDetailsModel                       {                           PhysicianName = e.Shift.Physician.FirstName + " " + e.Shift.Physician.LastName,                           Physicianid = e.Shift.Physician.PhysicianId,                           RegionName = e.Shift.Physician.Region.Name,                           Status = e.Status,                           Starttime = e.StartTime,                           Endtime = e.EndTime,                           Shiftdate = DateOnly.FromDateTime(e.ShiftDate),                           Shiftdetailid = e.ShiftDetailId,                       }                   ).ToList();            else                return _context.ShiftDetails.Where(e => e.IsDeleted != new BitArray(1, true) && e.RegionId == reg)                .Include(e => e.Shift)                .ThenInclude(e => e.Physician).ThenInclude(e => e.Region).Select(e =>                    new ShiftDetailsModel                    {                        PhysicianName = e.Shift.Physician.FirstName + " " + e.Shift.Physician.LastName,                        Physicianid = e.Shift.Physician.PhysicianId,                        RegionName = e.Shift.Physician.Region.Name,                        Status = e.Status,                        Starttime = e.StartTime,                        Endtime = e.EndTime,                        Shiftdate = DateOnly.FromDateTime(e.ShiftDate),                        Shiftdetailid = e.ShiftDetailId,                    }                ).ToList();        }
         public List<RequestandRequestClient> getFilterByRegions(IEnumerable<RequestandRequestClient> r, int regionId)
         {
             List<RequestandRequestClient> s = new List<RequestandRequestClient>();
@@ -1163,6 +1161,31 @@ namespace Repository
                 physician.RoleId = roleid;
                 _context.Physicians.Add(physician);
                 _context.SaveChanges();
+
+
+                string Address = p.Address1 + "," + p.Address2 + "," + p.City  + "," + p.Zip;
+                var locationService = new GoogleMaps.LocationServices.GoogleLocationService(apikey: "AIzaSyARrk6kY-nnnSpReeWotnQxCAo_MoI4qbU");
+                var point = locationService.GetLatLongFromAddress(Address);
+                var latitude = point.Latitude;
+                var longitude = point.Longitude;
+
+                PhysicianLocation physicianLocation = new PhysicianLocation();
+
+
+                physicianLocation.Latitude = (decimal?)latitude;
+                physicianLocation.Longitude = (decimal?)longitude;
+                physicianLocation.PhysicianId = physician.PhysicianId;
+                physicianLocation.CreatedDate = DateTime.Now;
+                physicianLocation.PhysicianName = p.FirstName;
+                physicianLocation.Address = p.City;
+              
+                _context.PhysicianLocations.Add(physicianLocation);
+                _context.SaveChanges();
+
+
+
+
+               
                 if (photo != null && photo.Length > 0)
                 {
 
@@ -2055,7 +2078,7 @@ namespace Repository
                 int hid = _context.HealthProfessionalTypes.Where(x => x.HealthProfessionalId == h.Profession).Select(u => u.HealthProfessionalId).First();
                 healthProfessional.Profession = hid;
                 healthProfessional.FaxNumber = h.FaxNumber;
-                healthProfessional.Address = h.Address;
+                healthProfessional.Address = h.City + h.State;
                 healthProfessional.City = h.City;
                 healthProfessional.State = h.State;
                 healthProfessional.Zip  = h.Zip;

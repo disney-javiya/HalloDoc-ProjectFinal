@@ -50,7 +50,7 @@
 
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
+                            <input asp-for="FirstName" type="text" class="form-control firstName first-name-create-patient shadow-none e1" id="floatingInput" placeholder="" >
                             <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
                     <span class="firstNameValidation"></span>
                         </div>
@@ -280,7 +280,7 @@
     $('#createBtn').click(function (e) {
         var password = $('#password').val();
         var role = $('#role').val();
-        var firstName = $('.first-name-create-patient').val();
+        var firstName = $('.firstName').val();
         var lastName = $('.last-name-create-patient').val();
 
         var email = $('.phyEmail').val();

@@ -26,7 +26,6 @@ public partial class Admin
     public string Email { get; set; } = null!;
 
     [StringLength(20)]
-    [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
     public string? Mobile { get; set; }
 
     [StringLength(500)]
@@ -44,7 +43,6 @@ public partial class Admin
     public string? Zip { get; set; }
 
     [StringLength(20)]
-    [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
     public string? AltPhone { get; set; }
 
     [StringLength(128)]

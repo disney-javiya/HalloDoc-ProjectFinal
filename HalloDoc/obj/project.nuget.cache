@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "M53IGOcmgSJcWSERIgGJSwj7QJ81AbRHyb47XYGcRrlPsWIKYN+yR0jmAOl/ULmQFwZaqahYGWx984K2Ud7MJw==",
+  "dgSpecHash": "E+eKUzA3jQFM/EvmNwnv/yE/q7FUzuHG+pmuqJo0pKkMZodzQGwKWL1Kx8px1zwCFgjKPQitzc+LheVq50hvkw==",
   "success": true,
   "projectFilePath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\HalloDoc.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\pce88\\.nuget\\packages\\closedxml\\0.102.2\\closedxml.0.102.2.nupkg.sha512",
     "C:\\Users\\pce88\\.nuget\\packages\\documentformat.openxml\\2.16.0\\documentformat.openxml.2.16.0.nupkg.sha512",
     "C:\\Users\\pce88\\.nuget\\packages\\excelnumberformat\\1.1.0\\excelnumberformat.1.1.0.nupkg.sha512",
+    "C:\\Users\\pce88\\.nuget\\packages\\googlemaps.locationservices\\1.2.0.5\\googlemaps.locationservices.1.2.0.5.nupkg.sha512",
     "C:\\Users\\pce88\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\pce88\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\pce88\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

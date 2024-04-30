@@ -46,7 +46,7 @@
 
                         <div class="col-12">
                             <div class="form-floating mb-3 inp custom-date-input">
-                                <input asp-for=ShiftDetailData.ShiftDate asp-format="{0:yyyy-MM-dd}" type="date" class="form-control shiftDate input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
+                                <input asp-for=ShiftDetailData.ShiftDate asp-format="{0:yyyy-MM-dd}" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control shiftDate input-1 view-shift-inp" id="floatingInput-4" placeholder="ShiftDate" disabled>
                                 <label for="floatingInput-4" class="view-shift-label">Shift Date</label>
                             </div>
                             <span id="shiftDateValidation"></span>
@@ -68,7 +68,7 @@
                                 <label for="floatingInput-4" class="view-shift-label">End</label>
                             </div>
                         </div>
-                        <span id="startTimeSpan" class="text-danger hide">Start Time & End Time Cannot be Same!!!</span>
+                      
                     </div>
                     <div class="modal-footer">
                         <a href=" @Url.Action("UpdateShiftStatus", "Admin", new { id = Model.ShiftDetailData.ShiftDetailId})" @* asp-action="UpdateShiftStatus" asp-controller="Admin" asp-route-id="ShiftDetailData.ShiftDetailId" *@><button type="button" id="" class="btn btn-info text-white">Return</button></a>

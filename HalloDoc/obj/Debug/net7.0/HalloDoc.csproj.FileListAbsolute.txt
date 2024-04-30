@@ -817,3 +817,4 @@ D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\b
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\itext.bouncy-castle-fips-adapter.dll
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\itext.commons.dll
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\Microsoft.DotNet.PlatformAbstractions.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\GoogleMaps.LocationServices.dll

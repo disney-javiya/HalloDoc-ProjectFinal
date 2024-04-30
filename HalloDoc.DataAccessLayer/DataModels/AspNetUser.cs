@@ -14,10 +14,10 @@ public partial class AspNetUser
 
     [StringLength(256)]
     public string UserName { get; set; } = null!;
-   
+
     [Column(TypeName = "character varying")]
     public string? PasswordHash { get; set; }
-   
+
     [StringLength(256)]
     public string? Email { get; set; }
 

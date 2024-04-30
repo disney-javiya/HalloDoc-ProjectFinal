@@ -147,7 +147,7 @@ namespace Repository.IRepository
         public List<Smslog> filterSMSLogs(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate);
 
         //public List<ShiftDetailsModel> getshiftDetail();
-        public List<ShiftDetailsModel> getshiftDetail(int? regionId);
+        public List<ShiftDetailsModel> getshiftDetail(int reg);
         public ShiftDetailsModel getViewShiftData(int id);
         public Shift getShiftByID(int shiftid);
         public List<Physician> getPhysicianListByregion(int regid);

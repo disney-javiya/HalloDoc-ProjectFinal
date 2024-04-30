@@ -4,10 +4,10 @@
 @{
     Layout = "_AdminHeader";
 }
-<link rel="stylesheet" href="~/css/Scheduling.css" />
+
 <script src="~/js/daypilot-all.min.js"></script>
 
-<div class="container ">
+<div class="container scheduling">
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between mt-3">
@@ -102,10 +102,12 @@
                     <span id="physicianValidation"></span>
 
                         <div class="form-floating mb-3">
-                            <input asp-for="Shiftdate" type="date" class="form-control shiftDate dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                            <input asp-for="Shiftdate" type="date" class="form-control shiftDate dob-create-patient shadow-none" id="floatingInput" min="@DateTime.Now.ToString("yyyy-MM-dd")" placeholder="">
                             <label class="dob-create-patient-text" for="floatingInput">Shift Date</label>
                         <span id="shiftDateValidation"></span>
                         </div>
+                  
+
                         <div class="form-floating mb-3">
                             <input asp-for="Starttime" type="time" class="form-control startTime dob-create-patient shadow-none" placeholder="">
                             <label class="dob-create-patient-text">Start</label>
@@ -153,6 +155,7 @@
                         <button type="submit" id="createShiftSubmit" class="btn submit-btn-assigncase">Submit</button>
                         <button type="button" class="btn cancel-btn-cancelcase" data-bs-dismiss="modal">Cancel</button>
                     </div>
+                    
                 </form>
             </div>
         </div>
@@ -175,12 +178,14 @@
             }
         });
 
-
-
-
     });
 </script>
+<script>
+    $(document).ready(function () {
 
+        $('.provider').css('border-bottom', 'solid 3px #01bce9');
+    });
+</script>
     <script>
         $('#createShiftSubmit').click(function (e) {
            
@@ -398,3 +403,15 @@
     document.querySelector(".scheduler_default_corner_inner").nextElementSibling.style.display = "none";
 
 </script>
+<script>
+    $(document).ready(function () {
+        $('#region').change(function () {
+            var regionId = $(this).val();
+
+            window.location.href = "/Admin/ProviderSchedulingDayWise?regionId=" + regionId;
+
+
+        });
+
+    });
+</script> 

@@ -635,27 +635,18 @@
 
 <script>
     $(document).ready(function () {
-
         $.ajax({
             url: '/Admin/GetPhysiciansRoles',
             type: 'GET',
-
             success: function (data) {
-
                 var roleDropdown = $('#role');
                 roleDropdown.empty();
-
                 roleDropdown.append($('<option></option>').text(@Model.RoleId));
                 $.each(data, function (index, RoleId) {
-
                     roleDropdown.append($('<option></option>').attr('value', RoleId.roleId).text(RoleId.name));
                 });
             }
         });
-
-
-
-
     });
 </script>
 

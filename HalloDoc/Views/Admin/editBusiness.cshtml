@@ -28,9 +28,7 @@
                         </div>
                         <div class="col-md-6 ">
                             <select name="Profession" id="healthprofesional" class="form-select mb-3 p-3" aria-label="Default select example">
-                                <option selected>All Health Professional</option>
-
-
+                      
                             </select>
                         </div>
 
@@ -118,7 +116,16 @@
 
                     var healthprofesionalDropdown = $('#healthprofesional');
                     healthprofesionalDropdown.empty();
-                    healthprofesionalDropdown.append($('<option></option>').text("Select Profession"));
+                if (@Model.Profession == 1) {
+                    healthprofesionalDropdown.append($('<option></option>').attr('value', 1).text("Nursing"));
+                }
+                else if (@Model.Profession == 2) {
+                    healthprofesionalDropdown.append($('<option></option>').attr('value', 2).text("Pharmacy"));
+                }
+                else {
+                    healthprofesionalDropdown.append($('<option></option>').attr('value', 0).text("Select Healthprofessional Type"));
+                }
+                   
                     $.each(data, function (index, Profession) {
 
                         healthprofesionalDropdown.append($('<option></option>').attr('value', Profession.healthProfessionalId).text(Profession.professionName));

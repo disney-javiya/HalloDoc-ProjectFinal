@@ -32,7 +32,6 @@
                     <div class="col-md-6 gy-3">
                         <select asp-for="Status" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
                             <option selected>Status</option>
-         
                             <option value="2">Active</option>
                             <option value="3">Not Active</option>
                         </select>
@@ -224,7 +223,12 @@
         });
 
     </script>
+<script>
+    $(document).ready(function () {
 
+        $('#adminProfile').css('border-bottom', 'solid 3px #01bce9');
+    });
+</script>
 
 <script>
     $('#submit1').click(function (e) {

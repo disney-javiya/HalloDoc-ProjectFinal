@@ -31,7 +31,7 @@ using System.Globalization;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Bibliography;
-using System.Drawing;
+
 
 namespace HalloDoc.Controllers
 {
@@ -1798,7 +1798,7 @@ namespace HalloDoc.Controllers
             return PartialView("_SMSLogs", model);
         }
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingDayWise(int? regionId)
+        public IActionResult ProviderSchedulingDayWise(int regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ShiftDetailsModel model = getSchedulingData(regionId);
@@ -1807,7 +1807,7 @@ namespace HalloDoc.Controllers
         }
 
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingWeekWise(int? regionId)
+        public IActionResult ProviderSchedulingWeekWise(int regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ShiftDetailsModel model = getSchedulingData(regionId);
@@ -1815,14 +1815,14 @@ namespace HalloDoc.Controllers
             return View(model);
         }
         [CustomeAuthorize("Admin")]
-        public IActionResult ProviderSchedulingMonthWise(int? regionId)
+        public IActionResult ProviderSchedulingMonthWise(int regionId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ShiftDetailsModel model = getSchedulingData(regionId);
             return View(model);
         }
 
-        public ShiftDetailsModel getSchedulingData(int? regionId)
+        public ShiftDetailsModel getSchedulingData(int regionId)
         {
             ShiftDetailsModel model = new();
             model.physicians = _adminRepository.GetAllPhysicians();

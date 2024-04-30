@@ -14,16 +14,16 @@
 <div class="tab-dashboard mt-1">
     <ul class="nav m-2">
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="adminDashboard" aria-current="page">Dashboard</a>
+            <a class="nav-link" id="dashboard" asp-controller="Admin" asp-action="adminDashboard" aria-current="page">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="providerLocation">Provider Location</a>
+            <a class="nav-link" id="providerLocation" asp-controller="Admin" asp-action="providerLocation">Provider Location</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="adminProfile">My Profile</a>
+            <a class="nav-link" id="adminProfile" asp-controller="Admin" asp-action="adminProfile">My Profile</a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle provider"  href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Providers
             </a>
                 
@@ -35,11 +35,11 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Admin" asp-action="partnersPage">Partners</a>
+            <a class="nav-link" id="partners"  asp-controller="Admin" asp-action="partnersPage">Partners</a>
         </li>
        
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle access" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Access
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -50,7 +50,7 @@
         </li>
         
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle records" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Records
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -71,3 +71,4 @@
         element1.classList.toggle("dark-mode");
     }
 </script>
+

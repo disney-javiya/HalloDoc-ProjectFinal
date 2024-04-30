@@ -66,6 +66,15 @@
           }
         }
       },
+      "GoogleMaps.LocationServices/1.2.0.5": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
+        }
+      },
       "Humanizer/2.14.1": {
         "type": "package",
         "dependencies": {
@@ -4835,6 +4844,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "ClosedXML": "0.102.2",
+          "GoogleMaps.LocationServices": "1.2.0.5",
           "Microsoft.AspNet.Mvc": "5.3.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.16",
           "Microsoft.AspNetCore.Http.Features": "5.0.17",
@@ -4856,6 +4866,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "ClosedXML": "0.102.2",
+          "GoogleMaps.LocationServices": "1.2.0.5",
           "HalloDoc.DataAccessLayer": "1.0.0",
           "Microsoft.AspNet.Mvc": "5.3.0",
           "Microsoft.AspNet.WebApi.Core": "5.3.0",
@@ -4955,6 +4966,18 @@
         "lib/netstandard1.0/ExcelNumberFormat.xml",
         "lib/netstandard2.0/ExcelNumberFormat.dll",
         "lib/netstandard2.0/ExcelNumberFormat.xml"
+      ]
+    },
+    "GoogleMaps.LocationServices/1.2.0.5": {
+      "sha512": "0j3RL5+acxYgQNz72JdXJ1nUKxMGaY+6UvrOIOxZfp0qpJOUmo/ivCAm53atbnuy0z3vrZK+j9mZifh35UBqag==",
+      "type": "package",
+      "path": "googlemaps.locationservices/1.2.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "googlemaps.locationservices.1.2.0.5.nupkg.sha512",
+        "googlemaps.locationservices.nuspec",
+        "lib/netstandard2.0/GoogleMaps.LocationServices.dll"
       ]
     },
     "Humanizer/2.14.1": {
@@ -13229,6 +13252,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "ClosedXML >= 0.102.2",
+      "GoogleMaps.LocationServices >= 1.2.0.5",
       "HalloDoc.DataAccessLayer >= 1.0.0",
       "Microsoft.AspNetCore.Authentication >= 2.1.2",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.16",
@@ -13297,6 +13321,10 @@
           "ClosedXML": {
             "target": "Package",
             "version": "[0.102.2, )"
+          },
+          "GoogleMaps.LocationServices": {
+            "target": "Package",
+            "version": "[1.2.0.5, )"
           },
           "Microsoft.AspNetCore.Authentication": {
             "target": "Package",

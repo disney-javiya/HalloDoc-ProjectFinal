@@ -232,9 +232,9 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PhysicianLocation>(entity =>
         {
-            entity.Property(e => e.LocationId).ValueGeneratedOnAdd();
+            entity.HasKey(e => e.LocationId).HasName("PhysicianLocation_pkey");
 
-            entity.HasOne(d => d.Physician).WithMany()
+            entity.HasOne(d => d.Physician).WithMany(p => p.PhysicianLocations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("PhysicianLocation_PhysicianId_fkey");
         });

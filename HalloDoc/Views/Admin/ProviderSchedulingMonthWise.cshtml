@@ -4,7 +4,6 @@
 @{
     Layout = "_AdminHeader";
 }
-<link rel="stylesheet" href="~/css/Scheduling.css" />
 <script src="~/js/daypilot-all.min.js"></script>
 
 <div class="container ">
@@ -21,7 +20,7 @@
             <div class=" container rounded bg-white shadow py-3 ">
                 <div class="d-flex align-items-center justify-content-between my-3">
                     <div class="col-md-4 col-sm-12">
-                        <select class="form-select form-select-lg" id="Regions">
+                        <select class="form-select form-select-lg" id="region">
 
                             <option selected><i class="fa fa-search text-muted position-absolute" style="padding-top:10px; padding-left:10px;"></i>All Regions</option>
 
@@ -102,7 +101,7 @@
                         </select>
 
                         <div class="form-floating mb-3">
-                            <input asp-for="Shiftdate" type="date" class="form-control dob-create-patient shadow-none" id="floatingInput" placeholder="">
+                        <input asp-for="Shiftdate" type="date" class="form-control dob-create-patient shadow-none" min="@DateTime.Now.ToString("yyyy-MM-dd")" id="floatingInput" placeholder="">
                             <label class="dob-create-patient-text" for="floatingInput">Shift Date</label>
 
                         </div>
@@ -178,6 +177,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function () {
             $('.region').change(function () {
@@ -304,3 +304,38 @@
     app.init();
 </script>
 
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+
+            success: function (data) {
+
+                var regionDropdown = $('#region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').text("Select Regions"));
+                $.each(data, function (index, region) {
+                    regionDropdown.append($('<option></option>').attr('value', region.regionId).text(region.name));
+                });
+            }
+        });
+
+
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#region').change(function () {
+            var regionId = $(this).val();
+
+            window.location.href = "/Admin/ProviderSchedulingMonthWise?regionId=" + regionId;
+
+
+        });
+
+    });
+</script> 

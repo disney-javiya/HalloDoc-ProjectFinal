@@ -27,7 +27,6 @@ public partial class Physician
     public string Email { get; set; } = null!;
 
     [StringLength(20)]
-    [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
     public string? Mobile { get; set; }
 
     [StringLength(500)]
@@ -66,7 +65,6 @@ public partial class Physician
     public string? Zip { get; set; }
 
     [StringLength(20)]
-    [RegularExpression("^([0]|\\+91)?[6789]\\d{9}$", ErrorMessage = "Enter Valid Mobile Number")]
     public string? AltPhone { get; set; }
 
     [StringLength(128)]
@@ -126,6 +124,9 @@ public partial class Physician
     public virtual AspNetUser? ModifiedByNavigation { get; set; }
 
     [InverseProperty("Physician")]
+    public virtual ICollection<PhysicianLocation> PhysicianLocations { get; set; } = new List<PhysicianLocation>();
+
+    [InverseProperty("Physician")]
     public virtual ICollection<PhysicianNotification> PhysicianNotifications { get; set; } = new List<PhysicianNotification>();
 
     [InverseProperty("Physician")]
@@ -134,7 +135,6 @@ public partial class Physician
     [ForeignKey("RegionId")]
     [InverseProperty("Physicians")]
     [JsonIgnore]
-
     public virtual Region? Region { get; set; }
 
     [InverseProperty("Physician")]
