@@ -301,7 +301,10 @@ namespace HalloDoc.Controllers
             return View();
         }
 
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult createPatientRequest(patientInfo RequestData)
@@ -522,8 +525,6 @@ namespace HalloDoc.Controllers
         public IActionResult patientProfile()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-          
-            
             var res = _patientRepository.GetPatientData(ViewBag.Data);
             return View(res);
         }
@@ -531,9 +532,7 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Patient")]
         public IActionResult patientProfile(User u)
         {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-           
-            
+            ViewBag.Data = HttpContext.Session.GetString("key"); 
             _patientRepository.updateProfile(ViewBag.Data, u);
             return View();
         }

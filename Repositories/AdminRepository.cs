@@ -1235,10 +1235,7 @@ namespace Repository
         {
             return _context.Physicians.Where(x=>x.IsDeleted == new BitArray(new bool[] {false})).ToList();
         }
-        //public List<Physician> getPhysiciansbyRegion(int? regionId)
-        //{
-        //    return _context.Physicians.Where(x => x.IsDeleted == new BitArray(new bool[] { false }) && x.RegionId == regionId).ToList();
-        //}
+       
 
         public Physician getPhysicianDetails(int physicianId)
         {
@@ -2565,7 +2562,14 @@ namespace Repository
  
 
 
-        public List<Physician> getPhysicianOnCallList(int reg)        {            var time = TimeOnly.FromDateTime(DateTime.Now);            if (reg != 0)                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();            else                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();        }
+        public List<Physician> getPhysicianOnCallList(int regionId)        {            var time = TimeOnly.FromDateTime(DateTime.Now);            if (regionId != 0)
+            {
+                List<Physician> phy = _context.Physicians.Include(p => p.Shifts)
+                   .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))
+                   .OrderBy(e => e.PhysicianId).ToList();
+                phy = phy.Where(x=>x.RegionId == regionId).ToList();
+                return phy;
+            }                            else                return _context.Physicians.Include(p => p.Shifts)                    .ThenInclude(p => p.ShiftDetails.Where(e => DateOnly.FromDateTime(e.ShiftDate) == DateOnly.FromDateTime(DateTime.Now) && e.StartTime <= time && e.EndTime >= time))                    .OrderBy(e => e.PhysicianId).ToList();        }
 
 
         public ShiftDetailsModel SchedulingMonth(int monthNum) 
@@ -2573,7 +2577,7 @@ namespace Repository
             return new ShiftDetailsModel
             {
                 regions = getAllRegions(),
-                shiftdetail = _context.ShiftDetails.Where(e => e.Status == 0 && e.IsDeleted == new BitArray(1, false) && e.ShiftDate.Month == monthNum).Include(e => e.Shift).ThenInclude(e => e.Physician).ThenInclude(e => e.Region).ToList(),
+                shiftdetail = _context.ShiftDetails.Where(e => e.Status == 0 && e.IsDeleted == new BitArray (new bool[] {false}) && e.ShiftDate.Month == monthNum).Include(e => e.Shift).ThenInclude(e => e.Physician).ThenInclude(e => e.Region).ToList(),
               
                   
             };

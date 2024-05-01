@@ -47,7 +47,7 @@
             <div class="col-md-6 gy-3 mb-3" style=" color: lightgray;">
 
                 <select asp-for="RoleId" id="role" class="form-select p-3 ainfo" aria-label="Default select example" disabled>
- 
+                    
                 </select>
             </div>
 
@@ -395,6 +395,27 @@
     </div>
 <script src="/js/custom.js"></script>
 
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Admin/GetPhysiciansRoles',
+            type: 'GET',
+            success: function (data) {
+                var roleDropdown = $('#role');
+                roleDropdown.empty();
+
+                $.each(data, function (index, RoleId) {
+                    var option = $('<option></option>').attr('value', RoleId.roleId).text(RoleId.name);
+                    if (RoleId.roleId == @Model.RoleId) {
+                        option.attr('selected', 'selected');
+                    }
+                    roleDropdown.append(option);
+                });
+            }
+        });
+    });
+</script>
+
 
 <script>
     const phoneInputField = document.querySelector("#phone");
@@ -623,32 +644,12 @@
         });
 
         $('#uncheckedCheckboxesInput').val(uncheckedCheckboxes);
-
-
-
-
     });
 
 
 </script>
 
 
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            url: '/Admin/GetPhysiciansRoles',
-            type: 'GET',
-            success: function (data) {
-                var roleDropdown = $('#role');
-                roleDropdown.empty();
-                roleDropdown.append($('<option></option>').text(@Model.RoleId));
-                $.each(data, function (index, RoleId) {
-                    roleDropdown.append($('<option></option>').attr('value', RoleId.roleId).text(RoleId.name));
-                });
-            }
-        });
-    });
-</script>
 
 
 <script>

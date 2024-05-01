@@ -106,7 +106,7 @@
             </form>
         </main>
 
-    <script>
+@*     <script>
         $(document).ready(function () {
             $.ajax({
                 url: '/Admin/GetAllHealthProfessionalType',
@@ -137,4 +137,23 @@
         });
 
 
-    </script>
+    </script> *@
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Admin/GetAllHealthProfessionalType',
+            type: 'GET',
+            success: function (data) {
+                var healthprofesionalDropdown = $('#healthprofesional');
+                healthprofesionalDropdown.empty();
+                $.each(data, function (index, Profession) {
+                    var option = $('<option></option>').attr('value', Profession.healthProfessionalId).text(Profession.professionName);
+                    if (Profession.healthProfessionalId == @Model.Profession) {
+                        option.attr('selected', 'selected');
+                    }
+                    healthprofesionalDropdown.append(option);
+                });
+            }
+        });
+    });
+</script>

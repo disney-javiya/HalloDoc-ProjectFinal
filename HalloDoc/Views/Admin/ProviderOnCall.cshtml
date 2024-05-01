@@ -18,7 +18,7 @@
         </div>
         <div class="row align-items-center justify-content-between my-3">
             <div class="col-md-4 col-sm-12 p-0 mb-3">
-                <select class="form-select form-select-lg" id="Regions">
+                <select class="form-select form-select-lg" id="region">
                     <option selected><i class="fa fa-search text-muted position-absolute" style="padding-top:10px; padding-left:10px;"></i>All Regions</option>
                 </select>
             </div>
@@ -85,3 +85,36 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Admin/getAllRegions',
+            type: 'GET',
+
+            success: function (data) {
+
+                var regionDropdown = $('#region');
+                regionDropdown.empty();
+                regionDropdown.append($('<option></option>').attr('value', 0).text("Select Regions"));
+                $.each(data, function (index, region) {
+                    regionDropdown.append($('<option></option>').attr('value', region.regionId).text(region.name));
+                });
+            }
+        });
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#region').change(function () {
+            var regionId = $(this).val();
+
+            window.location.href = "/Admin/ProviderOnCall?regionId=" + regionId;
+
+
+        });
+
+    });
+</script> 

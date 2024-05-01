@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -20,20 +21,37 @@ namespace Repository
         private readonly string _secret;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
+        private readonly AdminRepository _adminRepository;
 
-        public AuthenticateRepository(IConfiguration configuration, ApplicationDbContext context)
+        public AuthenticateRepository(IConfiguration configuration, ApplicationDbContext context, IAdminRepository adminRepository)
         {
             _configuration = configuration;
             _context = context;
+            adminRepository = adminRepository;
         }
         public string GenerateJwtToken(AspNetUser user, string role)
         {
 
+           
+            int roleId = 0;
+            if (role == "Admin")
+            {
+                Admin admin = _context.Admins.Where(x => x.AspNetUserId == user.Id).FirstOrDefault();
+                roleId = (int)admin.RoleId;
+            }
+            else if (role == "Physician")
+            {
+                Physician physician = _context.Physicians.Where(x => x.AspNetUserId == user.Id).FirstOrDefault();
+                roleId = (int)physician.RoleId;
+            }
+
+            List<string> menu = _context.RoleMenus.Where(x => x.RoleId == roleId).Select(x => x.Menu.Name).ToList();
             var claims = new List<Claim> {
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, role),
             new Claim("UserId", user.Id.ToString()),
             new Claim("UserName", user.UserName),
+             new Claim("Menu",JsonSerializer.Serialize(menu))
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -88,9 +106,6 @@ namespace Repository
             }
         }
 
-        //public string getCurrentUserId()
-        //{
-        //    _context.AspNetUsers.Where(x=>x.Email == )
-        //}
+       
     }
 }

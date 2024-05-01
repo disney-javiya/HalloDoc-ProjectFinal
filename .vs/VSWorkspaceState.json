@@ -10,6 +10,6 @@
     "\\Repositories",
     "\\Repositories\\IRepository"
   ],
-  "SelectedNode": "\\HalloDoc\\Views\\Admin\\ProviderSchedulingDayWise.cshtml",
+  "SelectedNode": "\\HalloDoc\\Controllers\\AdminController.cs",
   "PreviewInSolutionExplorer": false
 }

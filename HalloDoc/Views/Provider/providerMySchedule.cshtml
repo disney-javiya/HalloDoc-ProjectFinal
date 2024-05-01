@@ -83,7 +83,6 @@
                     <select asp-for="RegionId" class="form-select mb-3 region" aria-label="Default select example">
                         <option selected>Select Region</option>
 
-
                     </select>
 
 
@@ -146,7 +145,12 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
 
+        $('#providerMySchedule').css('border-bottom', 'solid 3px #01bce9');
+    });
+</script>
 <script>
     $(document).ready(function () {
         $.ajax({

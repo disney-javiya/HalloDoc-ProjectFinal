@@ -140,17 +140,17 @@
 
             
             var month = today.toLocaleString('default', { month: 'long' });
-            alert(month);
-            $.ajax({
-                url: '/Admin/SchedulingMonth',
+            window.location.href = "/Admin/SchedulingMonth?month=" + month;
+            // $.ajax({
+            //     url: '/Admin/SchedulingMonth',
                 
-                data: { month: month },
-                success: function (data) {
+            //     data: { month: month },
+            //     success: function (data) {
 
                     
 
-                }
-            });
+            //     }
+            // });
         }
 
     function approveShifts() {
