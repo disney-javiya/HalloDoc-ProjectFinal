@@ -341,6 +341,10 @@
       "PackagePath": "staticwebassets\\js\\pagination.js"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\providerInvoicing.js",
+      "PackagePath": "staticwebassets\\js\\providerInvoicing.js"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

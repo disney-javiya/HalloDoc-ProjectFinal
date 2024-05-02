@@ -256,12 +256,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmlkZXJccHJvdmlkZXJFbmNvdW50ZXJGb3JtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Provider/providerInvoicing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmlkZXJccHJvdmlkZXJJbnZvaWNpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Provider/providerMySchedule.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmlkZXJccHJvdmlkZXJNeVNjaGVkdWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Provider/providerProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmlkZXJccHJvdmlkZXJQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Provider/providerTimesheet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmlkZXJccHJvdmlkZXJUaW1lc2hlZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Provider/providerViewCase.cshtml]

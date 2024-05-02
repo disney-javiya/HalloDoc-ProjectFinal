@@ -1,0 +1,106 @@
+﻿@{
+    Layout = "_ProviderHeader";
+}
+<script>
+    $(document).ready(function () {
+
+        $('#providerInvoicing').css('border-bottom', 'solid 3px #01bce9');
+    });
+</script>
+@{
+    DateTime startDate = DateTime.Parse(Context.Request.Query["startDate"]);
+    DateTime endDate = DateTime.Parse(Context.Request.Query["endDate"]);
+}
+<main>
+    <div class="container ">
+        <div class="row row-cols-1 bg-white">
+            <div class="col d-flex justify-content-end m-2">
+                <a class="btn border border-info text-info mt-1" role="button" asp-controller="Provider" asp-action="providerInvoicing"> < Back</a>
+            </div>
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr class="table-secondary">
+                            <th scope="col" class="text-muted">Date</th>
+                            <th scope="col" class="text-muted">On-call Hours</th>
+                            <th scope="col" class="text-muted">Total Hours</th>
+                            <th scope="col" class="text-muted">Weekend/Holiday</th>
+                            <th scope="col" class="text-muted">Number of Housecalls</th>
+                            <th scope="col" class="text-muted">Number of Phone Consults</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            
+
+                            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                            {
+                                <tr class="text-muted">
+                                    <td scope="row">@date.ToString("MM/dd/yyyy")</td>
+                                    <td>0</td>
+                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" /></td>
+                                    <td>
+                                        <div class="form-check d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'"/></td>
+                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'"/></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a role="button" class="btn btn-info text-white">Submit</a>
+            </div>
+        </div>
+        <div class="col d-flex mt-2">
+            <a role="button" class="btn btn-info text-white">Add Receipts</a>
+        </div>
+    <div class="row row-cols-1   bg-white mt-3">    
+        <div class="col mt-2">
+            <table class="table">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col" class="text-muted">Date</th>
+                        <th scope="col" class="text-muted">Item</th>
+                        <th scope="col" class="text-muted">Amount</th>
+                        <th scope="col" class="text-muted">Bill</th>
+                        <th scope="col" class="text-muted">Action</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        @{
+                            
+
+                            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                            {
+                                <tr class="text-muted">
+                                    <td scope="row">@date.ToString("MM/dd/yyyy")</td>
+                                    <td>Medicines</td>
+                                    <td>10</td>
+                                    <td>Dummy-file</td>
+                                    <td>
+                                        <div class="row gap-2">
+                                            <a class="col btn border border-info text-info mt-1">Edit</a>
+                                            <a class="col btn border border-info text-info mt-1">Delete</a>
+                                            <a class="col btn border border-info text-info mt-1">View</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+            </table>
+        </div>
+     
+    </div>
+        <div class="col text-end mt-2">
+            <a role="button" class="btn btn-info text-white">Finalize</a>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "_ProviderHeader";
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('#providerInvoicing').css('border-bottom', 'solid 3px #01bce9');
+    });
+</script>
+
+@{
+    var today = DateTime.Now.ToString("yyyy/MM/dd");
+}
+
+
+<div class="d-flex flex-column justify-content-center align-items-center mt-1">
+    <div class="row row-cols-1 justify-content-center align-items-center bg-white w-50">
+        <div class="col  d-flex justify-content-between m-2">
+            <h3>Timesheets</h3>
+            <a class="btn border border-info mt-1" role="button" asp-controller="Provider" asp-action="providerDashboard"> < Back</a>
+        </div>
+        <div class="col d-flex justify-content-between m-2">
+            <select class="border border-secondary rounded p-2" id="timesheetPeriod" onmouseup="this.style.outline='none'">
+                <option>Search By Timesheet Period</option>
+                @{
+                    DateTime todayDate = DateTime.Now;
+
+                    for (int i = 1; i <= todayDate.Month; i++)
+                    {
+                        var firstDayOfMonth = new DateTime(todayDate.Year, i, 1);
+                        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                        int daysInMonth = lastDayOfMonth.Day;
+
+                        string option1 = $"{firstDayOfMonth:yyyy/MM/dd} - {firstDayOfMonth.AddDays(daysInMonth / 2 - 1):yyyy/MM/dd}";
+                        string option2 = $"{firstDayOfMonth.AddDays(daysInMonth / 2):yyyy/MM/dd} - {lastDayOfMonth:yyyy/MM/dd}";
+
+                        <option>@option1</option>
+                        <option>@option2</option>
+                                    
+                    }
+                }
+            </select>
+
+            <a role="button" class="btn border border-info text-info p-2" id="finalizeBtn" onclick="viewProviderTimesheetPage()">Finalize Timesheet</a>
+        </div>
+        <div class="col">
+            <p class="text-secondary">No Records Found</p>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 justify-content-center align-items-center bg-white w-50 mt-3">
+        <h4>TimeSheet Reimbursement</h4>
+        <p class="text-secondary">No Records Found</p>
+    </div>
+</div>

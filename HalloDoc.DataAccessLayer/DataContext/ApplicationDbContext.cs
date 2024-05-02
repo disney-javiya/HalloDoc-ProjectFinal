@@ -48,6 +48,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Passwordreset> Passwordresets { get; set; }
 
+    public virtual DbSet<Payrate> Payrates { get; set; }
+
     public virtual DbSet<Physician> Physicians { get; set; }
 
     public virtual DbSet<PhysicianLocation> PhysicianLocations { get; set; }
@@ -87,6 +89,12 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<ShiftDetailRegion> ShiftDetailRegions { get; set; }
 
     public virtual DbSet<Smslog> Smslogs { get; set; }
+
+    public virtual DbSet<Timesheet> Timesheets { get; set; }
+
+    public virtual DbSet<TimesheetDetail> TimesheetDetails { get; set; }
+
+    public virtual DbSet<TimesheetReimbursement> TimesheetReimbursements { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -213,6 +221,23 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Passwordreset>(entity =>
         {
             entity.HasKey(e => e.Prid).HasName("passwordreset_pkey");
+        });
+
+        modelBuilder.Entity<Payrate>(entity =>
+        {
+            entity.HasKey(e => e.PayrateId).HasName("Payrate_pkey");
+
+            entity.Property(e => e.BatchTesting).HasDefaultValueSql("0");
+            entity.Property(e => e.Housecall).HasDefaultValueSql("0");
+            entity.Property(e => e.HousecallNightWeekend).HasDefaultValueSql("0");
+            entity.Property(e => e.NightShiftWeekend).HasDefaultValueSql("0");
+            entity.Property(e => e.Phoneconsult).HasDefaultValueSql("0");
+            entity.Property(e => e.PhoneconsultNightWeekend).HasDefaultValueSql("0");
+            entity.Property(e => e.Shift).HasDefaultValueSql("0");
+
+            entity.HasOne(d => d.Physician).WithMany(p => p.Payrates)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Payrate_PhysicianId_fkey");
         });
 
         modelBuilder.Entity<Physician>(entity =>
@@ -429,6 +454,37 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.SmslogId).HasName("SMSLog_pkey");
 
             entity.Property(e => e.SmslogId).UseIdentityAlwaysColumn();
+        });
+
+        modelBuilder.Entity<Timesheet>(entity =>
+        {
+            entity.HasKey(e => e.TimesheetId).HasName("Timesheet_pkey");
+
+            entity.HasOne(d => d.Physician).WithMany(p => p.Timesheets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Timesheet_PhysicianId_fkey");
+        });
+
+        modelBuilder.Entity<TimesheetDetail>(entity =>
+        {
+            entity.HasKey(e => e.TimesheetDetailId).HasName("TimesheetDetails_pkey");
+
+            entity.Property(e => e.Housecall).HasDefaultValueSql("0");
+            entity.Property(e => e.PhoneConsult).HasDefaultValueSql("0");
+            entity.Property(e => e.ShiftHours).HasDefaultValueSql("0");
+
+            entity.HasOne(d => d.Timesheet).WithMany(p => p.TimesheetDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("TimesheetDetails_TimesheetId_fkey");
+        });
+
+        modelBuilder.Entity<TimesheetReimbursement>(entity =>
+        {
+            entity.HasKey(e => e.TimesheetReimbursementId).HasName("TimesheetReimbursement_pkey");
+
+            entity.HasOne(d => d.Timesheet).WithMany(p => p.TimesheetReimbursements)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("TimesheetReimbursement_TimesheetId_fkey");
         });
 
         modelBuilder.Entity<User>(entity =>

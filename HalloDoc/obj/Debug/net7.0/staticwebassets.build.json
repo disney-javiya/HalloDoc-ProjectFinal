@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QS8c8a++B073pRjXYFGRNIth7nh5AVnPSAu/EgYDnvg=",
+  "Hash": "qVmxafvXST0NqrDBNh3dzo4NriPI48/D2oaph3cl7hM=",
   "Source": "HalloDoc",
   "BasePath": "_content/HalloDoc",
   "Mode": "Default",
@@ -1477,6 +1477,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\pagination.js"
+    },
+    {
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\providerInvoicing.js",
+      "SourceId": "HalloDoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
+      "BasePath": "_content/HalloDoc",
+      "RelativePath": "js/providerInvoicing.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\providerInvoicing.js"
     },
     {
       "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\site.js",

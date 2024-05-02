@@ -747,7 +747,14 @@ namespace HalloDoc.Controllers
             _providerRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), requestId, ViewBag.Data, null);
             return null;
         }
-
+        public IActionResult providerInvoicing()
+        {
+            return View();
+        }
+        public IActionResult providerTimesheet(DateTime startDate, DateTime endDate)
+        {
+            return View();
+        }
         public IActionResult logOut()
         {
 
