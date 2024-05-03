@@ -1349,5 +1349,64 @@ namespace Repository
             var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u => u.UserId).FirstOrDefault();
             return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
         }
+
+        public List<TimesheetModel> providerTimesheetData(DateTime startDate , DateTime endDate, string email)
+        {
+          int phyId =  _context.Physicians.Where(x=>x.Email == email).Select(x=>x.PhysicianId).FirstOrDefault();
+           Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.PhysicianId == phyId).FirstOrDefault();
+            if(t == null)
+            {
+                Timesheet timesheet = new Timesheet();
+                timesheet.PhysicianId = phyId;
+                timesheet.Startdate = startDate;
+                timesheet.Enddate = endDate;
+                timesheet.IsFinalized = new BitArray(new bool[] { false });
+                _context.Timesheets.Add(timesheet);
+                _context.SaveChanges(true);
+                for (DateTime i = startDate; i <= endDate; i = i.AddDays(1))
+                {
+                    TimesheetDetail timesheetDetail = new TimesheetDetail();
+                    timesheetDetail.TimesheetId = timesheet.TimesheetId;
+                    timesheetDetail.Shiftdate = i;
+                    timesheetDetail.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == i && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();      
+                    _context.TimesheetDetails.Add(timesheetDetail);
+                    _context.SaveChanges();
+                }
+               return GetTimesheetDetails(timesheet.TimesheetId);
+            }
+            else
+            {
+                var res = _context.TimesheetDetails.Where(x=>x.TimesheetId == t.TimesheetId).ToList();
+                foreach (var item in res)
+                {
+                    if(item.ShiftHours == 0 && item.Housecall == 0 && item.PhoneConsult == 0)
+                    {
+                        item.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == item.Shiftdate && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();
+                        _context.SaveChanges();
+                    }
+                }          
+                return GetTimesheetDetails(t.TimesheetId);
+            }
+        }
+
+        public List<TimesheetModel> GetTimesheetDetails(int TimesheetId)
+        {
+            List<TimesheetModel> timesheetModels = new List<TimesheetModel>();
+            var res = _context.TimesheetDetails.Where(x=>x.TimesheetId == TimesheetId).OrderBy(x=>x.Shiftdate).ToList();
+            foreach (var timesheet in res)
+            {
+               TimesheetModel tm = new TimesheetModel();
+                tm.Date = DateOnly.FromDateTime((DateTime)timesheet.Shiftdate);
+                tm.ShiftHours = timesheet.ShiftHours;
+                tm.IsWeekend = timesheet.IsWeekend;
+                tm.Housecall = timesheet.Housecall;
+                tm.TotalHours = timesheet.ShiftHours;
+                tm.PhoneConsult = timesheet.PhoneConsult;
+                timesheetModels.Add(tm);
+               
+            }
+            return timesheetModels;
+            
+        }
     }
 }

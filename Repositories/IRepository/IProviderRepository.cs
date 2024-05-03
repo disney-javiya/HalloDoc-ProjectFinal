@@ -72,5 +72,7 @@ namespace Repository.IRepository
         public string providerCreateRequest(createAdminRequest RequestData, string email);
         public void passwordresetInsert(string Email, string id);
         public int GetUserByRequestId(string Id);
+        public List<TimesheetModel> providerTimesheetData(DateTime startDate, DateTime endDate, string email);
+        public List<TimesheetModel> GetTimesheetDetails(int TimesheetId);
     }
 }
