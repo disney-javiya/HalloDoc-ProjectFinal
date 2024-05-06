@@ -1,0 +1,87 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.Physician;
+
+@{
+    Layout = "_AdminHeader";
+}
+<div class="main-create-patient-req d-flex justify-content-center align-items-center mt-1">
+    <div class="row row-cols-1 justify-content-center align-items-center width-create-patient-req ">
+<form method="post" class="row row-cols-1 " action="@Url.Action("physicianUpdateAccount", "Admin", new { physicianId =  Context.Request.Query["physicianId"]})" enctype="multipart/form-data">
+    <div class="col">
+        <h5>Physician Information</h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="FirstName" type="text" class="form-control first-name-create-patient shadow-none e1" id="floatingInput" placeholder="" disabled>
+            <label class="first-name-create-patient-text" for="floatingInput">First Name</label>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="LastName" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" disabled>
+            <label class="last-name-create-patient-text" for="floatingInput">Last Name</label>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6 gy-3">
+        <div class="form-floating mb-3">
+            <input asp-for="Email" type="email" class="form-control email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com" disabled>
+            <label class="email-create-patient-text" for="floatingInput">Email address</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+
+    <div class="col-md-6 gy-3 ">
+        <div class="form-floating mb-3">
+
+            <input asp-for="Mobile" class=" form-control contact-create-patient shadow-none e1" id="phone" type="tel" disabled />
+            <label class="contact-create-patient-text" for="phone"> </label>
+            <span asp-validation-for="Mobile" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="MedicalLicense" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" disabled>
+            <label class="last-name-create-patient-text" for="floatingInput">Medical License #</label>
+            <span asp-validation-for="MedicalLicense" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Npinumber" type="text" class="form-control last-name-create-patient shadow-none e1" id="floatingInput" placeholder="" disabled>
+            <label class="last-name-create-patient-text" for="floatingInput">NPI Number</label>
+            <span asp-validation-for="Npinumber" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6 gy-3">
+        <div class="form-floating mb-3">
+            <input asp-for="SyncEmailAddress" type="email" class="form-control email-create-patient shadow-none e1" id="floatingInput" placeholder="name@example.com" disabled>
+            <label class="email-create-patient-text" for="floatingInput">Synchronization Email address</label>
+            <span asp-validation-for="SyncEmailAddress" class="text-danger"></span>
+        </div>
+    </div>
+
+
+    <div id="checkbox-container" class="col-md-6 gy-3">
+        <input type="hidden" id="uncheckedCheckboxesInput" name="uncheckedCheckboxes" />
+
+    </div>
+
+
+
+    <div class="col d-flex justify-content-end mb-2">
+        <a role="button" class="btn submit-btn-create-patient  me-2" id="edit1">Edit</a>
+
+    </div>
+
+    <div class="col d-flex justify-content-end mb-2">
+        <button type="submit" role="button" class="btn save-btn-patient-profile  me-2 p-2" id="submit1" style="display: none;">Save</button>
+        <a role="button" class="btn cancel-btn-patient-profile  me-2 p-2" id="cancel1" style="display: none;">Cancel</a>
+    </div>
+</form>
+</div>
+</div>

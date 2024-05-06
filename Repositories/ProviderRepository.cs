@@ -1350,7 +1350,7 @@ namespace Repository
             return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
         }
 
-        public List<TimesheetModel> providerTimesheetData(DateTime startDate , DateTime endDate, string email)
+        public TimesheetModel providerTimesheetData(DateTime startDate , DateTime endDate, string email)
         {
           int phyId =  _context.Physicians.Where(x=>x.Email == email).Select(x=>x.PhysicianId).FirstOrDefault();
            Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.PhysicianId == phyId).FirstOrDefault();
@@ -1389,24 +1389,20 @@ namespace Repository
             }
         }
 
-        public List<TimesheetModel> GetTimesheetDetails(int TimesheetId)
+        public TimesheetModel GetTimesheetDetails(int TimesheetId)
         {
-            List<TimesheetModel> timesheetModels = new List<TimesheetModel>();
+            TimesheetModel timesheetModels = new TimesheetModel();
             var res = _context.TimesheetDetails.Where(x=>x.TimesheetId == TimesheetId).OrderBy(x=>x.Shiftdate).ToList();
-            foreach (var timesheet in res)
-            {
-               TimesheetModel tm = new TimesheetModel();
-                tm.Date = DateOnly.FromDateTime((DateTime)timesheet.Shiftdate);
-                tm.ShiftHours = timesheet.ShiftHours;
-                tm.IsWeekend = timesheet.IsWeekend;
-                tm.Housecall = timesheet.Housecall;
-                tm.TotalHours = timesheet.ShiftHours;
-                tm.PhoneConsult = timesheet.PhoneConsult;
-                timesheetModels.Add(tm);
-               
-            }
+           timesheetModels.Timesheets = res;
+            
             return timesheetModels;
             
+        }
+
+        public void insertTimesheetDetail(TimesheetModel timesheetModel)
+        {
+           
+
         }
     }
 }

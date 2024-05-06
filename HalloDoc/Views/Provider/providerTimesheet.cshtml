@@ -1,19 +1,20 @@
-﻿@model List<HalloDoc.DataAccessLayer.DataModels.ViewModels.TimesheetModel>
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.TimesheetModel
 @{
     Layout = "_ProviderHeader";
 }
 <script>
     $(document).ready(function () {
-
         $('#providerInvoicing').css('border-bottom', 'solid 3px #01bce9');
     });
 </script>
+
 @{
     DateTime startDate = DateTime.Parse(Context.Request.Query["startDate"]);
     DateTime endDate = DateTime.Parse(Context.Request.Query["endDate"]);
 }
 <main>
     <div class="container ">
+        <form method="post" asp-controller="Provider" asp-action="InsertTimesheetDetail"> 
         <div class="row row-cols-1 bg-white">
             <div class="col d-flex justify-content-end m-2">
                 <a class="btn border border-info text-info mt-1" role="button" asp-controller="Provider" asp-action="providerInvoicing"> < Back</a>
@@ -30,34 +31,36 @@
                             <th scope="col" class="text-muted">Number of Phone Consults</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        
-                          @if (Model != null)
-                        {
-                            foreach (var item in Model)
+                        <tbody>
+
+                            @if (Model != null)
                             {
-                                <tr class="text-muted"> 
-                                    <td scope="row">@item.Date</td>
-                                    <td>@item.ShiftHours</td>
-                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" value="@item.TotalHours"/></td>
-                                    <td>
-                                        <div class="form-check d-flex justify-content-center align-items-center">
-                                            <input class="form-check-input" type="checkbox" value="@item.IsWeekend" id="flexcheckdefault">
-                                        </div>
-                                    </td>
-                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" value="@item.Housecall" onmouseup="this.style.outline='none'"/></td>
-                                    <td><input type="text" class="rounded p-2 border border-secondary-subtle" value="@item.PhoneConsult" onmouseup="this.style.outline='none'"/></td>
-                                </tr>
+                                foreach (var item in Model.Timesheets)
+                                {
+                                    <tr class="text-muted">
+                                        <input hidden value="@Model.PhysicianId">
+                                        <td scope="row">@item.Shiftdate</td>
+                                        <td>@item.ShiftHours</td>
+                                        <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" value="@item.ShiftHours" /></td>
+                                        <td>
+                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                <input @*  asp-for="@item.IsWeekend" *@ class="form-check-input" type="checkbox" value="@item.IsWeekend" id="flexcheckdefault">
+                                            </div>
+                                        </td>
+                                        <td><input asp-for="@item.Housecall" type="text" class="rounded p-2 border border-secondary-subtle" value="@item.Housecall" onmouseup="this.style.outline='none'" /></td>
+                                        <td><input asp-for="@item.PhoneConsult" type="text" class="rounded p-2 border border-secondary-subtle" value="@item.PhoneConsult" onmouseup="this.style.outline='none'" /></td>
+                                    </tr>
+                                }
                             }
-                        }  
-                    </tbody>
+                        </tbody>
 
                 </table>
             </div>
             <div class="col d-flex justify-content-end">
-                <a role="button" class="btn btn-info text-white">Submit</a>
+                    <button id="submitForm" class="btn btn-info text-white">Submit</button>
             </div>
         </div>
+        </form> 
         <div class="col d-flex mt-2">
             <a role="button" class="btn btn-info text-white">Add Receipts</a>
         </div>
@@ -105,3 +108,4 @@
         </div>
     </div>
 </main>
+

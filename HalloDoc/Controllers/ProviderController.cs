@@ -754,9 +754,17 @@ namespace HalloDoc.Controllers
         public IActionResult providerTimesheet(DateTime startDate, DateTime endDate)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-           List<TimesheetModel> timesheetModels =  _providerRepository.providerTimesheetData(startDate, endDate, ViewBag.Data);
+           TimesheetModel timesheetModels =  _providerRepository.providerTimesheetData(startDate, endDate, ViewBag.Data);
             return View(timesheetModels);
         }
+        [HttpPost]
+        public void InsertTimesheetDetail(TimesheetModel formData)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            _providerRepository.insertTimesheetDetail(formData);
+        }
+
+       
         public IActionResult logOut()
         {
 

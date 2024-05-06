@@ -116,6 +116,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGF0aWVudEhpc3RvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Admin/PayRate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUGF5UmF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HalloDoc-MVCProjectFinal/HalloDoc-MVCProjectFinal/HalloDoc/Views/Admin/providerLocation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccHJvdmlkZXJMb2NhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

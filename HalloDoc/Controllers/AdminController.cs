@@ -2001,6 +2001,11 @@ namespace HalloDoc.Controllers
           string name =  _adminRepository.GetRequestName(RequestId);
             return name;
         }
+
+        public IActionResult PayRate()
+        {
+            return View();
+        }
         public IActionResult logOut()
         {
 
