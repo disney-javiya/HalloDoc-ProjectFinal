@@ -18,7 +18,24 @@ public partial class TimesheetReimbursement
 
     public int Amount { get; set; }
 
-    public string? Bill { get; set; }
+    public string? Filename { get; set; }
+
+    public int? PhysicianId { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? ReimbursementDate { get; set; }
+
+    [Column(TypeName = "character varying")]
+    public string? CreatedBy { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? CreatedDate { get; set; }
+
+    [Column(TypeName = "character varying")]
+    public string? ModifiedBy { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? ModifiedDate { get; set; }
 
     [ForeignKey("TimesheetId")]
     [InverseProperty("TimesheetReimbursements")]

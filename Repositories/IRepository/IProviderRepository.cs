@@ -73,7 +73,9 @@ namespace Repository.IRepository
         public void passwordresetInsert(string Email, string id);
         public int GetUserByRequestId(string Id);
         public TimesheetModel providerTimesheetData(DateTime startDate, DateTime endDate, string email);
-        public TimesheetModel GetTimesheetDetails(int TimesheetId);
-        public void insertTimesheetDetail(TimesheetModel timesheetModel);
+       
+        public void insertTimesheetDetail(List<TimesheetDetail> timesheetModel);
+        void SaveReimbursement(TimesheetModel model, string? v);
+        void EditReimbursement(DateTime startDate1, string item, int amount, int gap, string? v);
     }
 }

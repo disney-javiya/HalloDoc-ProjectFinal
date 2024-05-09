@@ -20,6 +20,12 @@ using System.Text;
 using Repository;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Diagnostics.Metrics;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.Text.Json.Nodes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
+using System.Web.WebPages;
 
 namespace HalloDoc.Controllers
 {
@@ -44,14 +50,14 @@ namespace HalloDoc.Controllers
 
 
 
-       
+
         [CustomeAuthorize("Physician", "ProviderDashboard")]
         public IActionResult providerDashboard()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
-       
+
         public List<int> getCountNumber()
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -67,12 +73,12 @@ namespace HalloDoc.Controllers
             return result;
         }
 
-        public IActionResult providerTableData(string type,  string patient_name, string typeid, int pagesize, int pagenumber = 1)
+        public IActionResult providerTableData(string type, string patient_name, string typeid, int pagesize, int pagenumber = 1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             int t = int.Parse(type);
             int tid = 0;
-          
+
             if (typeid != null && typeid != "all")
             {
                 tid = int.Parse(typeid);
@@ -81,30 +87,30 @@ namespace HalloDoc.Controllers
             {
                 typeid = null;
             }
-           
-           
+
+
 
             IEnumerable<RequestandRequestClient> res = _providerRepository.getRequestStateData(t, ViewBag.Data);
             dashboardTableModel model = new();
             List<RequestandRequestClient> result;
-           
-            if ( patient_name != null && typeid == null)
+
+            if (patient_name != null && typeid == null)
             {
                 result = _providerRepository.getFilterByName(res, patient_name);
             }
-            else if(  patient_name == null && typeid != null)
+            else if (patient_name == null && typeid != null)
             {
                 result = _providerRepository.getByRequesttypeId(res, tid);
             }
-            else if ( patient_name != null && typeid != null)
+            else if (patient_name != null && typeid != null)
             {
                 result = _providerRepository.getFilterByrequestTypeAndName(res, tid, patient_name);
             }
-            else 
+            else
             {
                 result = res.ToList();
             }
-           
+
             model.result = result;
             var count = result.Count();
             if (count > 0)
@@ -185,7 +191,7 @@ namespace HalloDoc.Controllers
         public IActionResult providerTransferCase(string requestId, string additionalNotesTransfer)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            _providerRepository.providerTransferCase(requestId,  additionalNotesTransfer, ViewBag.Data);
+            _providerRepository.providerTransferCase(requestId, additionalNotesTransfer, ViewBag.Data);
             return RedirectToAction("providerDashboard");
 
         }
@@ -193,7 +199,7 @@ namespace HalloDoc.Controllers
         public IActionResult providerViewUploads(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-           
+
             var document = _providerRepository.GetDocumentsByRequestId(requestId);
             ViewBag.pname = _providerRepository.getName(requestId.ToString());
             ViewBag.num = _providerRepository.getConfirmationNumber(requestId);
@@ -506,9 +512,9 @@ namespace HalloDoc.Controllers
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             encounterModel en = _providerRepository.getEncounterDetails(requestId);
-         
-            
-           
+
+
+
             byte[] pdfdata = _providerRepository.GeneratePDF(en);
             return File(pdfdata, "application/pdf", "MedicalReport.pdf");
         }
@@ -521,12 +527,12 @@ namespace HalloDoc.Controllers
             Physician physician = _providerRepository.getProviderInfo(ViewBag.Data);
             var res = _providerRepository.getPhysicianDetails(physician.PhysicianId);
             return View(res);
-           
+
         }
 
 
-        
-       
+
+
         [HttpGet]
         public List<Region> getPhysicianRegions()
         {
@@ -535,7 +541,7 @@ namespace HalloDoc.Controllers
             return res;
         }
         [CustomeAuthorize("Physician", "ProviderProfile")]
-       
+
         [HttpPost]
         public IActionResult physicianUpdatePassword(string password)
         {
@@ -558,8 +564,8 @@ namespace HalloDoc.Controllers
         public IActionResult providerEncounterForm(int requestId, encounterModel em)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-           _providerRepository.providerEncounterFormPost(requestId, em);
-            return RedirectToAction("providerEncounterForm" , new { requestId = requestId });
+            _providerRepository.providerEncounterFormPost(requestId, em);
+            return RedirectToAction("providerEncounterForm", new { requestId = requestId });
         }
 
         public IActionResult editAccountRequest(string reqmessage)
@@ -567,8 +573,8 @@ namespace HalloDoc.Controllers
             ViewBag.Data = HttpContext.Session.GetString("key");
 
 
-           Physician p = _providerRepository.getProviderInfo(ViewBag.Data);
-           AspNetUser a = _providerRepository.GetUserById(p.CreatedBy);
+            Physician p = _providerRepository.getProviderInfo(ViewBag.Data);
+            AspNetUser a = _providerRepository.GetUserById(p.CreatedBy);
             string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
 
             string senderPassword = "Disney@20";
@@ -739,7 +745,7 @@ namespace HalloDoc.Controllers
 
             //mailMessage.To.Add(Email)
             mailMessage.To.Add("pateldisney20@gmail.com");
-;
+            ;
 
             client.SendMailAsync(mailMessage);
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -754,17 +760,52 @@ namespace HalloDoc.Controllers
         public IActionResult providerTimesheet(DateTime startDate, DateTime endDate)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-           TimesheetModel timesheetModels =  _providerRepository.providerTimesheetData(startDate, endDate, ViewBag.Data);
+            TimesheetModel timesheetModels = _providerRepository.providerTimesheetData(startDate, endDate, ViewBag.Data);
             return View(timesheetModels);
         }
         [HttpPost]
-        public void InsertTimesheetDetail(TimesheetModel formData)
+        public void UpdateInvoiceSheetData(string sheetData)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            _providerRepository.insertTimesheetDetail(formData);
+
+            // Manually parse the JSON string
+            JArray jsonArray = JArray.Parse(sheetData);
+
+            // Iterate through the array and extract the values
+            List<TimesheetDetail> timesheetDetails = new List<TimesheetDetail>();
+            foreach (JObject item in jsonArray)
+            {
+                TimesheetDetail timesheetDetail = new TimesheetDetail
+                {
+                    ShiftHours = int.Parse((string)item.GetValue("TotalHours")),
+                    TimesheetDetailId = int.Parse((string)item.GetValue("TimesheetDetailId")),
+                    IsWeekend = new BitArray(new[] { Convert.ToBoolean(item.GetValue("IsWeekend")) }),
+                    Housecall = int.Parse((string)item.GetValue("Housecall")),
+                    PhoneConsult = int.Parse((string)item.GetValue("PhoneConsult"))
+                };
+
+                timesheetDetails.Add(timesheetDetail);
+            }
+
+            _providerRepository.insertTimesheetDetail(timesheetDetails);
         }
 
-       
+        public IActionResult SaveReimbursement([FromForm] TimesheetModel model)
+        {
+            
+            _providerRepository.SaveReimbursement(model, HttpContext.Session.GetString("key"));
+
+            return RedirectToAction(nameof(providerTimesheet),new { startDate =model.Startdate , endDate =model.Enddate});
+        }
+
+        public IActionResult EditReimbursement(string StartDate1,string EndDate, string Item, int Amount, int Gap)
+        {
+            //string T = DateOnly.FromDateTime(StartDate1).ToString("MM-dd-yyyy");
+            //DateTime dt = DateTime.ParseExact(T, "MM-dd-yyyy", CultureInfo.InvariantCulture);
+            //string StartDate = dt.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture);
+            //_providerRepository.EditReimbursement(StartDate1, Item, Amount, Gap, HttpContext.Session.GetString("key"));
+            return RedirectToAction(nameof(providerTimesheet), new { startDate = StartDate1, endDate = EndDate});
+        }
         public IActionResult logOut()
         {
 

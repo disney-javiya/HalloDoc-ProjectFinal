@@ -48,6 +48,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\AdminFiles\" />
+    <Folder Include="wwwroot\InvoicingFile\" />
   </ItemGroup>
 
 </Project>

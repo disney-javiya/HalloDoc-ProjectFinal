@@ -9,18 +9,17 @@
 </script>
 
 @{
-    DateTime startDate = DateTime.Parse(Context.Request.Query["startDate"]);
-    DateTime endDate = DateTime.Parse(Context.Request.Query["endDate"]);
+    DateTime startDate = (DateTime)Model.Startdate;
+    DateTime endDate = (DateTime)Model.Enddate;
 }
 <main>
     <div class="container ">
-        <form method="post" asp-controller="Provider" asp-action="InsertTimesheetDetail"> 
         <div class="row row-cols-1 bg-white">
             <div class="col d-flex justify-content-end m-2">
                 <a class="btn border border-info text-info mt-1" role="button" asp-controller="Provider" asp-action="providerInvoicing"> < Back</a>
             </div>
             <div class="col">
-                <table class="table">
+                    <table id="invoiceSheetTable" class="table">
                     <thead>
                         <tr class="table-secondary">
                             <th scope="col" class="text-muted">Date</th>
@@ -38,13 +37,13 @@
                                 foreach (var item in Model.Timesheets)
                                 {
                                     <tr class="text-muted">
-                                        <input hidden value="@Model.PhysicianId">
+                                
                                         <td scope="row">@item.Shiftdate</td>
                                         <td>@item.ShiftHours</td>
-                                        <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" value="@item.ShiftHours" /></td>
+                                        <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" value="@item.ShiftHours" /><input hidden value="@item.TimesheetDetailId"></td>
                                         <td>
                                             <div class="form-check d-flex justify-content-center align-items-center">
-                                                <input @*  asp-for="@item.IsWeekend" *@ class="form-check-input" type="checkbox" value="@item.IsWeekend" id="flexcheckdefault">
+                                                <input class="form-check-input" type="checkbox" value="@item.IsWeekend" id="flexcheckdefault">
                                             </div>
                                         </td>
                                         <td><input asp-for="@item.Housecall" type="text" class="rounded p-2 border border-secondary-subtle" value="@item.Housecall" onmouseup="this.style.outline='none'" /></td>
@@ -57,14 +56,13 @@
                 </table>
             </div>
             <div class="col d-flex justify-content-end">
-                    <button id="submitForm" class="btn btn-info text-white">Submit</button>
+                  <button id="invoiceData" class="btn btn-info text-white">Submit</button>
             </div>
         </div>
-        </form> 
         <div class="col d-flex mt-2">
-            <a role="button" class="btn btn-info text-white">Add Receipts</a>
+            <a role="button" class="btn btn-info text-white" onclick="showAddReceiptsTable()" id="addReceiptsButton">Add Receipts</a>
         </div>
-    <div class="row row-cols-1 bg-white mt-3">    
+    <div class="row row-cols-1 bg-white mt-3" id="addReceiptsTable">    
         <div class="col mt-2">
             <table class="table">
                 <thead>
@@ -77,24 +75,93 @@
                     </tr>
                 </thead>
                     <tbody>
-                        @{
-                            
-
-                            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                     
+                        @if (Model != null)
+                        {
+                            var id1 = 0;
+                            foreach (var item in Model.Timesheets)
                             {
+                                var res = @Model.timesheetReimbursements.Where(x => x.ReimbursementDate == @item.Shiftdate && x.TimesheetId == item.TimesheetId).FirstOrDefault();
+                                 <form asp-action="SaveReimbursement" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" value="@startDate" name="StartDate" id="StartDate" />
+                                            <input type="hidden" value="@endDate" name="EndDate" id="EndDate" />
+                                            <input type="hidden" value="@id1" name="Gap" />
                                 <tr class="text-muted">
-                                    <td scope="row">@date.ToString("MM/dd/yyyy")</td>
-                                    <td>Medicines</td>
-                                    <td>10</td>
-                                    <td>Dummy-file</td>
+
+                                    <td scope="row">@item.Shiftdate</td>
+                                    @if (res != null && res.Item != null)
+                                    {
+                                        var str = "item" + id1;
+                                        <td>
+                                            <input type="text" id=@str name="Item" class="rounded p-2 border border-secondary-subtle" value="@res.Item" onmouseup="this.style.outline='none'" disabled />
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        var str = "item" + id1;
+                                        <td><input type="text" name="Item" onchange="Enablefile(@id1)" id=@str class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" /></td>
+                                    }
+                                    @if (res != null && @res.Amount != 0)
+                                    {
+                                        var str = "amount" + id1;
+                                        <td>
+                                            <input type="text" id=@str name="Amount" class="rounded p-2 border border-secondary-subtle" value="@res.Amount" onmouseup="this.style.outline='none'" disabled />
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                         var str = "amount" + id1;
+                                        <td><input type="text" name="Amount" onchange="Enablefile(@id1)" id=@str class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" /></td>
+                                    }
+                                    @if (res != null && @res.Filename != null)
+                                    {
+                                        
+                                        <td>
+                                            @res.Filename
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        var str = "ReceiptFile" + id1;
+                                        <td >
+                                           @*  <input type="file" name="files" id="real-file" hidden="hidden"/>
+
+                                            <input onchange="SaveData(@id1)" class="form-control w-50 mb-3" type="text" id=@str value="Select File" disabled>
+                                            <button class="btn btn-info mb-3" type="button" id="custom-button">
+                                                <i class="bi bi-cloud-arrow-up"></i> Upload
+                                            </button> *@
+                                            <input type="file" id=@str name="ReceiptFile" onchange="SaveData(@id1)" name="ReceiptFile" disabled>
+                                        </td>
+                                    }
                                     <td>
-                                        <div class="row gap-2">
-                                            <a class="col btn border border-info text-info mt-1">Edit</a>
-                                            <a class="col btn border border-info text-info mt-1">Delete</a>
-                                            <a class="col btn border border-info text-info mt-1">View</a>
-                                        </div>
+                                       
+                                            @if (res != null)
+                                            {
+                                                var str = "edit" + id1;
+                                                <a class="col btn border border-info text-info mt-1 editBtns" id="@str" onclick="EditReceipt(@id1)">Edit</a>
+                                                 str = "delete" + id1;
+                                                <a class="col btn border border-info text-info mt-1 editBtns" id="@str">Delete</a>
+                                                 str = "view" + id1;
+                                                <a class="col btn border border-info text-info mt-1 editBtns" id="@str">View</a>
+                                                 str = "save" + id1;
+                                                <a class="col btn border border-info text-info mt-1 saveBtns" id="@str" style="display:none;" onclick="EditReimbursement(@id1)">Save</a>
+                                                 str = "cancel" + id1;
+                                                <a class="col btn border border-info text-info mt-1 saveBtns" id="@str" style="display:none;" onclick="CancelReimbursement(@id1)">Cancel</a>
+                                                 
+                                            }
+                                            else
+                                            {
+                                                var str = "savebtn" + id1;
+                                                <button class="col btn border border-info text-info mt-1 saveBtns" id="@str" style="display:none;" type="submit">Save</button>
+                                                
+                                            }
+
+                                            
+                                 
                                     </td>
                                 </tr>
+                                </form>
+                                id1++;
                             }
                         }
                     </tbody>
@@ -108,4 +175,123 @@
         </div>
     </div>
 </main>
+<script>
+    $('#invoiceData').click(function () {
+        var data = GetTableData();
+        var sheetData = JSON.stringify(data);
+       
+        $.ajax({
+            url: '/Provider/UpdateInvoiceSheetData',
+            method: 'POST',
+            data: {'sheetData': sheetData },
+            success: function (response) {
+                if (response) {
+                    var startDate = DateTime.Parse(Context.Request.Query["startDate"]);
+                    var endDate = DateTime.Parse(Context.Request.Query["endDate"]);
+                    window.location.href = '/Provider/providerTimesheet?startDate=' + startDate + '&endDate=' + endDate;
+                    /*showToast('sheet updated');*/
+                } else {
+                    /* showToastDanger('Data not updated');*/
+                }
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status === 400) {
+                    window.location.href = '/Home/Login';
 
+                }
+            }
+        });
+
+    });
+</script>
+@* 
+<script>
+    const fileInput = document.getElementById("real-file");
+    const customBtn = document.getElementById("custom-button");
+    const customTxt = document.getElementById("custom-text");
+
+    customBtn.addEventListener("click", function () {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener("change", function () {
+        if (this.files.length === 1) {
+            customTxt.value = this.files[0].name;
+           
+        } else {
+            customTxt.value = "Select File";
+        }
+    });
+</script> *@
+<script>
+    function EditReceipt(id1) {
+        debugger;
+        document.getElementById("edit" + id1).style.display = "none";
+        document.getElementById("view" + id1).style.display = "none";
+        document.getElementById("delete" + id1).style.display = "none";
+        document.getElementById("save" + id1).style.display = "inline";
+        document.getElementById("cancel" + id1).style.display = "inline";
+        document.getElementById("item" + id1).removeAttribute("disabled");
+        document.getElementById("amount" + id1).removeAttribute("disabled");
+    }
+</script>
+<script>
+    function EditReimbursement(id1) {
+        debugger;
+        var ItemValue = document.getElementById("item" + id1).value;
+        var AmountValue = document.getElementById("amount" + id1).value;
+        var d = @startDate.ToString("dd-MM-yyyy");
+        var d1 = @endDate.ToString("dd-MM-yyyy");
+
+        // window.location.href = "/Provider/EditReimbursement?StartDate1=" +  d+"&EndDate="+d1 + "&Item=" + ItemValue + "&Amount=" + AmountValue + "&Gap=" + id1;
+    }
+</script>
+<script>
+    function SaveData(id1) {
+        debugger;
+        var filename = document.getElementById("ReceiptFile" + id1).value;
+        var extension = filename.split('.').pop();
+        if (extension != "pdf") {
+            alert("Please Choose PDF file!!");
+            document.getElementById("ReceiptFile" + id1).value = "";
+        }
+        else
+            document.getElementById("savebtn" + id1).style.display = "inline";
+
+    }
+</script>
+<script>
+    function CancelReimbursement(id1) {
+        debugger;
+        document.getElementById("edit" + id1).style.display = "inline";
+        document.getElementById("view" + id1).style.display = "inline";
+        document.getElementById("delete" + id1).style.display = "inline";
+        document.getElementById("save" + id1).style.display = "none";
+        document.getElementById("cancel" + id1).style.display = "none";
+        document.getElementById("item" + id1).setAttribute("disabled", "");
+        document.getElementById("amount" + id1).setAttribute("disabled", "");
+    }
+</script>
+<script>
+    function OpenReceipt() {
+        debugger;
+        var t = document.getElementById("ReceiptForm").style.display == 'block';
+        if (t)
+            document.getElementById("ReceiptForm").style.display = 'none';
+        else
+            document.getElementById("ReceiptForm").style.display = 'block';
+    }
+</script>
+<script>
+    function Enablefile(id1) {
+        debugger;
+        var itemValue = document.getElementById("item" + id1).value;
+        var amountValue = document.getElementById("amount" + id1).value;
+        if (itemValue != "" && amountValue != 0) {
+            document.getElementById("ReceiptFile" + id1).removeAttribute("disabled");
+        }
+        else {
+            document.getElementById("ReceiptFile" + id1).setAttribute("disabled", "");
+        }
+    }
+</script>

@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using HalloDoc.DataAccessLayer.DataContext;
 using HalloDoc.DataAccessLayer.DataModels;
 using HalloDoc.DataAccessLayer.DataModels.ViewModels;
@@ -18,8 +19,13 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.WebPages;
 using Cell = iText.Layout.Element.Cell;
+using Div = iText.Layout.Element.Div;
+using Document = iText.Layout.Document;
+using Paragraph = iText.Layout.Element.Paragraph;
 using Table = iText.Layout.Element.Table;
+using TextAlignment = iText.Layout.Properties.TextAlignment;
 
 namespace Repository
 {
@@ -35,7 +41,7 @@ namespace Repository
 
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type, string email)
         {
-            int phyId = _context.Physicians.Where(x=>x.Email == email).Select(u=>u.PhysicianId).FirstOrDefault();
+            int phyId = _context.Physicians.Where(x => x.Email == email).Select(u => u.PhysicianId).FirstOrDefault();
             var query = (from req in _context.Requests
                          join client in _context.RequestClients on req.RequestId equals client.RequestId
                          select new
@@ -69,15 +75,15 @@ namespace Repository
 
             if (type == 1)
             {
-                query = query.Where(req => req.Status == 1 &&  req.PhysicianId == phyId);
+                query = query.Where(req => req.Status == 1 && req.PhysicianId == phyId);
             }
             else if (type == 2)
             {
-                query = query.Where(req => req.Status == 2  && req.PhysicianId == phyId);
+                query = query.Where(req => req.Status == 2 && req.PhysicianId == phyId);
             }
             else if (type == 3)
             {
-                query = query.Where(req => (req.Status == 4 || req.Status == 5 ) && req.PhysicianId == phyId );
+                query = query.Where(req => (req.Status == 4 || req.Status == 5) && req.PhysicianId == phyId);
             }
             else if (type == 4)
             {
@@ -90,14 +96,14 @@ namespace Repository
             }
 
             return query.ToList();
-        }       
+        }
         public AspNetUser GetUserByEmail(string email)
         {
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
         public AspNetUser GetUserById(string id)
         {
-           return _context.AspNetUsers.Where(x=>x.Id ==  id).FirstOrDefault();
+            return _context.AspNetUsers.Where(x => x.Id == id).FirstOrDefault();
         }
         public Physician getProviderInfo(string email)
         {
@@ -120,7 +126,7 @@ namespace Repository
             var regions = _context.Regions.Where(x => regionIds.Contains(x.RegionId)).ToList();
             return regions;
         }
-       
+
         public void physicianUpdatePassword(string email, string password)
         {
             var aspuser = _context.AspNetUsers.Where(x => x.Email == email).First();
@@ -177,10 +183,10 @@ namespace Repository
 
         public List<RequestandRequestClient> getFilterByrequestTypeAndName(IEnumerable<RequestandRequestClient> r, int requesttypeId, string patient_name)
         {
-           
+
             List<RequestandRequestClient> bytid = getByRequesttypeId(r, requesttypeId);
-            List< RequestandRequestClient> byname = getFilterByName(bytid, patient_name);
-           
+            List<RequestandRequestClient> byname = getFilterByName(bytid, patient_name);
+
             return byname;
 
         }
@@ -189,7 +195,7 @@ namespace Repository
         {
             Request r = new Request();
             RequestStatusLog rs = new RequestStatusLog();
-            int phyId = _context.Physicians.Where(x=>x.Email == email).Select(u=>u.PhysicianId).FirstOrDefault();
+            int phyId = _context.Physicians.Where(x => x.Email == email).Select(u => u.PhysicianId).FirstOrDefault();
             var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
             if (res != null)
             {
@@ -295,7 +301,7 @@ namespace Repository
                 var r = _context.RequestNotes.Where(u => u.RequestNotesId == res.RequestNotesId).FirstOrDefault();
                 r.RequestNotesId = r.RequestNotesId;
                 r.PhysicianNotes = v.AdditionalNote;
-               
+
                 if (r.CreatedBy == "")
                 {
                     r.CreatedBy = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
@@ -384,7 +390,7 @@ namespace Repository
                 }
             }
 
-           
+
         }
 
         public RequestWiseFile GetFileById(int fileId)
@@ -524,13 +530,13 @@ namespace Repository
             _context.SaveChanges();
         }
 
-       public void providerEncounterCase(int requestId, string calltype, string email)
-       {
+        public void providerEncounterCase(int requestId, string calltype, string email)
+        {
             var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
             RequestStatusLog rs = new RequestStatusLog();
-            if(res != null && calltype != null)
+            if (res != null && calltype != null)
             {
-                if(calltype == "housecall")
+                if (calltype == "housecall")
                 {
                     res.Status = 5;
                     res.CallType = 1;
@@ -561,18 +567,18 @@ namespace Repository
                 }
             }
 
-       }
+        }
 
 
-       
+
 
         public encounterModel providerEncounterForm(int requestId)
         {
 
             var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
-            if(e == null)
+            if (e == null)
             {
-              var rc =  _context.RequestClients.Where(x=>x.RequestId == requestId).FirstOrDefault();
+                var rc = _context.RequestClients.Where(x => x.RequestId == requestId).FirstOrDefault();
                 encounterModel result = new encounterModel();
                 result.FirstName = rc.FirstName;
                 result.LastName = rc.LastName;
@@ -642,7 +648,7 @@ namespace Repository
         public void providerEncounterFormPost(int requestId, encounterModel em)
         {
             var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
-            if(e == null)
+            if (e == null)
             {
                 EncounterForm encounterForm = new EncounterForm();
                 encounterForm.RequestId = requestId;
@@ -677,7 +683,7 @@ namespace Repository
             }
             else
             {
-               
+
                 e.IsFinalized = new BitArray(new bool[] { false });
                 e.HistoryIllness = em.HistoryIllness;
                 e.MedicalHistory = em.MedicalHistory;
@@ -706,7 +712,7 @@ namespace Repository
                 e.FollowUp = em.FollowUp;
                 _context.SaveChanges();
             }
-            
+
         }
 
 
@@ -765,7 +771,8 @@ namespace Repository
                 PdfWriter writer = new PdfWriter(stream)
 ;
                 PdfDocument pdf = new PdfDocument(writer);
-                Document document = new Document(pdf);
+
+                Document document = new iText.Layout.Document(pdf);
 
                 Div div = new Div();
                 //Image image = new Image(ImageDataFactory.Create("D:\\HalloDoc - MVCProjectFinal\\HalloDoc - MVCProjectFinal\\HalloDoc\\wwwroot\\Files\\Fig56.Patient site 1.png"));
@@ -780,7 +787,7 @@ namespace Repository
 
 
                 document.Add(new Paragraph($"Patient Name: \t\t {encounter.FirstName + " " + encounter.LastName}"));
-                document.Add(new Paragraph($"DOB: \t\t {( encounter.DateOfBirth)}"));
+                document.Add(new Paragraph($"DOB: \t\t {(encounter.DateOfBirth)}"));
                 document.Add(new Paragraph($"Report Date:\t\t "));
                 document.Add(new Paragraph($"PDF Generate Date:\t\t {DateTime.Now.ToShortDateString()}"));
                 document.Add(new Paragraph($"Address:\t\t {encounter.Address}"));
@@ -949,9 +956,10 @@ namespace Repository
 
         public void transferToConcludeState(int requestId)
         {
-            var res = _context.Requests.Where(x=>x.RequestId == requestId).FirstOrDefault();
+            var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
             RequestStatusLog rs = new RequestStatusLog();
-            if(res != null) {
+            if (res != null)
+            {
                 res.Status = 6;
                 res.ModifiedDate = DateTime.Now;
                 _context.SaveChanges();
@@ -969,7 +977,7 @@ namespace Repository
         {
             var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
             var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
-            if (res != null && e!=null)
+            if (res != null && e != null)
             {
                 res.CompletedByPhysician = new BitArray(new bool[] { true });
 
@@ -983,9 +991,9 @@ namespace Repository
         {
             var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
             RequestStatusLog rs = new RequestStatusLog();
-            RequestNote rn = _context.RequestNotes.Where(x=>x.RequestId == requestId).FirstOrDefault();
+            RequestNote rn = _context.RequestNotes.Where(x => x.RequestId == requestId).FirstOrDefault();
             var e = _context.EncounterForms.Where(x => x.RequestId == requestId).FirstOrDefault();
-            if(res.CompletedByPhysician != null && res.CompletedByPhysician[0] && e.IsFinalized[0])
+            if (res.CompletedByPhysician != null && res.CompletedByPhysician[0] && e.IsFinalized[0])
             {
                 res.Status = 8;
                 _context.SaveChanges();
@@ -1002,7 +1010,7 @@ namespace Repository
                     RequestNote r = new RequestNote();
                     r.RequestId = requestId;
                     r.PhysicianNotes = notes;
-                     name = _context.Physicians.Where(x => x.Email == email).Select(u => u.FirstName).First();
+                    name = _context.Physicians.Where(x => x.Email == email).Select(u => u.FirstName).First();
                     r.CreatedBy = name;
                     r.CreatedDate = DateTime.Now;
                     _context.RequestNotes.Add(r);
@@ -1016,14 +1024,14 @@ namespace Repository
                     rn.ModifiedBy = name;
                     _context.SaveChanges();
                 }
-                
+
             }
         }
 
 
         public Physician getPhysicianDetails(int physicianId)
         {
-            
+
             var res = _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
             return res;
         }
@@ -1100,7 +1108,7 @@ namespace Repository
                 weekdays += i;
             }
 
-            int phy_id =   _context.Physicians.Where(x => x.Email == email).Select(u => u.PhysicianId).FirstOrDefault();
+            int phy_id = _context.Physicians.Where(x => x.Email == email).Select(u => u.PhysicianId).FirstOrDefault();
             Shift shift = new Shift();
             shift.PhysicianId = phy_id;
 
@@ -1350,11 +1358,12 @@ namespace Repository
             return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
         }
 
-        public TimesheetModel providerTimesheetData(DateTime startDate , DateTime endDate, string email)
+        public TimesheetModel providerTimesheetData(DateTime startDate, DateTime endDate, string email)
         {
-          int phyId =  _context.Physicians.Where(x=>x.Email == email).Select(x=>x.PhysicianId).FirstOrDefault();
-           Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.PhysicianId == phyId).FirstOrDefault();
-            if(t == null)
+            int phyId = _context.Physicians.Where(x => x.Email == email).Select(x => x.PhysicianId).FirstOrDefault();
+            Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.PhysicianId == phyId).FirstOrDefault();
+
+            if (t == null)
             {
                 Timesheet timesheet = new Timesheet();
                 timesheet.PhysicianId = phyId;
@@ -1368,41 +1377,122 @@ namespace Repository
                     TimesheetDetail timesheetDetail = new TimesheetDetail();
                     timesheetDetail.TimesheetId = timesheet.TimesheetId;
                     timesheetDetail.Shiftdate = i;
-                    timesheetDetail.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == i && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();      
+                    timesheetDetail.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == i && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();
                     _context.TimesheetDetails.Add(timesheetDetail);
                     _context.SaveChanges();
+
+
                 }
-               return GetTimesheetDetails(timesheet.TimesheetId);
+                return GetTimesheetDetails(timesheet.TimesheetId, startDate, endDate);
             }
             else
             {
-                var res = _context.TimesheetDetails.Where(x=>x.TimesheetId == t.TimesheetId).ToList();
+                List<TimesheetReimbursement> timesheetReimbursement = _context.TimesheetReimbursements.Where(x => x.TimesheetId == t.TimesheetId).ToList();
+                var res = _context.TimesheetDetails.Where(x => x.TimesheetId == t.TimesheetId).ToList();
                 foreach (var item in res)
                 {
-                    if(item.ShiftHours == 0 && item.Housecall == 0 && item.PhoneConsult == 0)
+                    if (item.ShiftHours == 0 && item.Housecall == 0 && item.PhoneConsult == 0)
                     {
                         item.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == item.Shiftdate && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();
                         _context.SaveChanges();
                     }
-                }          
-                return GetTimesheetDetails(t.TimesheetId);
+                }
+                return GetTimesheetDetails(t.TimesheetId,startDate,endDate);
             }
         }
 
-        public TimesheetModel GetTimesheetDetails(int TimesheetId)
+        private TimesheetModel GetTimesheetDetails(int TimesheetId,DateTime startDate,DateTime endDate)
         {
             TimesheetModel timesheetModels = new TimesheetModel();
-            var res = _context.TimesheetDetails.Where(x=>x.TimesheetId == TimesheetId).OrderBy(x=>x.Shiftdate).ToList();
-           timesheetModels.Timesheets = res;
-            
+            var res = _context.TimesheetDetails.Where(x => x.TimesheetId == TimesheetId).OrderBy(x => x.Shiftdate).ToList();
+            var timesheetReimbursement = _context.TimesheetReimbursements.Where(x => x.TimesheetId == TimesheetId).ToList();
+            timesheetModels.Timesheets = res;
+            timesheetModels.timesheetReimbursements = timesheetReimbursement;
+            timesheetModels.Startdate=startDate;
+            timesheetModels.Enddate=endDate;
             return timesheetModels;
-            
+
         }
 
-        public void insertTimesheetDetail(TimesheetModel timesheetModel)
+        public void insertTimesheetDetail(List<TimesheetDetail> data)
         {
-           
 
+            foreach (var item in data)
+            {
+                TimesheetDetail timesheetDetail = _context.TimesheetDetails.Where(x => x.TimesheetDetailId == item.TimesheetDetailId).FirstOrDefault();
+                if (timesheetDetail != null)
+                {
+                    timesheetDetail.ShiftHours = item.ShiftHours;
+                    timesheetDetail.Housecall = item.Housecall;
+                    timesheetDetail.PhoneConsult = item.PhoneConsult;
+                    timesheetDetail.IsWeekend = item.IsWeekend;
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public void SaveReimbursement(TimesheetModel model, string? phyEmail)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.Email == phyEmail);
+
+            Timesheet invoice1 = _context.Timesheets.FirstOrDefault(x => x.PhysicianId == phy.PhysicianId && x.Startdate == model.Startdate && x.Enddate == model.Enddate);
+            int timesheetID = 0;
+            if (invoice1 != null)
+            {
+                timesheetID = invoice1.TimesheetId;
+            }
+            else
+            {
+                Timesheet invoice = new Timesheet();
+                invoice.PhysicianId = phy.PhysicianId;
+                invoice.Startdate = (DateTime)model.Startdate;
+                invoice.Enddate = (DateTime)model.Enddate;
+                //invoice.Createdby = phy.AspNetUserId ?? 1;
+                //invoice.CreatedDate = DateTime.Now;
+                _context.Timesheets.Add(invoice);
+                _context.SaveChanges();
+                timesheetID = invoice.TimesheetId;
+            }
+
+            TimesheetReimbursement reim = new TimesheetReimbursement
+            {
+                Amount = model.Amount,
+                Item = model.Item,
+                ReimbursementDate = model.Startdate.Value.AddDays(model.Gap),
+                TimesheetId = timesheetID,
+                Filename = model.ReceiptFile.FileName,
+                PhysicianId = phy.PhysicianId,
+                CreatedBy = phy.AspNetUserId ?? "",
+                CreatedDate = DateTime.Now,
+
+            };
+
+            string filename = model.ReceiptFile.FileName;
+            string path = Path.Combine("D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\" + phy.PhysicianId + "\\" + filename);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            using FileStream stream = new(path, FileMode.Create);
+            model.ReceiptFile?.CopyTo(stream)
+;
+
+            _context.TimesheetReimbursements.Add(reim);
+            _context.SaveChanges();
+        }
+        public void EditReimbursement(DateTime startDate, string item, int amount, int gap, string? phyEmail)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.Email == phyEmail);
+
+            TimesheetReimbursement reim =  _context.TimesheetReimbursements.FirstOrDefault(x => x.ReimbursementDate.Value.Date == DateTime.Parse(startDate.AddDays(gap).ToString("MM-dd-yyyy")).Date && x.PhysicianId == phy.PhysicianId) ;
+        
+            reim.Amount = amount;
+            reim.Item = item;
+            reim.ModifiedBy = phy.AspNetUserId ;
+            reim.ModifiedDate = DateTime.Now;
+            _context.TimesheetReimbursements.Update(reim);
+            _context.SaveChanges();
         }
     }
 }

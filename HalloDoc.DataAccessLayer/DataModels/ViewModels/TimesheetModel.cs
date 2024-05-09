@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,20 +24,15 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
 
         [Column("isFinalized", TypeName = "bit(1)")]
         public BitArray? IsFinalized { get; set; }
-        //[Column(TypeName = "timestamp without time zone")]
-        //public DateTime? Shiftdate { get; set; }
-
-        //public int? ShiftHours { get; set; }
-        //public int? TotalHours { get; set; }
-
-        //public int? Housecall { get; set; }
-
-        //public int? PhoneConsult { get; set; }
-
-        //[Column("isWeekend", TypeName = "bit(1)")]
-        //public BitArray? IsWeekend { get; set; }
-
+        
         public List<TimesheetDetail> Timesheets { get; set; }
+        public List<TimesheetReimbursement> timesheetReimbursements { get; set; }
         public List<ShiftDetail> ShiftDetail { get; set; }
+
+        public string Item { get; set; }
+        public string FileName { get; set; }
+        public IFormFile ReceiptFile { get; set; }
+        public int Amount { get; set; }
+        public int Gap { get; set; }
     }
 }
