@@ -1,0 +1,143 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.TimesheetModel
+@{
+
+
+    DateTime date = DateTime.Now;
+}
+
+
+<div class=" row p-3 ">
+    <div class=" col form-floating table-responsive mb-3">
+        <table class="table ">
+            <colgroup>
+                <col style="width: 13%" />
+                <col style="width: 7%" />
+                <col style="width: 20%" />
+                <col style="width: 10%" />
+                <col style="width: 25%" />
+                <col style="width: 25%" />
+            </colgroup>
+            <thead>
+                <tr class="table-secondary">
+                    <td>Date</td>
+                    <td>On-call Hours</td>
+                    <td>Total Hours</td>
+                    <td>Weekend/Holiday</td>
+                    <td>Number of Housecalls</td>
+                    <td>Number of Phone Concults</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var timesheet in Model.Timesheets)
+                {
+                    <tr>
+                        <td>@timesheet.Shiftdate</td>
+                        <td>@timesheet.ShiftHours</td>
+                        <td></td>
+                        <td>
+                            @if (timesheet.IsWeekend.Length > 0 && timesheet.IsWeekend[0]) 
+                            {
+                                <span>1</span>
+                            }
+                            else
+                            {
+                               <span>0</span>
+                            }
+                        </td>
+                        <td>@timesheet.Housecall</td>
+                        <td>@timesheet.PhoneConsult</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row ps-3">
+    <div class="col">
+        <h5>
+            TimeSheet Reimbursement
+        </h5>
+    </div>
+</div>
+
+<div class=" row p-3 ">
+    <div class=" col form-floating table-responsive mb-3">
+        <table class="table ">
+            <colgroup>
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 30%" />
+                <col style="width: 25%" />
+            </colgroup>
+            <thead>
+                <tr class="table-secondary">
+                    <td>Date</td>
+                    <td>Item</td>
+                    <td>Amount</td>
+                    <td>Bill</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @if (Model != null)
+                {
+                    var id1 = 0;
+                    foreach (var item in Model.Timesheets)
+                    {
+                        var res = @Model.timesheetReimbursements.Where(x => x.ReimbursementDate == @item.Shiftdate && x.TimesheetId == item.TimesheetId).FirstOrDefault();
+                        <form asp-action="SaveReimbursement" method="post" enctype="multipart/form-data">
+                            
+
+                        <tr class="text-muted">
+
+                            <td scope="row">@item.Shiftdate</td>
+                                @if (res == null)
+                                {
+                                <td>No Data</td>
+                                <td>0</td>
+                                    <td>No Data</td>
+                                    <td>No Data</td>
+                                }
+                                else
+                                {
+                                <td>@res.Item</td>
+                                <td>@res.Amount</td>
+                                <td>@res.Filename</td>
+                                <td>
+                                        @if (res.Filename != null)
+                                        {
+                                            var str = "view" + id1;
+
+                                        }
+                                        @if (true)
+                                        {
+                                            
+                                            var str1 = "";
+                                            if (res.Filename != null)
+                                            {
+                                                str1 = "/InvoicingFile/" + @res.PhysicianId + "/" + Uri.EscapeDataString(@res.Filename);
+                                            }
+                                        <a href="@str1" target="_blank" class="col btn border border-info text-info mt-1 editBtns">View</a>
+                                        }
+                                </td>
+                                }
+
+                           
+
+                        </tr>
+                        </form>
+                        id1++;
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

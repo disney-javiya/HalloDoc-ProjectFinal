@@ -1377,6 +1377,7 @@ namespace Repository
                     TimesheetDetail timesheetDetail = new TimesheetDetail();
                     timesheetDetail.TimesheetId = timesheet.TimesheetId;
                     timesheetDetail.Shiftdate = i;
+                    timesheetDetail.IsWeekend = new BitArray(new bool[] { false });
                     timesheetDetail.ShiftHours = _context.ShiftDetails.Where(x => x.ShiftDate == i && x.Shift.PhysicianId == phyId).Select(x => (x.EndTime - x.StartTime).Hours).FirstOrDefault();
                     _context.TimesheetDetails.Add(timesheetDetail);
                     _context.SaveChanges();
@@ -1485,7 +1486,7 @@ namespace Repository
         {
             var phy = _context.Physicians.FirstOrDefault(e => e.Email == phyEmail);
 
-            TimesheetReimbursement reim =  _context.TimesheetReimbursements.FirstOrDefault(x => x.ReimbursementDate.Value.Date == DateTime.Parse(startDate.AddDays(gap).ToString("MM-dd-yyyy")).Date && x.PhysicianId == phy.PhysicianId) ;
+            TimesheetReimbursement reim =  _context.TimesheetReimbursements.FirstOrDefault(x => x.ReimbursementDate.Value.Date == DateTime.Parse(startDate.AddDays(gap).ToString("dd-MM-yyyy")).Date && x.PhysicianId == phy.PhysicianId) ;
         
             reim.Amount = amount;
             reim.Item = item;
@@ -1493,6 +1494,44 @@ namespace Repository
             reim.ModifiedDate = DateTime.Now;
             _context.TimesheetReimbursements.Update(reim);
             _context.SaveChanges();
+        }
+        public void DeleteReimbursement( int rid, string? phyEmail)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.Email == phyEmail);
+
+            TimesheetReimbursement reim = _context.TimesheetReimbursements.FirstOrDefault(x => x.TimesheetReimbursementId == rid && x.PhysicianId == phy.PhysicianId);
+
+           
+           _context.TimesheetReimbursements.Remove(reim);
+            _context.SaveChanges();
+        }
+        public bool IsTimesheetFinalized(DateTime startDate, string phyEmail)
+        {
+            DateTime enddate = startDate.AddDays(15 - startDate.Day);
+            var phy = _context.Physicians.Where(x=>x.Email == phyEmail).FirstOrDefault();
+            if (startDate.Day > 15)
+            {
+                enddate = startDate.AddDays(DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day);
+            }
+            Timesheet invoice = _context.Timesheets.FirstOrDefault(x => x.PhysicianId == phy.PhysicianId && x.Startdate == startDate && x.Enddate == enddate);
+            if (invoice != null)
+            {
+                if (invoice.IsFinalized[0] == true)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        }
+        public void FinalizeTimesheetProvider(DateTime startDate, DateTime endDate, string? phyEmail)
+        {
+            int phyId = _context.Physicians.Where(x=>x.Email == phyEmail).Select(x=>x.PhysicianId).FirstOrDefault();
+            Timesheet timesheet = _context.Timesheets.Where(x => x.Startdate == startDate && x.Enddate == endDate && x.PhysicianId == phyId).FirstOrDefault();
+            if(timesheet != null)
+            {
+                timesheet.IsFinalized = new BitArray(new bool[] {true});
+                _context.SaveChanges();
+            }
         }
     }
 }

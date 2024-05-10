@@ -181,5 +181,10 @@ namespace Repository.IRepository
         public bool IsUserExists(string email);
         public string GetRequestName(int RequestId);
         public List<RequestClient> GetAllRequestClient();
+        public PayRateViewModel GetPayRate(int id);
+        public void UpdatePayRate(PayRateViewModel model, int phyid);
+        public TimesheetModel providerTimesheetData(DateTime startDate, DateTime endDate, int phyId);
+        public List<bool> IsTimesheetFinalized(DateTime startDate, int phyid);
+        public TimesheetModel GETTimeSheetForApprove(DateTime startDate, int phyid);
     }
 }

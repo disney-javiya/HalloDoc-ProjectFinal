@@ -106,38 +106,7 @@
             </form>
         </main>
 
-@*     <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '/Admin/GetAllHealthProfessionalType',
-                type: 'GET',
 
-                success: function (data) {
-
-                    var healthprofesionalDropdown = $('#healthprofesional');
-                    healthprofesionalDropdown.empty();
-                if (@Model.Profession == 1) {
-                    healthprofesionalDropdown.append($('<option></option>').attr('value', 1).text("Nursing"));
-                }
-                else if (@Model.Profession == 2) {
-                    healthprofesionalDropdown.append($('<option></option>').attr('value', 2).text("Pharmacy"));
-                }
-                else {
-                    healthprofesionalDropdown.append($('<option></option>').attr('value', 0).text("Select Healthprofessional Type"));
-                }
-                   
-                    $.each(data, function (index, Profession) {
-
-                        healthprofesionalDropdown.append($('<option></option>').attr('value', Profession.healthProfessionalId).text(Profession.professionName));
-
-                    });
-
-                }
-            });
-        });
-
-
-    </script> *@
 <script>
     $(document).ready(function () {
         $.ajax({

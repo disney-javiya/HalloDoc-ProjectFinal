@@ -26,6 +26,18 @@ public partial class Timesheet
     [Column("isFinalized", TypeName = "bit(1)")]
     public BitArray? IsFinalized { get; set; }
 
+    [Column("isApproved")]
+    public bool? IsApproved { get; set; }
+
+    [Column("adminNote", TypeName = "character varying")]
+    public string? AdminNote { get; set; }
+
+    [Column("invoiceAmount")]
+    public int? InvoiceAmount { get; set; }
+
+    [Column("bonusAmount")]
+    public int? BonusAmount { get; set; }
+
     [ForeignKey("PhysicianId")]
     [InverseProperty("Timesheets")]
     public virtual Physician Physician { get; set; } = null!;

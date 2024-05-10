@@ -14,19 +14,25 @@ public partial class Payrate
     [Key]
     public int PayrateId { get; set; }
 
-    public decimal? NightShiftWeekend { get; set; }
+    public int? NightShiftWeekend { get; set; }
 
-    public decimal? Shift { get; set; }
+    public int? Shift { get; set; }
 
-    public decimal? HousecallNightWeekend { get; set; }
+    public int? HousecallNightWeekend { get; set; }
 
-    public decimal? Phoneconsult { get; set; }
+    public int? Phoneconsult { get; set; }
 
-    public decimal? PhoneconsultNightWeekend { get; set; }
+    public int? PhoneconsultNightWeekend { get; set; }
 
-    public decimal? BatchTesting { get; set; }
+    public int? BatchTesting { get; set; }
 
-    public decimal? Housecall { get; set; }
+    public int? Housecall { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? CreatedDate { get; set; }
+
+    [Column(TypeName = "timestamp without time zone")]
+    public DateTime? ModifiedDate { get; set; }
 
     [ForeignKey("PhysicianId")]
     [InverseProperty("Payrates")]

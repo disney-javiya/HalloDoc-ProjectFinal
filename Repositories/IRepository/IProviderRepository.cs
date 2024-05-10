@@ -77,5 +77,8 @@ namespace Repository.IRepository
         public void insertTimesheetDetail(List<TimesheetDetail> timesheetModel);
         void SaveReimbursement(TimesheetModel model, string? v);
         void EditReimbursement(DateTime startDate1, string item, int amount, int gap, string? v);
+        public void DeleteReimbursement(int rid, string? phyEmail);
+        public bool IsTimesheetFinalized(DateTime startDate, string phyEmail);
+        public void FinalizeTimesheetProvider(DateTime startDate, DateTime endDate, string? phyEmail);
     }
 }

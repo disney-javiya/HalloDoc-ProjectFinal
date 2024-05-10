@@ -12,6 +12,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
     public class TimesheetModel
     {
         public int PhysicianId { get; set; }
+        public int InvoiceId { get; set; }
         //public DateOnly? Date { get; set; }
 
         [Column(TypeName = "timestamp without time zone")]
@@ -26,6 +27,7 @@ namespace HalloDoc.DataAccessLayer.DataModels.ViewModels
         public BitArray? IsFinalized { get; set; }
         
         public List<TimesheetDetail> Timesheets { get; set; }
+        public List<TimesheetDetail> physicians { get; set; }
         public List<TimesheetReimbursement> timesheetReimbursements { get; set; }
         public List<ShiftDetail> ShiftDetail { get; set; }
 

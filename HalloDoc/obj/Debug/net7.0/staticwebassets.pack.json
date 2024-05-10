@@ -289,12 +289,20 @@
       "PackagePath": "staticwebassets\\Files\\postgresql-2.png"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\1\\SQL Questions.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\1\\SQL Questions.pdf"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Assignment 5-PMS.pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\Assignment 5-PMS.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\MVC (1).pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\MVC (1).pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\MVC.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\MVC.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\MedicalReport (1).pdf",
@@ -307,6 +315,14 @@
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SQL Questions.pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\SQL Questions.pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees-17April24-GoodToHave.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\SRS-23-24-Trainees-17April24-GoodToHave.pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Test Instructions.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\Test Instructions.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\css\\site.css",

@@ -2002,10 +2002,33 @@ namespace HalloDoc.Controllers
             return name;
         }
 
-        public IActionResult PayRate()
+
+        public IActionResult PayRate(int id)
         {
+            PayRateViewModel model = _adminRepository.GetPayRate(id);
+            return View(model);
+        }
+        public IActionResult PayratePhysician(PayRateViewModel model, int phyid)
+        {
+            _adminRepository.UpdatePayRate(model, phyid);
+            return RedirectToAction(nameof(PayRate), new { id = phyid });
+        }
+
+        public IActionResult adminInvoicing()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
             return View();
         }
+        [HttpPost]
+        public IActionResult GETTimeSheet(DateTime StartDate, DateTime endDate, int phyId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            TimesheetModel timesheetModels = _adminRepository.providerTimesheetData(StartDate, endDate, phyId);
+            return PartialView("_TimesheetDetail", timesheetModels);
+        }
+        [Route("/Admin/Invoicing/{StartDate}/{phyid}")]        [HttpGet]        public IActionResult IsTimesheetFinalized(string StartDate, string phyid)        {            List<bool> isFinalized = _adminRepository.IsTimesheetFinalized(DateTime.Parse(StartDate), int.Parse(phyid));            return Json(new { isfinal = isFinalized.ElementAt(0), isapprove = isFinalized.ElementAt(1) });        }
+
+        [HttpPost]        public IActionResult GETTimeSheetForApprove(DateTime StartDate, int phyid)        {            TimesheetModel model = _adminRepository.GETTimeSheetForApprove(StartDate, phyid);            return PartialView("_TimesheetApprove", model);        }
         public IActionResult logOut()
         {
 

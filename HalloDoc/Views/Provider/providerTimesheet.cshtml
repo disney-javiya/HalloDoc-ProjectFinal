@@ -43,8 +43,17 @@
                                         <td><input type="text" class="rounded p-2 border border-secondary-subtle" onmouseup="this.style.outline='none'" value="@item.ShiftHours" /><input hidden value="@item.TimesheetDetailId"></td>
                                         <td>
                                             <div class="form-check d-flex justify-content-center align-items-center">
+                                            @if (item.IsWeekend.Length > 0 && item.IsWeekend[0]) 
+                                            {
+                                                <input class="form-check-input" type="checkbox" value="@item.IsWeekend" checked id="flexcheckdefault">
+                                            }
+                                            else
+                                            {
                                                 <input class="form-check-input" type="checkbox" value="@item.IsWeekend" id="flexcheckdefault">
-                                            </div>
+                                            }
+
+                                                
+                                        </div>
                                         </td>
                                         <td><input asp-for="@item.Housecall" type="text" class="rounded p-2 border border-secondary-subtle" value="@item.Housecall" onmouseup="this.style.outline='none'" /></td>
                                         <td><input asp-for="@item.PhoneConsult" type="text" class="rounded p-2 border border-secondary-subtle" value="@item.PhoneConsult" onmouseup="this.style.outline='none'" /></td>
@@ -85,7 +94,8 @@
                                  <form asp-action="SaveReimbursement" method="post" enctype="multipart/form-data">
                                             <input type="hidden" value="@startDate" name="StartDate" id="StartDate" />
                                             <input type="hidden" value="@endDate" name="EndDate" id="EndDate" />
-                                            <input type="hidden" value="@id1" name="Gap" />
+                                            <input type="hidden" value="@id1" name="Gap"/>
+                                   
                                 <tr class="text-muted">
 
                                     <td scope="row">@item.Shiftdate</td>
@@ -124,13 +134,7 @@
                                     {
                                         var str = "ReceiptFile" + id1;
                                         <td >
-                                           @*  <input type="file" name="files" id="real-file" hidden="hidden"/>
-
-                                            <input onchange="SaveData(@id1)" class="form-control w-50 mb-3" type="text" id=@str value="Select File" disabled>
-                                            <button class="btn btn-info mb-3" type="button" id="custom-button">
-                                                <i class="bi bi-cloud-arrow-up"></i> Upload
-                                            </button> *@
-                                            <input type="file" id=@str name="ReceiptFile" onchange="SaveData(@id1)" name="ReceiptFile" disabled>
+                                            <input type="file" id=@str name="ReceiptFile" onchange="SaveData(@id1)" disabled>
                                         </td>
                                     }
                                     <td>
@@ -140,9 +144,14 @@
                                                 var str = "edit" + id1;
                                                 <a class="col btn border border-info text-info mt-1 editBtns" id="@str" onclick="EditReceipt(@id1)">Edit</a>
                                                  str = "delete" + id1;
-                                                <a class="col btn border border-info text-info mt-1 editBtns" id="@str">Delete</a>
-                                                 str = "view" + id1;
-                                                <a class="col btn border border-info text-info mt-1 editBtns" id="@str">View</a>
+                                            <a class="col btn border border-info text-info mt-1 deleteBtn"  onclick="DeleteReceipt(@id1, @res.TimesheetReimbursementId)" id="@str">Delete</a>
+                                                str = "view" + id1;
+                                                var str1 = "";
+                                                if(res.Filename != null)
+                                                {
+                                                     str1 = "/InvoicingFile/" + @res.PhysicianId + "/" + Uri.EscapeDataString(@res.Filename);
+                                                }
+                                                <a href="@str1" target="_blank" class="col btn border border-info text-info mt-1 editBtns" id="@str">View</a>
                                                  str = "save" + id1;
                                                 <a class="col btn border border-info text-info mt-1 saveBtns" id="@str" style="display:none;" onclick="EditReimbursement(@id1)">Save</a>
                                                  str = "cancel" + id1;
@@ -171,10 +180,19 @@
      
     </div>
         <div class="col text-end mt-2">
-            <a role="button" class="btn btn-info text-white">Finalize</a>
+            <a role="button" class="btn btn-info text-white" onclick="finalizeTimesheet()">Finalize</a>
         </div>
     </div>
 </main>
+<script>
+    function finalizeTimesheet() { 
+        var startDate = "@startDate";
+        var endDate = "@endDate";
+        var startDatePart = startDate.split(' ')[0];
+        var endDatePart = endDate.split(' ')[0];
+        window.location.href = "/Provider/FinalizeTimesheetProvider?StartDate1=" + startDatePart + "&EndDate=" + endDatePart;
+    }
+</script>
 <script>
     $('#invoiceData').click(function () {
         var data = GetTableData();
@@ -204,28 +222,19 @@
 
     });
 </script>
-@* 
 <script>
-    const fileInput = document.getElementById("real-file");
-    const customBtn = document.getElementById("custom-button");
-    const customTxt = document.getElementById("custom-text");
+    function DeleteReceipt(id1, TimesheetReimbursementId) {
+        var rid = TimesheetReimbursementId;
+        var startDate = "@startDate";
+        var endDate = "@endDate";
+        var startDatePart = startDate.split(' ')[0];
+        var endDatePart = endDate.split(' ')[0];
+        window.location.href = "/Provider/DeleteReimbursement?StartDate1=" + startDatePart + "&EndDate=" + endDatePart + "&rid=" + rid;
+    }
+</script>
 
-    customBtn.addEventListener("click", function () {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener("change", function () {
-        if (this.files.length === 1) {
-            customTxt.value = this.files[0].name;
-           
-        } else {
-            customTxt.value = "Select File";
-        }
-    });
-</script> *@
 <script>
     function EditReceipt(id1) {
-        debugger;
         document.getElementById("edit" + id1).style.display = "none";
         document.getElementById("view" + id1).style.display = "none";
         document.getElementById("delete" + id1).style.display = "none";
@@ -237,18 +246,19 @@
 </script>
 <script>
     function EditReimbursement(id1) {
-        debugger;
         var ItemValue = document.getElementById("item" + id1).value;
-        var AmountValue = document.getElementById("amount" + id1).value;
-        var d = @startDate.ToString("dd-MM-yyyy");
-        var d1 = @endDate.ToString("dd-MM-yyyy");
+        var AmountValue = document.getElementById("amount" + id1).value;  
+        var startDate = "@startDate"; 
+        var endDate = "@endDate";   
+        var startDatePart = startDate.split(' ')[0];
+        var endDatePart = endDate.split(' ')[0];
 
-        // window.location.href = "/Provider/EditReimbursement?StartDate1=" +  d+"&EndDate="+d1 + "&Item=" + ItemValue + "&Amount=" + AmountValue + "&Gap=" + id1;
+        window.location.href = "/Provider/EditReimbursement?StartDate1=" + startDatePart + "&EndDate=" + endDatePart + "&Item=" + ItemValue + "&Amount=" + AmountValue + "&Gap=" + id1;
     }
+
 </script>
 <script>
     function SaveData(id1) {
-        debugger;
         var filename = document.getElementById("ReceiptFile" + id1).value;
         var extension = filename.split('.').pop();
         if (extension != "pdf") {
@@ -262,7 +272,6 @@
 </script>
 <script>
     function CancelReimbursement(id1) {
-        debugger;
         document.getElementById("edit" + id1).style.display = "inline";
         document.getElementById("view" + id1).style.display = "inline";
         document.getElementById("delete" + id1).style.display = "inline";
@@ -273,18 +282,13 @@
     }
 </script>
 <script>
-    function OpenReceipt() {
-        debugger;
-        var t = document.getElementById("ReceiptForm").style.display == 'block';
-        if (t)
-            document.getElementById("ReceiptForm").style.display = 'none';
-        else
-            document.getElementById("ReceiptForm").style.display = 'block';
-    }
+    $(document).ready(function () {
+        $('#addReceiptsTable').css('display', 'none');
+    });
 </script>
+
 <script>
     function Enablefile(id1) {
-        debugger;
         var itemValue = document.getElementById("item" + id1).value;
         var amountValue = document.getElementById("amount" + id1).value;
         if (itemValue != "" && amountValue != 0) {

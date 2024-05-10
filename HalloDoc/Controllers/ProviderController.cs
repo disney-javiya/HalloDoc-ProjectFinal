@@ -800,11 +800,40 @@ namespace HalloDoc.Controllers
 
         public IActionResult EditReimbursement(string StartDate1,string EndDate, string Item, int Amount, int Gap)
         {
-            //string T = DateOnly.FromDateTime(StartDate1).ToString("MM-dd-yyyy");
-            //DateTime dt = DateTime.ParseExact(T, "MM-dd-yyyy", CultureInfo.InvariantCulture);
-            //string StartDate = dt.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture);
-            //_providerRepository.EditReimbursement(StartDate1, Item, Amount, Gap, HttpContext.Session.GetString("key"));
-            return RedirectToAction(nameof(providerTimesheet), new { startDate = StartDate1, endDate = EndDate});
+            DateTime s = DateTime.Parse(StartDate1);
+            DateTime e = DateTime.Parse(EndDate);
+            _providerRepository.EditReimbursement(s, Item, Amount, Gap, HttpContext.Session.GetString("key"));
+            return RedirectToAction(nameof(providerTimesheet), new { startDate = s, endDate = e});
+        }
+        public IActionResult DeleteReimbursement(string StartDate1, string EndDate, int rid)
+        {
+            DateTime s = DateTime.Parse(StartDate1);
+            DateTime e = DateTime.Parse(EndDate);
+            _providerRepository.DeleteReimbursement(rid, HttpContext.Session.GetString("key"));
+            return RedirectToAction(nameof(providerTimesheet), new { startDate = s, endDate = e });
+        }
+        [HttpPost]
+        public IActionResult GETTimeSheet(DateTime StartDate, DateTime endDate)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            TimesheetModel timesheetModels = _providerRepository.providerTimesheetData(StartDate, endDate, ViewBag.Data);
+            return PartialView("_TimesheetDetail", timesheetModels);
+        }
+        [Route("/Provider/Invoicing/{StartDate}")]
+        [HttpGet]
+        public IActionResult IsTimesheetFinalized(string StartDate)
+        {
+            bool isFinalized = _providerRepository.IsTimesheetFinalized(DateTime.Parse(StartDate), HttpContext.Session.GetString("key"));
+
+            return Json(new { exists = isFinalized });
+        }
+
+        public IActionResult FinalizeTimesheetProvider(string StartDate1, string EndDate)
+        {
+            DateTime s = DateTime.Parse(StartDate1);
+            DateTime e = DateTime.Parse(EndDate);
+            _providerRepository.FinalizeTimesheetProvider(s, e, HttpContext.Session.GetString("key"));
+            return RedirectToAction(nameof(providerInvoicing));
         }
         public IActionResult logOut()
         {
