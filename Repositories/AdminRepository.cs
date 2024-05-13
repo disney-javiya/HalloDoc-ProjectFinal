@@ -3076,12 +3076,20 @@ namespace Repository
                         _context.SaveChanges();
                     }
                 }
+                TimesheetModel timesheetModel = new TimesheetModel();
+                Payrate payrate = _context.Payrates.Where(x => x.PhysicianId == t.PhysicianId).FirstOrDefault();
+               
+
+      
+
+
                 return GetTimesheetDetails(t.TimesheetId, startDate, endDate);
             }
         }
 
         private TimesheetModel GetTimesheetDetails(int TimesheetId, DateTime startDate, DateTime endDate)
         {
+            Payrate payrate = _context.Payrates.Where(x => x.PhysicianId == (_context.Timesheets.Where(x=>x.TimesheetId == TimesheetId).Select(x=>x.PhysicianId).FirstOrDefault())).FirstOrDefault();
             TimesheetModel timesheetModels = new TimesheetModel();
             var res = _context.TimesheetDetails.Where(x => x.TimesheetId == TimesheetId).OrderBy(x => x.Shiftdate).ToList();
             var timesheetReimbursement = _context.TimesheetReimbursements.Where(x => x.TimesheetId == TimesheetId).ToList();
@@ -3089,11 +3097,140 @@ namespace Repository
             timesheetModels.timesheetReimbursements = timesheetReimbursement;
             timesheetModels.Startdate = startDate;
             timesheetModels.Enddate = endDate;
+            timesheetModels.Shift = payrate.Shift;
+            timesheetModels.NightshiftWeekend = payrate.NightShiftWeekend;
+            timesheetModels.Housecall = payrate.Housecall;
+            timesheetModels.PhoneConsults = payrate.Phoneconsult;
+            timesheetModels.PhysicianId = _context.Timesheets.Where(x => x.TimesheetId == TimesheetId).Select(x => x.PhysicianId).FirstOrDefault();
+            int totalshift = 0;
+            int totalweekend = 0;
+            int totalhousecall = 0;
+            int totalphoneconsult = 0;
+            foreach (var item in res)
+            {
+                totalshift += item.ShiftHours != null ? (int)item.ShiftHours : 0;
+                //totalweekend += item.IsWeekend == new BitArray(new bool[] { true }) ? 1 : 0;
+                totalweekend += item.IsWeekend[0] ? 1 : 0;
+                totalhousecall += item.Housecall != null ? (int)item.Housecall : 0;
+                totalphoneconsult += item.PhoneConsult != null ? (int)item.PhoneConsult : 0;
+
+                timesheetModels.TotalShift = payrate.Shift * totalshift;
+                timesheetModels.TotalNightshiftWeekend = payrate.NightShiftWeekend * totalweekend;
+                timesheetModels.TotalHousecall = payrate.Housecall * totalhousecall;
+                timesheetModels.TotalPhoneConsults = payrate.Phoneconsult * totalphoneconsult;
+                //timesheetModel.TotalInvoice = (payrate.Phoneconsult  totalphoneconsult) +(payrate.Housecall  totalhousecall) +(payrate.NightShiftWeekend  totalweekend) +(payrate.Shift  totalshift);
+                timesheetModels.TotalInvoice = (payrate.Phoneconsult * totalphoneconsult) +
+                           (payrate.Housecall * totalhousecall) +
+                           (payrate.NightShiftWeekend * totalweekend) +
+                           (payrate.Shift * totalshift);
+            }
             return timesheetModels;
 
         }
+
+
         public List<bool> IsTimesheetFinalized(DateTime startDate, int phyid)        {            DateTime enddate = startDate.AddDays(15 - startDate.Day);            List<bool> bools = new List<bool> { false, false };            if (startDate.Day > 15)            {                enddate = startDate.AddDays(DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day);            }            Timesheet invoice = _context.Timesheets.FirstOrDefault(x => x.PhysicianId == phyid && x.Startdate == startDate && x.Enddate == enddate);            if (invoice != null)            {                if (invoice.IsFinalized != null && invoice.IsApproved == null)                    bools = new List<bool> { true, false };                else if (invoice.IsFinalized != null && invoice.IsApproved != null)                    bools = new List<bool> { true, true };            }            return bools;        }
         public TimesheetModel GETTimeSheetForApprove(DateTime startDate, int phyid)        {            DateTime enddate = startDate.AddDays(15 - startDate.Day);            if (startDate.Day > 15)            {                enddate = startDate.AddDays(DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day);            }            Timesheet invoice = _context.Timesheets.FirstOrDefault(x => x.PhysicianId == phyid && x.Startdate == startDate && x.Enddate == enddate);            return new TimesheetModel            {                InvoiceId = invoice.TimesheetId,                PhysicianId = phyid,                Startdate = startDate,                Enddate = enddate,            };        }
-        
+
+
+        public void insertTimesheetDetail(List<TimesheetDetail> data)
+        {
+
+            foreach (var item in data)
+            {
+                TimesheetDetail timesheetDetail = _context.TimesheetDetails.Where(x => x.TimesheetDetailId == item.TimesheetDetailId).FirstOrDefault();
+                if (timesheetDetail != null)
+                {
+                    timesheetDetail.ShiftHours = item.ShiftHours;
+                    timesheetDetail.Housecall = item.Housecall;
+                    timesheetDetail.PhoneConsult = item.PhoneConsult;
+                    timesheetDetail.IsWeekend = item.IsWeekend;
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public void SaveReimbursement(TimesheetModel model ,int phyId, string adminEmail)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.PhysicianId == phyId);
+
+            Timesheet invoice1 = _context.Timesheets.FirstOrDefault(x => x.PhysicianId == phy.PhysicianId && x.Startdate == model.Startdate && x.Enddate == model.Enddate);
+            int timesheetID = 0;
+            if (invoice1 != null)
+            {
+                timesheetID = invoice1.TimesheetId;
+            }
+            else
+            {
+                Timesheet invoice = new Timesheet();
+                invoice.PhysicianId = phy.PhysicianId;
+                invoice.Startdate = (DateTime)model.Startdate;
+                invoice.Enddate = (DateTime)model.Enddate;
+                //invoice.cre = phy.AspNetUserId ?? "";
+                //invoice.CreatedDate = DateTime.Now;
+                _context.Timesheets.Add(invoice);
+                _context.SaveChanges();
+                timesheetID = invoice.TimesheetId;
+            }
+
+            TimesheetReimbursement reim = new TimesheetReimbursement
+            {
+                Amount = model.Amount,
+                Item = model.Item,
+                ReimbursementDate = model.Startdate.Value.AddDays(model.Gap),
+                TimesheetId = timesheetID,
+                Filename = model.ReceiptFile.FileName,
+                PhysicianId = phy.PhysicianId,
+                CreatedBy = _context.AspNetUsers.Where(x => x.Email == adminEmail).Select(x => x.Id).FirstOrDefault(),
+                CreatedDate = DateTime.Now,
+
+            };
+
+            string filename = model.ReceiptFile.FileName;
+            string path = System.IO.Path.Combine("D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\" + phy.PhysicianId + "\\" + filename);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+            using FileStream stream = new(path, FileMode.Create);
+            model.ReceiptFile?.CopyTo(stream)
+;
+
+            _context.TimesheetReimbursements.Add(reim);
+            _context.SaveChanges();
+        }
+        public void EditReimbursement(DateTime startDate, string item, int amount, int gap, int? phyId, string adminEmail)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.PhysicianId == phyId);
+
+            TimesheetReimbursement reim = _context.TimesheetReimbursements.FirstOrDefault(x => x.ReimbursementDate.Value.Date == DateTime.Parse(startDate.AddDays(gap).ToString("dd-MM-yyyy")).Date && x.PhysicianId == phy.PhysicianId);
+
+            reim.Amount = amount;
+            reim.Item = item;
+            reim.ModifiedBy = _context.AspNetUsers.Where(x => x.Email == adminEmail).Select(x => x.Id).FirstOrDefault();
+            reim.ModifiedDate = DateTime.Now;
+            _context.TimesheetReimbursements.Update(reim);
+            _context.SaveChanges();
+        }
+        public void DeleteReimbursement(int rid, int phyId)
+        {
+            var phy = _context.Physicians.FirstOrDefault(e => e.PhysicianId == phyId);
+
+            TimesheetReimbursement reim = _context.TimesheetReimbursements.FirstOrDefault(x => x.TimesheetReimbursementId == rid && x.PhysicianId == phy.PhysicianId);
+
+
+            _context.TimesheetReimbursements.Remove(reim);
+            _context.SaveChanges();
+        }
+        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote)
+        {
+           Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.Enddate == endDate && x.PhysicianId == phyId).FirstOrDefault();
+            t.IsApproved = true;
+            t.BonusAmount = bonus;
+            t.AdminNote = adminNote;
+            _context.SaveChanges();
+        }
+
     }
 }

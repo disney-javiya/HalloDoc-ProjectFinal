@@ -31,7 +31,7 @@ using System.Globalization;
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Bibliography;
-
+using Newtonsoft.Json.Linq;
 
 namespace HalloDoc.Controllers
 {
@@ -2029,6 +2029,72 @@ namespace HalloDoc.Controllers
         [Route("/Admin/Invoicing/{StartDate}/{phyid}")]        [HttpGet]        public IActionResult IsTimesheetFinalized(string StartDate, string phyid)        {            List<bool> isFinalized = _adminRepository.IsTimesheetFinalized(DateTime.Parse(StartDate), int.Parse(phyid));            return Json(new { isfinal = isFinalized.ElementAt(0), isapprove = isFinalized.ElementAt(1) });        }
 
         [HttpPost]        public IActionResult GETTimeSheetForApprove(DateTime StartDate, int phyid)        {            TimesheetModel model = _adminRepository.GETTimeSheetForApprove(StartDate, phyid);            return PartialView("_TimesheetApprove", model);        }
+        [HttpPost]
+        public IActionResult adminApproveTimesheet(DateTime StartDate, DateTime EndDate, int PhyId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            TimesheetModel timesheetModels = _adminRepository.providerTimesheetData(StartDate, EndDate, PhyId);
+            return View(timesheetModels);
+        }
+
+
+        [HttpPost]
+        public void UpdateInvoiceSheetData(string sheetData)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+
+            // Manually parse the JSON string
+            JArray jsonArray = JArray.Parse(sheetData);
+
+            // Iterate through the array and extract the values
+            List<TimesheetDetail> timesheetDetails = new List<TimesheetDetail>();
+            
+
+            foreach (JObject item in jsonArray)
+            {
+                TimesheetDetail timesheetDetail = new TimesheetDetail
+                {
+                    ShiftHours = item["TotalHours"] != null ? int.Parse((string)item["TotalHours"]) : 0,
+                    TimesheetDetailId = item["TimesheetDetailId"] != null ? int.Parse((string)item["TimesheetDetailId"]) : 0,
+                    IsWeekend = item["IsWeekend"] != null ? new BitArray(new[] { Convert.ToBoolean(item["IsWeekend"]) }) : new BitArray(1), // assuming false if null
+                    Housecall = item["Housecall"] != null ? int.Parse((string)item["Housecall"]) : 0,
+                    PhoneConsult = item["PhoneConsult"] != null ? int.Parse((string)item["PhoneConsult"]) : 0
+                };
+
+                timesheetDetails.Add(timesheetDetail);
+            }
+
+
+            _adminRepository.insertTimesheetDetail(timesheetDetails);
+        }
+        public IActionResult SaveReimbursement([FromForm] TimesheetModel model ,int phyId)
+        {
+
+            _adminRepository.SaveReimbursement(model,phyId, HttpContext.Session.GetString("key"));
+
+            return RedirectToAction(nameof(adminApproveTimesheet));
+        }
+
+        public IActionResult EditReimbursement(string StartDate1, string EndDate, string Item, int Amount, int Gap, int phyId)
+        {
+            DateTime s = DateTime.Parse(StartDate1);
+            DateTime e = DateTime.Parse(EndDate);
+            _adminRepository.EditReimbursement(s, Item, Amount, Gap,phyId, HttpContext.Session.GetString("key"));
+            return RedirectToAction(nameof(GETTimeSheet), new { startDate = s, endDate = e });
+        }
+        public IActionResult DeleteReimbursement(string StartDate1, string EndDate, int rid, int phyId)
+        {
+            DateTime s = DateTime.Parse(StartDate1);
+            DateTime e = DateTime.Parse(EndDate);
+            _adminRepository.DeleteReimbursement(rid, phyId);
+            return RedirectToAction(nameof(GETTimeSheet), new { startDate = s, endDate = e });
+        }
+        public IActionResult adminApprove(DateTime startDate,DateTime endDate, int phyId, int bonus, string adminNote)
+        {
+            _adminRepository.adminApprove(startDate, endDate, phyId, bonus, adminNote);
+            return RedirectToAction(nameof(adminApproveTimesheet), new {StartDate = startDate, EndDate = endDate, PhyId = phyId});
+
+        }
         public IActionResult logOut()
         {
 

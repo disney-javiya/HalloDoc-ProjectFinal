@@ -1408,9 +1408,11 @@ namespace Repository
             var res = _context.TimesheetDetails.Where(x => x.TimesheetId == TimesheetId).OrderBy(x => x.Shiftdate).ToList();
             var timesheetReimbursement = _context.TimesheetReimbursements.Where(x => x.TimesheetId == TimesheetId).ToList();
             timesheetModels.Timesheets = res;
+            
             timesheetModels.timesheetReimbursements = timesheetReimbursement;
             timesheetModels.Startdate=startDate;
             timesheetModels.Enddate=endDate;
+            
             return timesheetModels;
 
         }
@@ -1427,6 +1429,7 @@ namespace Repository
                     timesheetDetail.Housecall = item.Housecall;
                     timesheetDetail.PhoneConsult = item.PhoneConsult;
                     timesheetDetail.IsWeekend = item.IsWeekend;
+                   
                     _context.SaveChanges();
                 }
             }

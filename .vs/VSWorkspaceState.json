@@ -10,6 +10,6 @@
     "\\Repositories",
     "\\Repositories\\IRepository"
   ],
-  "SelectedNode": "\\HalloDoc\\Views\\Provider\\providerTimesheet.cshtml",
+  "SelectedNode": "\\HalloDoc\\Controllers\\AdminController.cs",
   "PreviewInSolutionExplorer": false
 }

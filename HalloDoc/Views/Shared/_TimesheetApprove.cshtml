@@ -30,7 +30,14 @@
                     <td>@Model.Enddate</td>
                     <td>Pending</td>
                     <td>
-                        <a class="btn btn-outline-info " type="button" asp-action="TimeSheet" asp-route-StartDate="@Model.Startdate" asp-route-phyid="@Model.PhysicianId">Approve</a>
+                       @*  <a class="btn btn-outline-info " type="button" asp-controller="Admin" asp-action="adminApproveTimesheet" asp-route-StartDate="@Model.Startdate" asp-route-endDate="@Model.Enddate" asp-route-phyId="@Model.PhysicianId">Approve</a> *@
+                        <form method="post" action="/Admin/adminApproveTimesheet">
+                            <input type="hidden" name="StartDate" value="@Model.Startdate" />
+                            <input type="hidden" name="EndDate" value="@Model.Enddate" />
+                            <input type="hidden" name="PhyId" value="@Model.PhysicianId" />
+                            <button class="btn btn-outline-info" type="submit">Approve</button>
+                        </form>
+
                     </td>
 
                 </tr>

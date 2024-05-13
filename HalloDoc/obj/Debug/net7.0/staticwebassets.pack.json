@@ -297,6 +297,10 @@
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\Assignment 5-PMS.pdf"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Assignment-1234.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\Assignment-1234.pdf"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\MVC (1).pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\MVC (1).pdf"
     },
@@ -313,8 +317,20 @@
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\MedicalReport (2).pdf"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Plan_till_1Feb2024.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\Plan_till_1Feb2024.pdf"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SQL Questions.pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\SQL Questions.pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees (1).pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\SRS-23-24-Trainees (1).pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees-14Feb24.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\SRS-23-24-Trainees-14Feb24.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees-17April24-GoodToHave.pdf",
@@ -323,6 +339,10 @@
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Test Instructions.pdf",
       "PackagePath": "staticwebassets\\InvoicingFile\\25\\Test Instructions.pdf"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\Updated-Training-Plan-20March24.pdf",
+      "PackagePath": "staticwebassets\\InvoicingFile\\25\\Updated-Training-Plan-20March24.pdf"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\css\\site.css",

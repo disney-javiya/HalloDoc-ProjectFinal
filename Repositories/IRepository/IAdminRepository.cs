@@ -186,5 +186,10 @@ namespace Repository.IRepository
         public TimesheetModel providerTimesheetData(DateTime startDate, DateTime endDate, int phyId);
         public List<bool> IsTimesheetFinalized(DateTime startDate, int phyid);
         public TimesheetModel GETTimeSheetForApprove(DateTime startDate, int phyid);
+        public void insertTimesheetDetail(List<TimesheetDetail> data);
+        public void SaveReimbursement(TimesheetModel model,int phyId, string adminEmail);
+        public void EditReimbursement(DateTime startDate, string item, int amount, int gap, int? phyId, string adminEmail);
+        public void DeleteReimbursement(int rid, int phyId);
+        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote);
     }
 }
