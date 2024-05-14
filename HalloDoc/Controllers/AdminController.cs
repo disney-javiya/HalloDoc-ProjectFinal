@@ -2089,10 +2089,10 @@ namespace HalloDoc.Controllers
             _adminRepository.DeleteReimbursement(rid, phyId);
             return RedirectToAction(nameof(GETTimeSheet), new { startDate = s, endDate = e });
         }
-        public IActionResult adminApprove(DateTime startDate,DateTime endDate, int phyId, int bonus, string adminNote)
+        public IActionResult adminApprove(DateTime startDate,DateTime endDate, int phyId, int bonus, string adminNote, int timesheetId)
         {
-            _adminRepository.adminApprove(startDate, endDate, phyId, bonus, adminNote);
-            return RedirectToAction(nameof(adminApproveTimesheet), new {StartDate = startDate, EndDate = endDate, PhyId = phyId});
+            _adminRepository.adminApprove(startDate, endDate, phyId, bonus, adminNote, timesheetId);
+            return View("adminInvoicing");
 
         }
         public IActionResult logOut()

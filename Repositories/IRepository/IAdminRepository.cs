@@ -190,6 +190,6 @@ namespace Repository.IRepository
         public void SaveReimbursement(TimesheetModel model,int phyId, string adminEmail);
         public void EditReimbursement(DateTime startDate, string item, int amount, int gap, int? phyId, string adminEmail);
         public void DeleteReimbursement(int rid, int phyId);
-        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote);
+        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote, int timesheetId);
     }
 }

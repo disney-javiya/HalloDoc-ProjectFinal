@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mxNcHiuF7MDRKj/B54At6jct1rxTZOxLsgD5H60/nJ0=",
+  "Hash": "ZXyOqD+LJepmSYYDtXvnZQ2tq9IQIZrp3QuOzVn/q9M=",
   "Source": "HalloDoc",
   "BasePath": "_content/HalloDoc",
   "Mode": "Default",
@@ -1579,6 +1579,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees (1).pdf"
+    },
+    {
+      "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees_12Feb24.pdf",
+      "SourceId": "HalloDoc",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\",
+      "BasePath": "_content/HalloDoc",
+      "RelativePath": "InvoicingFile/25/SRS-23-24-Trainees_12Feb24.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees_12Feb24.pdf"
     },
     {
       "Identity": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\InvoicingFile\\25\\SRS-23-24-Trainees-14Feb24.pdf",

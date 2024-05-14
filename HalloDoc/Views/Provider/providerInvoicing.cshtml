@@ -36,9 +36,9 @@
                         string option1 = $"{firstDayOfMonth:yyyy/MM/dd} - {firstDayOfMonth.AddDays(daysInMonth / 2 - 1):yyyy/MM/dd}";
                         string option2 = $"{firstDayOfMonth.AddDays(daysInMonth / 2):yyyy/MM/dd} - {lastDayOfMonth:yyyy/MM/dd}";
 
-                            <option>@option1</option>
-                            <option>@option2</option>
-                                    
+                        <option>@option1</option>
+                        <option>@option2</option>
+
                     }
                 }
             </select>
@@ -56,10 +56,12 @@
 <script>
     $(document).ready(function () {
         $('#timesheetPeriod').change(function () {
+
+            // checkFinalize();
             MyAjax();
-            checkFinalize();
+
         });
-        
+
     });
 </script>
 <script>
@@ -68,23 +70,25 @@
         var dates = Date.split(" - ");
         var startDate = dates[0];
         var endDate = dates[1];
-      
+
         $.ajax({
             url: "/Provider/GETTimeSheet",
-            data: { 'StartDate': startDate, 'endDate': endDate},
+            data: { 'StartDate': startDate, 'endDate': endDate },
             type: "POST",
             dataType: "html",
             success: function (data) {
                 $("#timesheetTable").html(data);
+                checkFinalize();
             },
             error: function () {
                 $("#timesheetTable").html('No Data Found');
             }
         });
+       
     }
 </script>
 <script>
- 
+
     function checkFinalize() {
         var Date = $('#timesheetPeriod').val();
         var dates = Date.split(" - ");
@@ -94,14 +98,15 @@
             .then(data => {
                 if (!data.exists) {
                     document.getElementById('finalizeBtn').style.display = 'inline';
-
+                  
                 }
                 else {
                     document.getElementById('finalizeBtn').style.display = 'none';
+                  
                 }
             })
             .catch(error => console.error('Error:', error));
-        MyAjax();
+      
     }
 
 </script>

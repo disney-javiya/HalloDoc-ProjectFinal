@@ -3097,6 +3097,7 @@ namespace Repository
             timesheetModels.timesheetReimbursements = timesheetReimbursement;
             timesheetModels.Startdate = startDate;
             timesheetModels.Enddate = endDate;
+            timesheetModels.InvoiceId = TimesheetId;
             timesheetModels.Shift = payrate.Shift;
             timesheetModels.NightshiftWeekend = payrate.NightShiftWeekend;
             timesheetModels.Housecall = payrate.Housecall;
@@ -3223,13 +3224,17 @@ namespace Repository
             _context.TimesheetReimbursements.Remove(reim);
             _context.SaveChanges();
         }
-        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote)
+        public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote, int timesheetId)
         {
-           Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.Enddate == endDate && x.PhysicianId == phyId).FirstOrDefault();
-            t.IsApproved = true;
-            t.BonusAmount = bonus;
-            t.AdminNote = adminNote;
-            _context.SaveChanges();
+           Timesheet t = _context.Timesheets.Where(x => x.Startdate == startDate && x.Enddate == endDate && x.PhysicianId == phyId && x.TimesheetId == timesheetId).FirstOrDefault();
+            if(t != null)
+            {
+                t.IsApproved = true;
+                t.BonusAmount = bonus;
+                t.AdminNote = adminNote;
+                _context.SaveChanges();
+            }
+           
         }
 
     }

@@ -153,18 +153,17 @@
                                         else
                                         {
                                             var str = "ReceiptFile" + id1;
-                                        <td>
-                                            <input type="file" id=@str name="ReceiptFile" onchange="SaveData(@id1)" disabled>
-                                        </td>
+                                         <td>
+                                            <input type="file" id=@str name="ReceiptFile" onchange="SaveData(@id1)" disabled /><span><button class="bg-info text-white p-2">Upload</button></span>
+                                        </td> 
+                                       
+
+
                                         }
                                     <td>
 
                                             @if (res != null)
-                                            {@* 
-                                                var str = "edit" + id1;
-                                            <a class="col btn border border-info text-info mt-1 editBtns" id="@str" onclick="EditReceipt(@id1)">Edit</a>
-                                                str = "delete" + id1;
-                                            <a class="col btn border border-info text-info mt-1 deleteBtn" onclick="DeleteReceipt(@id1, @res.TimesheetReimbursementId)" id="@str">Delete</a> *@
+                                            {
                                                var str = "view" + id1;
                                                 var str1 = "";
                                                 if (res.Filename != null)
@@ -201,17 +200,19 @@
             
 
         </div>
-        <div class="col text-end mt-2">
-            <form method="post"action="@Url.Action("adminApprove", "Admin", new{startDate = Model.Startdate, endDate = Model.Enddate , phyId = Model.PhysicianId})">
-                <input name="bonus" type="text" class="form-control email shadow-none " id="floatingInput" placeholder="">
-                <label for="floatingInput" class=" email-text">Bonus Amount </label>
+        <form method="post" action="@Url.Action("adminApprove", "Admin", new{startDate = Model.Startdate, endDate = Model.Enddate , phyId = Model.PhysicianId, timesheetId = Model.InvoiceId})">
+        <div class="col text-end mt-2 d-flex flex-row justify-content-end m-3">
+           
+                <input name="bonus" type="text" class="form-control email shadow-none w-25 m-1 p-2" id="floatingInput" placeholder="Bonus Amount">
+               
 
-                <input name="adminNote" type="text" class="form-control email shadow-none " id="floatingInput" placeholder="">
-                <label for="floatingInput" class=" email-text">Admin Description </label>
-                <button type="submit" class="btn btn-info text-white" >Approve</button>
-            </form>
+                <input name="adminNote" type="text" class="form-control email shadow-none w-25 m-1 p-2" id="floatingInput" placeholder="Admin Description">
+              
+                <button type="submit" class="btn btn-info text-white m-1 p-2" >Approve</button>
+           
             
         </div>
+        </form>
     </div>
 </main>
 <script>

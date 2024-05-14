@@ -124,10 +124,10 @@
         fetch('/Admin/Invoicing/' + startDate + '/' + phyid)
             .then(response => response.json())
             .then(data => {
-                if (data.isfinal && data.isapprove) {
+                if (data.isfinal && data.isapprove === true) {
                     MyAjax();
                 }
-                else if (data.isfinal && !data.isapprove) {
+                else if (data.isfinal && !(data.isapprove === true)) {
                     getTableDataForApprove();
                 }
                 else {
