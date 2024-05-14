@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Net;
 using NETCore.MailKit.Core;
+using HalloDoc.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Defaultconnection")));
 
-
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
@@ -40,4 +42,5 @@ app.MapControllerRoute(
     name: "default",
     //pattern: "{controller=Home}/{action=patientSite}/{id?}");
     pattern: "{controller=Admin}/{action=Index}/{id?}");
+    app.MapHub<ChatHub>("/chatHub");
 app.Run();

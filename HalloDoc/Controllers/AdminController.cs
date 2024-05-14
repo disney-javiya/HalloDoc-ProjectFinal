@@ -2026,9 +2026,21 @@ namespace HalloDoc.Controllers
             TimesheetModel timesheetModels = _adminRepository.providerTimesheetData(StartDate, endDate, phyId);
             return PartialView("_TimesheetDetail", timesheetModels);
         }
-        [Route("/Admin/Invoicing/{StartDate}/{phyid}")]        [HttpGet]        public IActionResult IsTimesheetFinalized(string StartDate, string phyid)        {            List<bool> isFinalized = _adminRepository.IsTimesheetFinalized(DateTime.Parse(StartDate), int.Parse(phyid));            return Json(new { isfinal = isFinalized.ElementAt(0), isapprove = isFinalized.ElementAt(1) });        }
+        [Route("/Admin/Invoicing/{StartDate}/{phyid}")]
+        [HttpGet]
+        public IActionResult IsTimesheetFinalized(string StartDate, string phyid)
+        {
+            List<bool> isFinalized = _adminRepository.IsTimesheetFinalized(DateTime.Parse(StartDate), int.Parse(phyid));
 
-        [HttpPost]        public IActionResult GETTimeSheetForApprove(DateTime StartDate, int phyid)        {            TimesheetModel model = _adminRepository.GETTimeSheetForApprove(StartDate, phyid);            return PartialView("_TimesheetApprove", model);        }
+            return Json(new { isfinal = isFinalized.ElementAt(0), isapprove = isFinalized.ElementAt(1) });
+        }
+
+        [HttpPost]
+        public IActionResult GETTimeSheetForApprove(DateTime StartDate, int phyid)
+        {
+            TimesheetModel model = _adminRepository.GETTimeSheetForApprove(StartDate, phyid);
+            return PartialView("_TimesheetApprove", model);
+        }
         [HttpPost]
         public IActionResult adminApproveTimesheet(DateTime StartDate, DateTime EndDate, int PhyId)
         {
@@ -2095,6 +2107,10 @@ namespace HalloDoc.Controllers
             return View("adminInvoicing");
 
         }
+        // public IActionResult chat()
+        // {
+        //     return View();
+        // }
         public IActionResult logOut()
         {
 

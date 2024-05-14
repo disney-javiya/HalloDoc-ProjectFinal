@@ -818,3 +818,4 @@ D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\i
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\itext.commons.dll
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\Microsoft.DotNet.PlatformAbstractions.dll
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\GoogleMaps.LocationServices.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\libman.json
