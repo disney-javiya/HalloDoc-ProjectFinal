@@ -21,7 +21,8 @@
     }
     $(document).ready(function () {
         var requestId = null;
-
+        var phyId = null;
+        var admin_email = null;
         $(document).on('click', '#cancel-option', function () {
 
             requestId = $(this).attr("value");
@@ -43,6 +44,15 @@
         $(document).on('click', '#assign-option', function () {
 
             requestId = $(this).attr("value");
+
+        });
+        $(document).on('click', '#chat-option', function () {
+            alert("sdfs");
+            phyId = $(this).attr("value");
+            admin_email = "@ViewBag.Data";
+            alert(admin_email);
+            $('#phyId').val(phyId);
+            $('#senderId').val(admin_email);
 
         });
         $(document).on('click', '#block-option', function () {
@@ -241,6 +251,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.13/signalr.min.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
+
+
+<div class="modal" id="providerModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg d-flex flex-column justify-content-between" style="width: 20%; height: 100vh; position: fixed; top:0; right: 0; bottom: 0; margin: 0;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background:#01bce9; color:white;">
+                <h4 class="modal-title">Test</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" style="height: 100vh;">
+
+                <input type="hidden" id="phyId"  name="phyId" />
+                <input type="hidden" id="senderId" name="senderId"/>
+              
+               
+                <ul id="messagesList"></ul>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer d-flex flex-row justify-content-between">
+                <input type="text" class="p-2 border-light-subtle w-75" style="outline: none; border-radius: 5px;" placeholder="Type your message" id="messageInput" />
+                <button type="button" class="btn btn-info " id="sendButton"><i class="fa-regular fa-paper-plane" style="color: #ffffff;"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="admin-table m-2">
     <table class="table">
         <thead>
@@ -289,39 +328,8 @@
                             - 
                         </td>
                         @* <td><a class="table-btn p-1" role="button" asp-controller="Admin" asp-action="chat">Provider</a></td> *@
-                          <td> <a class="table-btn p-1" role="button"  data-bs-toggle="modal" data-bs-target="#providerModal">Provider</a></td> 
+                          <td> <a class="table-btn p-1" id="chat-option" role="button"  data-bs-toggle="modal" data-bs-target="#providerModal" value="@item.PhysicianId">Provider</a></td> 
                                              
-
-
- <div class="modal" id="providerModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg d-flex flex-column justify-content-between" style="width: 20%; height: 100vh; position: fixed; top:0; right: 0; bottom: 0; margin: 0;">
-        <div class="modal-content">
-           
-                <!-- Modal Header -->
-                <div class="modal-header" style="background:#01bce9; color:white;">
-                    <h4 class="modal-title">Test</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-           
-                <!-- Modal body -->
-                <div class="modal-body" style="overflow-y: auto;">
-
-                    nfnsdndfj
-                     <ul id="messagesList"></ul>
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer d-flex flex-row ">
-                    <input type="text" class="p-2 ms-0 border-none"  placeholder="Type your message" id="messageInput"/>
-                    <button type="button" class="btn btn-info " id="sendButton"><i class="fa-regular fa-paper-plane" style="color: #ffffff;"></i></button>
-                </div>
-        </div>
-    </div>
-</div> 
-
-
-
-
-
                         <td>
                             <div class="dropdown">
                                 <a role="button" class="table-btn p-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

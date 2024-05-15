@@ -50,7 +50,7 @@ namespace HalloDoc.Controllers
             _authenticate = authenticate;
 
         }
-
+        
         public IActionResult Index()
         {
             return View();
@@ -220,6 +220,7 @@ namespace HalloDoc.Controllers
      
         public IActionResult adminTableData(string type, string regionId, string patient_name, string typeid, int pagesize, int pagenumber = 1)
         {
+            ViewBag.Data = HttpContext.Session.GetString("key");
             int t = int.Parse(type);
             int tid = 0;
             int r = 0;
