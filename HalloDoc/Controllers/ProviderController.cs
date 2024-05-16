@@ -835,6 +835,19 @@ namespace HalloDoc.Controllers
             _providerRepository.FinalizeTimesheetProvider(s, e, HttpContext.Session.GetString("key"));
             return RedirectToAction(nameof(providerInvoicing));
         }
+
+        public IActionResult _ChatPanel(int adminid, string requesterType)
+        {
+            string phy_email = HttpContext.Session.GetString("key");
+            Physician phy = _providerRepository.getProviderInfo(phy_email);
+            ChatViewModel model = new ChatViewModel();
+            model.PhysicianId = phy.PhysicianId;
+            model.AdminId = adminid;
+            model.SenderType = "Provider";
+            model.ReceiverType = requesterType;
+            model.CurrentUserId = phy.AspNetUserId;
+            return PartialView("_ChatHub", model);
+        }
         public IActionResult logOut()
         {
 

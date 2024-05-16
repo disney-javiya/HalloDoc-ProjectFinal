@@ -32,6 +32,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<CaseTag> CaseTags { get; set; }
 
+    public virtual DbSet<Chat> Chats { get; set; }
+
     public virtual DbSet<Concierge> Concierges { get; set; }
 
     public virtual DbSet<EmailLog> EmailLogs { get; set; }
@@ -166,6 +168,19 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<CaseTag>(entity =>
         {
             entity.Property(e => e.CaseTagId).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Chat>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("chat_pkey");
+
+            entity.HasOne(d => d.Receiver).WithMany(p => p.ChatReceivers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("chat_receiverid_fkey");
+
+            entity.HasOne(d => d.Sender).WithMany(p => p.ChatSenders)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("chat_senderid_fkey");
         });
 
         modelBuilder.Entity<Concierge>(entity =>
@@ -493,6 +508,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.AspNetUser).WithMany(p => p.Users).HasConstraintName("User_AspNetUserId_fkey");
         });
+        modelBuilder.HasSequence("chat_id_seq");
         modelBuilder.HasSequence("encounterform_id_seq");
 
         OnModelCreatingPartial(modelBuilder);

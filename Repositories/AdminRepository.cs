@@ -1181,10 +1181,6 @@ namespace Repository
               
                 _context.PhysicianLocations.Add(physicianLocation);
                 _context.SaveChanges();
-
-
-
-
                
                 if (photo != null && photo.Length > 0)
                 {
@@ -1212,13 +1208,10 @@ namespace Repository
                 _context.SaveChanges();
                 physicianUpdateUpload(email, physician.PhysicianId, agreementDoc, backgroundDoc, hippaDoc, disclosureDoc, licenseDoc);
 
-
-
             }
 
             if (region != null)
-            {
-               
+            {               
                 foreach (var a in region)
                 {
                     PhysicianRegion physicianRegion = new PhysicianRegion();
@@ -1267,8 +1260,6 @@ namespace Repository
 
             if (physician != null)
             {
-
-
                 physician.Status = p.Status;
                 physician.RoleId = p.RoleId;
                 var aid = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();

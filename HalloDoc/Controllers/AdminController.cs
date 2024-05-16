@@ -2112,6 +2112,19 @@ namespace HalloDoc.Controllers
         // {
         //     return View();
         // }
+
+        public IActionResult _ChatPanel(int phyid, string requesterType)
+        {
+            string admin_email = HttpContext.Session.GetString("key");
+            Admin admin = _adminRepository.getAdminInfo(admin_email);
+            ChatViewModel model = new ChatViewModel();
+            model.PhysicianId = phyid;
+            model.AdminId = admin.AdminId;
+            model.SenderType = "Admin";
+            model.ReceiverType = requesterType;
+            model.CurrentUserId =  admin.AspNetUserId;
+            return PartialView("_ChatHub", model);
+        }
         public IActionResult logOut()
         {
 

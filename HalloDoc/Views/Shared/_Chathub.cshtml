@@ -1,0 +1,122 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ChatViewModel
+
+<script>
+  
+    $(document).ready(function () {
+
+        debugger;
+
+        var myOffcanvas = document.getElementById('chatoffcanvas');
+        var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+        bsOffcanvas.show();
+        // var message = document.getElementById("messageInput").value;
+        var Sender = document.getElementById("Sender").value;
+        var SenderType = document.getElementById("SenderType").value;
+        var Receiver = document.getElementById("Receiver").value;
+        var ReceiverType = document.getElementById("ReceiverType").value;
+
+        connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+    });
+</script>
+<script>
+   
+
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        debugger;
+        var message = document.getElementById("messageInput").value;
+        var Sender = document.getElementById("Sender").value;
+        var SenderType = document.getElementById("SenderType").value;
+        var Receiver = document.getElementById("Receiver").value;
+        var ReceiverType = document.getElementById("ReceiverType").value;
+        if (message != "") {
+
+            connection.invoke("SaveData", Sender, SenderType, Receiver, ReceiverType, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
+                return console.error(err.toString());
+            });
+            document.getElementById("messageInput").value = "";
+        }
+        event.preventDefault();
+    });
+
+    connection.on("ReceiveMessage", function (data) {
+        debugger;
+        document.getElementById("messagesList").innerHTML = '';
+
+        data.forEach(function (item) {
+
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            li.textContent = `${item.message}`;
+            var paragraph = document.createElement("span");
+            paragraph.classList.add("TimeShow");
+            li.appendChild(paragraph);
+            var time = `${item.senttime}`;
+            var trimmedTime = time.substring(0, 5);
+            paragraph.textContent = trimmedTime;
+            var rgx = /[\{\-\}]/g;
+            var temp = false;
+            var regExp = new RegExp("@Model.CurrentUserId", "i");
+            var temp = regExp.test(item.senderid);
+            if (temp) {
+                li.classList.add("ChatMessageSender");
+                li.classList.add("text-end");
+            } else {
+                li.classList.add("ChatMessage");
+            }
+            document.getElementById("list")
+
+            // console.log(item);
+        })
+    });
+   
+
+   
+</script>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="chatoffcanvas" aria-labelledby="offcanvasExampleLabel" style=" z-index: 1060;">
+    <div class="offcanvas-header bg-info text-white">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Chat</h5>
+        <button type="button" class="btn-close  btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            <ul id="messagesList" style="list-style-type: none;"></ul>
+        </div>
+
+    </div>
+    <div class="row offcanvas-footer mx-3 my-2">
+        <div class="col-10 form-floating text-muted">
+            <input type="text" class="form-control input-placeholder" id="messageInput" placeholder="">
+            <label class="form-label ms-2 ps-3">Message</label>
+        </div>
+        <div class="col-2">
+            <i class="btn btn-info bi bi-send fs-4 mt-1 text-white" style="height:56px; width:56px" id="sendButton"></i>
+            <i class="btn btn-info bi bi-send fs-4 mt-1 text-white d-none" style="height:56px; width:56px" id="SampleButton"></i>
+        </div>
+        @if(Model.ReceiverType == "Provider")
+        {
+            <input type="hidden" value="@Model.PhysicianId" id="Receiver" />
+            <input type="hidden" value="@Model.AdminId" id="Sender" />
+            <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
+            <input type="hidden" value="@Model.SenderType" id="SenderType" />
+        }
+        else
+        {
+            <input type="hidden" value="@Model.AdminId" id="Receiver" />
+            <input type="hidden" value="@Model.PhysicianId" id="Sender" />
+            <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
+            <input type="hidden" value="@Model.SenderType" id="SenderType" />
+        }
+
+        @*<input type="text" class="w-100" id="messageInput" />*@
+
+    </div>
+</div>
+
+

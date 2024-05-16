@@ -49,6 +49,12 @@ public partial class AspNetUser
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Business> BusinessModifiedByNavigations { get; set; } = new List<Business>();
 
+    [InverseProperty("Receiver")]
+    public virtual ICollection<Chat> ChatReceivers { get; set; } = new List<Chat>();
+
+    [InverseProperty("Sender")]
+    public virtual ICollection<Chat> ChatSenders { get; set; } = new List<Chat>();
+
     [InverseProperty("AspNetUser")]
     public virtual ICollection<Physician> PhysicianAspNetUsers { get; set; } = new List<Physician>();
 

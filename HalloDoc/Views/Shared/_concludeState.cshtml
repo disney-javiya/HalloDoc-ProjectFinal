@@ -42,7 +42,7 @@
                             @Html.DisplayFor(modelItem => item.patientAddress)
                         </td>
 
-                        <td><a class="table-btn p-1" role="button">Provider</a></td>
+                        <td><a class="table-btn p-1" role="button" onclick="OpenChat('@item.PhysicianId','Provider')">Provider</a></td>
                         <td>
                             <div class="dropdown">
                                 <a role="button" class="table-btn p-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
