@@ -25,6 +25,7 @@ namespace Repository.IRepository
         public List<RequestandRequestClient> getFilterByrequestTypeAndName(IEnumerable<RequestandRequestClient> r, int requesttypeId, string patient_name);
         public void providerAccept(int requestId, string email);
         public RequestClient getPatientInfo(int requestId);
+        public AspNetUser getPatientAspId(int requestId);
         public string getConfirmationNumber(int requestId);
 
         public viewNotes getNotes(int requestId, string email);

@@ -39,7 +39,7 @@ namespace Repository.IRepository
         public void createPatientRequestSomeoneElse(string email,requestSomeoneElse r);
         public void updateProfile(string email,User u);
 
-
+        public Physician getPhysicianDetails(int physicianId);
         public IEnumerable<RequestWiseFile> GetFilesByRequestId(int requestId);
 
     }

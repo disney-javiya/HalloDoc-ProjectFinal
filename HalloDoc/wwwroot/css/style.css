@@ -767,40 +767,44 @@ Forgot-password-page
     border: 1px solid #01BCE9;
     text-decoration: none;
 }
-.ChatMessage {
-    /*margin: 7px;*/
+
+/*.ChatMessage {
+    margin: 7px;
     padding: 3px;
     border-radius: 5px;
     font-size: 19px;
+    background: #FBFBFB;
+    width: fit-content;
 }
 
     .ChatMessage::before {
-        content: "\f007"; /* FontAwesome Unicode for checkmark icon */
-        font-family: FontAwesome;
+        content: "\f007";*/ /* FontAwesome Unicode for checkmark icon */
+        /*font-family: FontAwesome;
         position: relative;
         left: -10px;
     }
 
 
 .ChatMessageSender {
-    /*margin: 7px;*/
+    margin: 7px;
     padding: 3px;
     border-radius: 5px;
     font-size: 19px;
+    background: #E6F5F8;
 }
 
 .ChatMessageSender1::after {
-    content: "\f007"; /* FontAwesome Unicode for the desired icon */
-    font-family: FontAwesome; /* Use the appropriate font family */
-    position: absolute;
-    right: 10px; /* Position the icon at the end of the list item */
-}
+    content: "\f007";*/ /* FontAwesome Unicode for the desired icon */
+    /*font-family: FontAwesome;*/ /* Use the appropriate font family */
+    /*position: absolute;
+    right: 10px;*/ /* Position the icon at the end of the list item */
+/*}
 
 .TimeShow {
     display: block;
     font-size: 12px;
     padding-left: 20px;
-}
+}*/
 
 
 /*Toggle switch Scheduling*/
@@ -869,7 +873,6 @@ input:checked + .slider:before {
 
 .toggle-label {
     display: inline-block;
-    ;
     width: 40px;
     height: 20px;
     background-color: #ccc;
@@ -1120,5 +1123,3 @@ h5, h3, h3 span, .tab-dashboard .nav .nav-item .nav-link, .search, .search-input
         display: none !important;
     }
 }
-
-

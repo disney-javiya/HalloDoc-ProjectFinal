@@ -836,17 +836,37 @@ namespace HalloDoc.Controllers
             return RedirectToAction(nameof(providerInvoicing));
         }
 
-        public IActionResult _ChatPanel(int adminid, string requesterType)
+        public IActionResult _ChatPanel(int adminid, string requesterType, string patientRequestId=null)
         {
-            string phy_email = HttpContext.Session.GetString("key");
-            Physician phy = _providerRepository.getProviderInfo(phy_email);
-            ChatViewModel model = new ChatViewModel();
-            model.PhysicianId = phy.PhysicianId;
-            model.AdminId = adminid;
-            model.SenderType = "Provider";
-            model.ReceiverType = requesterType;
-            model.CurrentUserId = phy.AspNetUserId;
-            return PartialView("_ChatHub", model);
+            if(patientRequestId == null && adminid !=0)
+            {
+                string phy_email = HttpContext.Session.GetString("key");
+                Physician phy = _providerRepository.getProviderInfo(phy_email);
+                ChatViewModel model = new ChatViewModel();
+                model.PhysicianId = phy.PhysicianId;
+                model.AdminId = adminid;
+                model.SenderType = "Provider";
+                model.ReceiverType = requesterType;
+                model.CurrentUserId = phy.AspNetUserId;
+                return PartialView("_ChatHub", model);
+            }
+            else
+            {
+                string phy_email = HttpContext.Session.GetString("key");
+                Physician phy = _providerRepository.getProviderInfo(phy_email);
+                AspNetUser a = _providerRepository.getPatientAspId(int.Parse(patientRequestId));
+               
+                ChatViewModel model = new ChatViewModel();
+                model.PhysicianId = phy.PhysicianId;
+               
+                model.SenderType = "Provider";
+                model.PatientAspId = a.Id;
+                model.ReceiverType = requesterType;
+                model.CurrentUserId = phy.AspNetUserId;
+                model.PatientName = a.UserName;
+                return PartialView("_ChatHub", model);
+            }
+            
         }
         public IActionResult logOut()
         {

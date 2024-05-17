@@ -613,7 +613,21 @@ namespace HalloDoc.Controllers
             _patientRepository.agreementApproved(req, aid, pid);
             return View("Index");
         }
-
+        public IActionResult _ChatPanel(int phyid, string requesterType)
+        {
+            string patient_email = HttpContext.Session.GetString("key");
+            AspNetUser a = _patientRepository.GetUserByEmail(patient_email);
+            Physician p = _patientRepository.getPhysicianDetails(phyid);
+            ChatViewModel model = new ChatViewModel();
+            model.PhysicianId = phyid;
+            
+            model.PatientAspId = a.Id; 
+            model.SenderType = "Patient";
+            model.ReceiverType = requesterType;
+            model.CurrentUserId = a.Id;
+            model.physicianName = p.FirstName + " " + p.LastName;
+            return PartialView("_ChatHub", model);
+        }
         /*-----------------------------------Logout--------------------------------------------------*/
         public IActionResult logOut()
         {

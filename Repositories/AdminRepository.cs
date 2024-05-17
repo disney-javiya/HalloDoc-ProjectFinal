@@ -3210,8 +3210,6 @@ namespace Repository
             var phy = _context.Physicians.FirstOrDefault(e => e.PhysicianId == phyId);
 
             TimesheetReimbursement reim = _context.TimesheetReimbursements.FirstOrDefault(x => x.TimesheetReimbursementId == rid && x.PhysicianId == phy.PhysicianId);
-
-
             _context.TimesheetReimbursements.Remove(reim);
             _context.SaveChanges();
         }

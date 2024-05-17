@@ -80,10 +80,10 @@
 </script>
 <script>
 
-    function OpenChat(adminid, requesterType) {
+    function OpenChat(adminid, requesterType, patientRequestId= null) {
         $.ajax({
             url: "/Provider/_ChatPanel",
-            data: { 'adminid': adminid, 'requesterType': requesterType },
+            data: { 'adminid': adminid, 'requesterType': requesterType , 'patientRequestId': patientRequestId},
             type: "GET",
             dataType: "html",
             success: function (data) {

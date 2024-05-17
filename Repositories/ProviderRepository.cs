@@ -215,6 +215,12 @@ namespace Repository
         {
             return _context.RequestClients.FirstOrDefault(x => x.RequestId == requestId);
         }
+        public AspNetUser getPatientAspId(int requestId)
+        {
+          var userId =   _context.Requests.Where(x=>x.RequestId == requestId).Select(x=>x.UserId).FirstOrDefault();
+          var aspId =  _context.Users.Where(x=>x.UserId == userId).Select(x=>x.AspNetUserId).FirstOrDefault();
+            return _context.AspNetUsers.FirstOrDefault(x => x.Id == aspId);
+        }
 
         public string getConfirmationNumber(int requestId)
         {

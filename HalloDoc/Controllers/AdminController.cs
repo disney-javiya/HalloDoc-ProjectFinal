@@ -1,37 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HalloDoc.DataAccessLayer.DataModels;
-using HalloDoc.Models;
-using System.Diagnostics;
-using Repository.IRepository;
-using HalloDoc.DataAccessLayer.DataModels.ViewModels;
-using HalloDoc.DataAccessLayer.DataContext;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Org.BouncyCastle.Asn1.Ocsp;
-using Microsoft.EntityFrameworkCore;
-using System.Security;
-using Repository;
-using System.IO.Compression;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections;
-using System.Net.Mail;
-using System.Net;
-using Elfie.Serialization;
+﻿using ClosedXML.Excel;
 using HalloDoc.AuthMiddleware;
+using HalloDoc.DataAccessLayer.DataModels;
+using HalloDoc.DataAccessLayer.DataModels.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using Repository.IRepository;
+using System.Collections;
+using System.Globalization;
+using System.IO.Compression;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
-using Twilio.Http;
-using System.Reflection;
-using System.Configuration.Provider;
-using System.Web.Helpers;
-using System.Globalization;
-using DocumentFormat.OpenXml.InkML;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Bibliography;
-using Newtonsoft.Json.Linq;
 
 namespace HalloDoc.Controllers
 {
@@ -2117,12 +2101,14 @@ namespace HalloDoc.Controllers
         {
             string admin_email = HttpContext.Session.GetString("key");
             Admin admin = _adminRepository.getAdminInfo(admin_email);
+            Physician p = _adminRepository.getPhysicianDetails(phyid);
             ChatViewModel model = new ChatViewModel();
             model.PhysicianId = phyid;
             model.AdminId = admin.AdminId;
             model.SenderType = "Admin";
             model.ReceiverType = requesterType;
             model.CurrentUserId =  admin.AspNetUserId;
+            model.physicianName = p.FirstName + " " + p.LastName; 
             return PartialView("_ChatHub", model);
         }
         public IActionResult logOut()

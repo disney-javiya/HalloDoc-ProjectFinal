@@ -54,6 +54,13 @@ namespace Repository
             rolename = _context.AspNetRoles.Where(x => x.Id == roleid).Select(x => x.Name).FirstOrDefault();
             return rolename;
         }
+
+        public Physician getPhysicianDetails(int physicianId)
+        {
+
+            var res = _context.Physicians.Where(x => x.PhysicianId == physicianId).FirstOrDefault();
+            return res;
+        }
         public void agreementApproved(int requestId, int? adminId, int? physicianId)
         {
 
