@@ -3,8 +3,11 @@
 @{
     string name = "";
 }
+
 <style>
-    .ChatMessage {
+
+
+     .ChatMessage {
         margin: 7px;
         padding: 3px;
         border-radius: 5px;
@@ -14,8 +17,8 @@
     }
 
         .ChatMessage::before {
-          /*   content: "\f007"; */
-           /*  / FontAwesome Unicode for checkmark icon / font-family: FontAwesome; */
+            content: "\f007";
+            font-family: FontAwesome; 
             position: relative;
             left: -10px;
         }
@@ -26,14 +29,15 @@
         border-radius: 5px;
         font-size: 19px;
         background: #E6F5F8;
+        
     }
 
     .ChatMessageSender1::after {
         content: "\f007";
-       /*  / FontAwesome Unicode for the desired icon / */ font-family: FontAwesome;
-       /*  / Use the appropriate font family / */ position: absolute;
+      font-family: FontAwesome;
+        position: absolute;
         right: 10px;
-      /*   / Position the icon at the end of the list item / */
+ 
     }
 
     .TimeShow {
@@ -57,7 +61,6 @@
         var SenderType = document.getElementById("SenderType").value;
         var Receiver = document.getElementById("Receiver").value;
         var ReceiverType = document.getElementById("ReceiverType").value;
-
         connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
             return console.error(err.toString());
         });
@@ -65,7 +68,7 @@
     });
 </script>
 <script>
-    document.getElementById("sendButton").addEventListener("click", function (event) {
+     document.getElementById("sendButton").addEventListener("click", function (event) {
         debugger;
         var message = document.getElementById("messageInput").value;
         var Sender = document.getElementById("Sender").value;
@@ -75,15 +78,17 @@
         if (message != "") {
 
             connection.invoke("SaveData", Sender, SenderType, Receiver, ReceiverType, message).catch(function (err) {
-                return console.error(err.toString());
+                return console.error("error");
             });
             connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
-                return console.error(err.toString());
+                return console.error("error");
             });
             document.getElementById("messageInput").value = "";
         }
         event.preventDefault();
-    });
+    }); 
+
+
 
     connection.on("ReceiveMessage", function (data) {
         debugger;
@@ -167,16 +172,20 @@
     </div>
     <div class="row offcanvas-footer mx-3 my-2">
         <div class="col-10 form-floating text-muted">
+
+
+            <emoji-picker></emoji-picker>
             <input type="text" class="form-control input-placeholder" id="messageInput" placeholder="">
             <label class="form-label ms-2 ps-3">Message</label>
         </div>
         <div class="col-2">
-            <i class="btn btn-info bi bi-send fs-4 mt-1 text-white" style="height:56px; width:56px" id="sendButton"></i>
-            <i class="btn btn-info bi bi-send fs-4 mt-1 text-white d-none" style="height:56px; width:56px" id="SampleButton"></i>
+            
+            <i class="btn btn-info fa-regular fa-paper-plane  fs-4 mt-1 text-white" style="height:56px; width:56px" id="sendButton"></i> 
+           
         </div>
         
 
     </div>
 </div>
 
-
+ 

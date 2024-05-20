@@ -4,10 +4,8 @@
         <thead>
             <tr>
                 <th scope="col">Name</th>
-          
                 <th scope="col">Phone</th>
                 <th scope="col">Address</th>
-
                 <th scope="col">Chat With</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -32,6 +30,7 @@
                         </td>
 
                         <td><a class="table-btn p-1" role="button" onclick="OpenChat('1','Admin')">Admin</a></td>
+                         <a class="table-btn p-1" role="button" onclick="OpenChat('','Patient','@item.requestId')">Patient</a>
                         <td>
                             <div class="dropdown">
                                 <a role="button" class="table-btn p-1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

@@ -170,8 +170,9 @@
                 type: "GET",
                 dataType: "html",
                 success: function (data) {
-                    debugger;                    $("#modalpopup").html(data);
-                    $("#modalpopup").show();
+                    debugger;                    
+                    $("#modalpopup").html(data);
+                    @* $("#modalpopup").show(); *@
                 },
                 error: function () {
                     alert("No Projects Found");

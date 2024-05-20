@@ -144,8 +144,8 @@
                     </a>
                     <div class=" d-flex flex-row justify-content-end">
                         <p class="m-1 p-1">Chat with:</p>
-                        <a class="admin-mob-btn p-1 m-1" role="button"> <i class="fa-regular fa-user p-2 me-2" style="color: #01BCE9; border:none">Patient</i></a>
-                        <a class="admin-mob-btn p-1 m-1" role="button"> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #01BCE9;  border:none">Provider</i></a>
+                        @* <a class="admin-mob-btn p-1 m-1" role="button"> <i class="fa-regular fa-user p-2 me-2" style="color: #01BCE9; border:none">Patient</i></a> *@
+                        <a class="admin-mob-btn p-1 m-1 p-1" role="button" onclick="OpenChat('@item.PhysicianId','Provider')"> <i class="fa-solid fa-user-nurse  p-2 me-1" style="color: #01BCE9;  border:none">Provider</i></a>
                     </div>
 
                 </div>

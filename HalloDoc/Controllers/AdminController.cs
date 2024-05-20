@@ -2092,10 +2092,7 @@ namespace HalloDoc.Controllers
             return View("adminInvoicing");
 
         }
-        // public IActionResult chat()
-        // {
-        //     return View();
-        // }
+       
 
         public IActionResult _ChatPanel(int phyid, string requesterType)
         {
