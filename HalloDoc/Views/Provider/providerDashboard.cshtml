@@ -106,6 +106,25 @@
 
 </script>
 <script>
+
+    function OpenGroupChat(adminId, phyid, requestId) {
+        $.ajax({
+            url: "/Provider/_GroupChatPanel",
+            data: { 'adminId': adminId, 'phyid': phyid, 'requestId': requestId },
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $("#modalpopup").html(data);
+            },
+            error: function () {
+                alert("No Projects Found");
+                $("#tableContent").html('An error has occurred');
+            }
+        });
+    }
+
+</script>
+<script>
  
     var patient_name;
     var type;

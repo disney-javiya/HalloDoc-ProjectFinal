@@ -13278,11 +13278,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\HalloDoc.csproj",
+      "projectUniqueName": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\HalloDoc.csproj",
       "projectName": "HalloDoc",
-      "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\HalloDoc.csproj",
+      "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\HalloDoc.csproj",
       "packagesPath": "C:\\Users\\pce88\\.nuget\\packages\\",
-      "outputPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\obj\\",
+      "outputPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pce88\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -13299,11 +13299,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
-              "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj"
+            "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
+              "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj"
             },
-            "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {
-              "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj"
+            "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {
+              "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj"
             }
           }
         }

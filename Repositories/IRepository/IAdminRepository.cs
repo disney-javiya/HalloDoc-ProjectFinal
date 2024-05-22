@@ -191,5 +191,8 @@ namespace Repository.IRepository
         public void EditReimbursement(DateTime startDate, string item, int amount, int gap, int? phyId, string adminEmail);
         public void DeleteReimbursement(int rid, int phyId);
         public void adminApprove(DateTime startDate, DateTime endDate, int phyId, int bonus, string adminNote, int timesheetId);
+        public GroupsMain getGroupMainDetails(int requestId);
+        public void InsertGroupMains(int requestId);
+        public string getCurrentUserAspId(string email);
     }
 }

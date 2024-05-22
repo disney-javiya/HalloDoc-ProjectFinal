@@ -92,7 +92,9 @@
                                     
                                 </td>
                                 <td>
-                                    <a class="table-btn p-1" role="button" onclick="OpenChat('@item.PhysicianId','Provider')">Provider</a>
+                                    <a class="table-btn p-1 text-info" role="button" style="border: 1px solid #01bce9;" onclick="OpenChat('@item.PhysicianId','Provider')">Provider</a>
+
+                                    <a class="table-btn p-1 text-info" style="border: 1px solid #01bce9;" role="button" onclick="OpenGroupChat('1','@item.PhysicianId','@item.RequestId')">Group Chat</a>
                                 </td>
                                 <td>
                                     <a  role="button" class="document-btn p-1"  href="@Url.Action("ViewDocuments", "Home", new { requestId = item.RequestId })">Documents</a>    
@@ -181,6 +183,26 @@
             });
         }
         
+
+    </script>
+
+    <script>
+
+        function OpenGroupChat(adminId, phyid, requestId) {
+            $.ajax({
+                url: "/Home/_GroupChatPanel",
+                data: { 'adminId': adminId, 'phyid': phyid, 'requestId': requestId },
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    $("#modalpopup").html(data);
+                },
+                error: function () {
+                    alert("No Projects Found");
+                    $("#tableContent").html('An error has occurred');
+                }
+            });
+        }
 
     </script>
 </body>

@@ -2108,6 +2108,49 @@ namespace HalloDoc.Controllers
             model.physicianName = p.FirstName + " " + p.LastName; 
             return PartialView("_ChatHub", model);
         }
+
+        public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            string admin_email = HttpContext.Session.GetString("key");
+            Admin admin = _adminRepository.getAdminInfo(admin_email);
+            Physician p = _adminRepository.getPhysicianDetails(phyid);
+            GroupChatViewModel model = new GroupChatViewModel();
+
+            GroupsMain groupsMain = _adminRepository.getGroupMainDetails(requestId);
+
+            if(groupsMain == null)
+            {
+                _adminRepository.InsertGroupMains(requestId);
+               var g = _adminRepository.getGroupMainDetails(requestId);
+                model.GroupId = g.GroupId;
+                model.GroupName = g.GroupName;
+                model.AdminId = adminId;
+                model.PhysicianId = phyid;
+                model.RequestId = requestId;
+                model.SenderId = getCurrentUserAspId();
+                return PartialView("_GroupChatHub", model);
+            }
+            else
+            {
+                
+                model.GroupId = groupsMain.GroupId;
+                model.GroupName = groupsMain.GroupName;
+                model.AdminId = adminId;
+                model.PhysicianId = phyid;
+                model.RequestId = requestId;
+                model.SenderId = getCurrentUserAspId();
+                return PartialView("_GroupChatHub", model);
+            }
+           
+        }
+
+        public string getCurrentUserAspId()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            string Id = _adminRepository.getCurrentUserAspId(ViewBag.Data);
+            return Id;
+        }
         public IActionResult logOut()
         {
 

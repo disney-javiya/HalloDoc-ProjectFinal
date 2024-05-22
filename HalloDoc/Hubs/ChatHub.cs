@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using HalloDoc.DataAccessLayer.DataContext;
 using DocumentFormat.OpenXml.InkML;
 using HalloDoc.DataAccessLayer.DataModels;
+using System.Web.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HalloDoc.Hubs{
     public class ChatHub: Hub
@@ -99,7 +101,51 @@ namespace HalloDoc.Hubs{
             _context.Chats.Add(chat);
             _context.SaveChanges();
         }
-       
+
+
+
+
+
+
+
+
+        public void GroupSendMessage(string GroupId)
+        {
+            GroupsMain groupsMain = _context.GroupsMains.FirstOrDefault(g => g.GroupId == int.Parse(GroupId));
+            
+
+           if(groupsMain != null)
+            {
+                List<GroupChat> data =  _context.GroupChats.Where(e => e.GroupId == int.Parse(GroupId)).ToList();
+                //Groups.AddToGroupAsync(Context.ConnectionId, groupsMain.GroupName);
+                Clients.Group(groupsMain.GroupName).SendAsync("ReceiveMessage", data);
+            }
+
+            
+            //Clients.Group(groupsMain.GroupName).SendAsync("ReceiveMessage",data);
+          
+          
+        }
+
+        public void GroupSaveData(string GroupId, string message, string RequestId, string PhysicianId, string AdminId, string SenderId)
+        {
+          
+
+            GroupChat chat = new GroupChat
+            {
+               GroupId = int.Parse(GroupId),
+                RequestId = int.Parse(RequestId),
+                PhysicianId = int.Parse(PhysicianId),
+                AdminId = int.Parse(AdminId),
+                Message = message,
+                SenderId = SenderId,
+                SentDate = DateTime.Now,
+                SentTime = TimeOnly.FromDateTime(DateTime.Now)
+            };
+            _context.GroupChats.Add(chat);
+            _context.SaveChanges();
+        }
+
     }
 }
 

@@ -1,0 +1,157 @@
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.GroupChatViewModel
+
+@{
+    string name = "";
+}
+
+<style>
+
+
+    .ChatMessage {
+        margin: 7px;
+        padding: 3px;
+        border-radius: 5px;
+        font-size: 19px;
+        background: #FBFBFB;
+        width: fit-content;
+    }
+
+        .ChatMessage::before {
+            content: "\f007";
+            font-family: FontAwesome;
+            position: relative;
+            left: -10px;
+        }
+
+    .ChatMessageSender {
+        margin: 7px;
+        padding: 3px;
+        border-radius: 5px;
+        font-size: 19px;
+        background: #E6F5F8;
+    }
+
+    .ChatMessageSender1::after {
+        content: "\f007";
+        font-family: FontAwesome;
+        position: absolute;
+        right: 10px;
+    }
+
+    .TimeShow {
+        display: block;
+        font-size: 12px;
+        padding-left: 20px;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        debugger;
+        var myOffcanvas = document.getElementById('chatoffcanvas');
+        var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+        bsOffcanvas.show();
+        var GroupId = document.getElementById("groupId").value;
+        console.log(typeof(GroupId));
+        connection.invoke("GroupSendMessage", GroupId).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+    });
+</script>
+<script>
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        debugger;
+        var message = document.getElementById("messageInput").value;
+        var GroupId = document.getElementById("groupId").value;
+        var RequestId = document.getElementById("requestId").value;
+        var PhysicianId = document.getElementById("physicianId").value;
+        var AdminId = document.getElementById("adminId").value;
+        var SenderId = document.getElementById("senderId").value;
+        if (message != "") {
+
+            connection.invoke("GroupSaveData", GroupId, message, RequestId, PhysicianId, AdminId, SenderId).catch(function (err) {
+                return console.error("error");
+            });
+            connection.invoke("GroupSendMessage", GroupId).catch(function (err) {
+                return console.error("error");
+            });
+            document.getElementById("messageInput").value = "";
+        }
+        event.preventDefault();
+    });
+
+
+
+    connection.on("ReceiveMessage", function (data) {
+        debugger;
+        alert("Heuu");
+        document.getElementById("messagesList").innerHTML = '';
+
+        data.forEach(function (item) {
+
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            li.textContent = `${item.message}`;
+
+            var paragraph = document.createElement("span");
+            paragraph.classList.add("TimeShow");
+            li.appendChild(paragraph);
+            var time = `${item.SentTime}`;
+            var trimmedTime = time.substring(0, 5);
+            paragraph.textContent = trimmedTime;
+            // var rgx = /[\{\-\}]/g;
+            // var temp = false;
+            // var regExp = new RegExp("", "i");
+            // var temp = regExp.test(item.senderid);
+            // if (temp) {
+            //     li.classList.add("ChatMessageSender");
+            //     li.classList.add("text-end");
+            //     li.style.backgroundColor = "#E6F5F8";
+            // } else {
+            //     li.classList.add("ChatMessage");
+            // }
+            document.getElementById("list")
+
+            // console.log(item);
+        })
+    });
+
+
+
+</script>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="chatoffcanvas" aria-labelledby="offcanvasExampleLabel" style=" z-index: 1060;">
+    <input type="hidden" value="@Model.GroupId" id="groupId" />
+   <input type="hidden" value="@Model.PhysicianId" id="physicianId" />
+    <input type="hidden" value="@Model.AdminId" id="adminId" />
+    <input type="hidden" value="@Model.RequestId" id="requestId" />
+    <input type="hidden" value="@Model.SenderId" id="senderId" />
+   
+
+    <div class="offcanvas-header bg-info text-white">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel"> Group @Model.RequestId</h5>
+        <button type="button" class="btn-close  btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            <ul id="messagesList" style="list-style-type: none;"></ul>
+        </div>
+
+    </div>
+    <div class="row offcanvas-footer mx-3 my-2">
+        <div class="col-10 form-floating text-muted">
+            <input type="text" class="form-control input-placeholder" id="messageInput" placeholder="">
+            <label class="form-label ms-2 ps-3">Message</label>
+        </div>
+        <div class="col-2">
+
+            <i class="btn btn-info fa-regular fa-paper-plane  fs-4 mt-1 text-white" style="height:56px; width:56px" id="sendButton"></i>
+
+        </div>
+
+
+    </div>
+</div>
+
+

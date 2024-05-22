@@ -81,5 +81,8 @@ namespace Repository.IRepository
         public void DeleteReimbursement(int rid, string? phyEmail);
         public bool IsTimesheetFinalized(DateTime startDate, string phyEmail);
         public void FinalizeTimesheetProvider(DateTime startDate, DateTime endDate, string? phyEmail);
+        public GroupsMain getGroupMainDetails(int requestId);
+        public void InsertGroupMains(int requestId);
+        public string getCurrentUserAspId(string email);
     }
 }

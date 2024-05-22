@@ -15,6 +15,9 @@ namespace Repository
         {
            return _context.Physicians.Where(x=>x.PhysicianId == phyId).Select(x=>x.AspNetUserId).FirstOrDefault();
         }
+
+       
+        
     }
 }
 

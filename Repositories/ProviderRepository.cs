@@ -1542,5 +1542,23 @@ namespace Repository
                 _context.SaveChanges();
             }
         }
+
+        public GroupsMain getGroupMainDetails(int requestId)
+        {
+            return _context.GroupsMains.Where(x => x.GroupName == "Group" + requestId).FirstOrDefault();
+        }
+        public void InsertGroupMains(int requestId)
+        {
+            GroupsMain groups = new GroupsMain();
+            groups.GroupName = "Group" + requestId;
+            _context.GroupsMains.Add(groups);
+            _context.SaveChanges(true);
+
+        }
+
+        public string getCurrentUserAspId(string email)
+        {
+            return _context.AspNetUsers.Where(x => x.Email == email).Select(x => x.Id).FirstOrDefault();
+        }
     }
 }

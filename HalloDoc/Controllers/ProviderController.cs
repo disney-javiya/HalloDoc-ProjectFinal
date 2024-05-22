@@ -868,6 +868,49 @@ namespace HalloDoc.Controllers
             }
             
         }
+
+        public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            string admin_email = HttpContext.Session.GetString("key");
+           
+            Physician p = _providerRepository.getPhysicianDetails(phyid);
+            GroupChatViewModel model = new GroupChatViewModel();
+
+            GroupsMain groupsMain = _providerRepository.getGroupMainDetails(requestId);
+
+            if (groupsMain == null)
+            {
+                _providerRepository.InsertGroupMains(requestId);
+                var g = _providerRepository.getGroupMainDetails(requestId);
+                model.GroupId = g.GroupId;
+                model.GroupName = g.GroupName;
+                model.AdminId = adminId;
+                model.PhysicianId = phyid;
+                model.RequestId = requestId;
+                model.SenderId = getCurrentUserAspId();
+                return PartialView("_GroupChatHub", model);
+            }
+            else
+            {
+
+                model.GroupId = groupsMain.GroupId;
+                model.GroupName = groupsMain.GroupName;
+                model.AdminId = adminId;
+                model.PhysicianId = phyid;
+                model.RequestId = requestId;
+                model.SenderId = getCurrentUserAspId();
+                return PartialView("_GroupChatHub", model);
+            }
+
+        }
+
+        public string getCurrentUserAspId()
+        {
+            ViewBag.Data = HttpContext.Session.GetString("key");
+            string Id = _providerRepository.getCurrentUserAspId(ViewBag.Data);
+            return Id;
+        }
         public IActionResult logOut()
         {
 

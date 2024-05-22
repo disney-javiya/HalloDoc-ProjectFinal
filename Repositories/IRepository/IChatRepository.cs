@@ -5,5 +5,7 @@ namespace Repository.IRepository
     public interface IChatRepository
     {
           public string GetAspId(int phyId);
+        
+        
     }
 }

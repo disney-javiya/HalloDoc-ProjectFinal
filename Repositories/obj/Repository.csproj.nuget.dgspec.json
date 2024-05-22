@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {}
+    "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {}
   },
   "projects": {
-    "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
+    "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj",
+        "projectUniqueName": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj",
         "projectName": "HalloDoc.DataAccessLayer",
-        "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj",
+        "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj",
         "packagesPath": "C:\\Users\\pce88\\.nuget\\packages\\",
-        "outputPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\obj\\",
+        "outputPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pce88\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -113,14 +113,14 @@
         }
       }
     },
-    "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {
+    "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj",
+        "projectUniqueName": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj",
+        "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\Repository.csproj",
         "packagesPath": "C:\\Users\\pce88\\.nuget\\packages\\",
-        "outputPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\obj\\",
+        "outputPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pce88\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -137,8 +137,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
-                "projectPath": "d:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj"
+              "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj": {
+                "projectPath": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc.DataAccessLayer\\HalloDoc.DataAccessLayer.csproj"
               }
             }
           }

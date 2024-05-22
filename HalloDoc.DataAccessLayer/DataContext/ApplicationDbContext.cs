@@ -40,6 +40,10 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<EncounterForm> EncounterForms { get; set; }
 
+    public virtual DbSet<GroupChat> GroupChats { get; set; }
+
+    public virtual DbSet<GroupsMain> GroupsMains { get; set; }
+
     public virtual DbSet<HealthProfessional> HealthProfessionals { get; set; }
 
     public virtual DbSet<HealthProfessionalType> HealthProfessionalTypes { get; set; }
@@ -209,6 +213,24 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Request).WithMany(p => p.EncounterForms)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_encounter_request");
+        });
+
+        modelBuilder.Entity<GroupChat>(entity =>
+        {
+            entity.HasKey(e => e.GroupChatsId).HasName("GroupChats_pkey");
+
+            entity.HasOne(d => d.Admin).WithMany(p => p.GroupChats).HasConstraintName("AdminId");
+
+            entity.HasOne(d => d.Group).WithMany(p => p.GroupChats).HasConstraintName("GroupId");
+
+            entity.HasOne(d => d.Physician).WithMany(p => p.GroupChats).HasConstraintName("PhysicianId");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.GroupChats).HasConstraintName("RequestId");
+        });
+
+        modelBuilder.Entity<GroupsMain>(entity =>
+        {
+            entity.HasKey(e => e.GroupId).HasName("GroupId");
         });
 
         modelBuilder.Entity<HealthProfessional>(entity =>

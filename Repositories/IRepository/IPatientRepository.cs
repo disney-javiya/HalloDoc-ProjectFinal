@@ -41,6 +41,9 @@ namespace Repository.IRepository
 
         public Physician getPhysicianDetails(int physicianId);
         public IEnumerable<RequestWiseFile> GetFilesByRequestId(int requestId);
+        public GroupsMain getGroupMainDetails(int requestId);
+        public void InsertGroupMains(int requestId);
+        public string getCurrentUserAspId(string email);
 
     }
 }

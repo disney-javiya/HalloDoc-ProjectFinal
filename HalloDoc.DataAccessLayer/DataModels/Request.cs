@@ -92,6 +92,9 @@ public partial class Request
     [InverseProperty("Request")]
     public virtual ICollection<EncounterForm> EncounterForms { get; set; } = new List<EncounterForm>();
 
+    [InverseProperty("Request")]
+    public virtual ICollection<GroupChat> GroupChats { get; set; } = new List<GroupChat>();
+
     [ForeignKey("PhysicianId")]
     [InverseProperty("Requests")]
     public virtual Physician? Physician { get; set; }
