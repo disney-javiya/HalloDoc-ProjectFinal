@@ -2092,58 +2092,99 @@ namespace HalloDoc.Controllers
             return View("adminInvoicing");
 
         }
-       
-
-        public IActionResult _ChatPanel(int phyid, string requesterType)
+        public IActionResult _ChatPanel(int receiver1, int receiver2, string requesterType)
         {
+
             string admin_email = HttpContext.Session.GetString("key");
             Admin admin = _adminRepository.getAdminInfo(admin_email);
-            Physician p = _adminRepository.getPhysicianDetails(phyid);
             ChatViewModel model = new ChatViewModel();
-            model.PhysicianId = phyid;
-            model.AdminId = admin.AdminId;
+            switch (requesterType)
+            {
+                case "Provider":
+                    Physician phy = _adminRepository.getPhysicianDetails(receiver1);
+                    model.ReceiverName = "Dr." + phy.FirstName + " " + phy.LastName;
+                    model.Receiver1Name = "Dr." + phy.FirstName;
+                    model.Receiver = receiver1.ToString();
+                    model.Receiver1 = phy.AspNetUserId;
+                    model.Receiver2 = "0";
+                    break;
+                case "Patient":
+                    Request request = _adminRepository.getRequestTableData(receiver2);
+                    User user = _adminRepository.GetUserByUserId((int)request.UserId);
+                    model.ReceiverName = user.FirstName + " " + user.LastName;
+                    model.Receiver = user.AspNetUserId;
+                    model.Receiver2 = "0";
+                    break;
+                case "AdminGroup":
+                    Physician phy1 = _adminRepository.getPhysicianDetails(receiver1);
+                    Request request1 = _adminRepository.getRequestTableData(receiver2);
+                    User user1 = _adminRepository.GetUserByUserId((int)request1.UserId);
+                    model.ReceiverName = "Dr." + phy1.LastName + " & " + user1.FirstName;
+                    model.Receiver1Name = "Dr." + phy1.LastName;
+                    model.Receiver2Name = user1.FirstName;
+                    model.Receiver = receiver1.ToString();
+                    model.Receiver1 = phy1.AspNetUserId;
+                    model.Receiver2 = user1.AspNetUserId;
+                    break;
+            }
+            model.Sender = admin.AdminId.ToString();
             model.SenderType = "Admin";
             model.ReceiverType = requesterType;
-            model.CurrentUserId =  admin.AspNetUserId;
-            model.physicianName = p.FirstName + " " + p.LastName; 
-            return PartialView("_ChatHub", model);
+            model.SenderName = admin.FirstName + " " + admin.LastName;
+            model.CurrentUserId = admin.AspNetUserId;
+            return PartialView("_ChatHub",model);
         }
 
-        public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            string admin_email = HttpContext.Session.GetString("key");
-            Admin admin = _adminRepository.getAdminInfo(admin_email);
-            Physician p = _adminRepository.getPhysicianDetails(phyid);
-            GroupChatViewModel model = new GroupChatViewModel();
+        //public IActionResult _ChatPanel(int phyid, string requesterType)
+        //{
+        //    string admin_email = HttpContext.Session.GetString("key");
+        //    Admin admin = _adminRepository.getAdminInfo(admin_email);
+        //    Physician p = _adminRepository.getPhysicianDetails(phyid);
+        //    ChatViewModel model = new ChatViewModel();
+        //    model.PhysicianId = phyid;
+        //    model.AdminId = admin.AdminId;
+        //    model.SenderType = "Admin";
+        //    model.ReceiverType = requesterType;
+        //    model.CurrentUserId =  admin.AspNetUserId;
+        //    model.physicianName = p.FirstName + " " + p.LastName; 
+        //    return PartialView("_ChatHub", model);
+        //}
 
-            GroupsMain groupsMain = _adminRepository.getGroupMainDetails(requestId);
+        //public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
+        //{
+        //    ViewBag.Data = HttpContext.Session.GetString("key");
+        //    string admin_email = HttpContext.Session.GetString("key");
+        //    Admin admin = _adminRepository.getAdminInfo(admin_email);
+        //    Physician p = _adminRepository.getPhysicianDetails(phyid);
+        //    GroupChatViewModel model = new GroupChatViewModel();
 
-            if(groupsMain == null)
-            {
-                _adminRepository.InsertGroupMains(requestId);
-               var g = _adminRepository.getGroupMainDetails(requestId);
-                model.GroupId = g.GroupId;
-                model.GroupName = g.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-            else
-            {
-                
-                model.GroupId = groupsMain.GroupId;
-                model.GroupName = groupsMain.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-           
-        }
+        //    GroupsMain groupsMain = _adminRepository.getGroupMainDetails(requestId);
+
+        //    if(groupsMain == null)
+        //    {
+        //        _adminRepository.InsertGroupMains(requestId);
+        //       var g = _adminRepository.getGroupMainDetails(requestId);
+        //        model.GroupId = g.GroupId;
+        //        model.GroupName = g.GroupName;
+        //        model.AdminId = adminId;
+        //        model.PhysicianId = phyid;
+        //        model.RequestId = requestId;
+        //        model.SenderId = getCurrentUserAspId();
+        //        return PartialView("_GroupChatHub", model);
+        //    }
+        //    else
+        //    {
+
+        //        model.GroupId = groupsMain.GroupId;
+        //        model.GroupName = groupsMain.GroupName;
+        //        model.AdminId = adminId;
+        //        model.PhysicianId = phyid;
+        //        model.RequestId = requestId;
+        //        model.SenderId = getCurrentUserAspId();
+        //        return PartialView("_GroupChatHub", model);
+        //    }
+
+        //}
 
         public string getCurrentUserAspId()
         {

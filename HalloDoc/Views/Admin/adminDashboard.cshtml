@@ -105,17 +105,33 @@
 <script>
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     connection.start().then(function () {
-        document.getElementById("sendButton").disabled = false;
+        // document.getElementById("sendButton").disabled = false;
     }).catch(function (err) {
         return console.error("error");
     });
 </script>
 <script>
 
-    function OpenChat(phyid, requesterType) {
+    // function OpenChat(phyid, requesterType) {
+    //     $.ajax({
+    //         url: "/Admin/_ChatPanel",
+    //         data: { 'phyid': phyid, 'requesterType': requesterType },
+    //         type: "GET",
+    //         dataType: "html",
+    //         success: function (data) {
+    //             $("#modalpopup").html(data);
+    //         },
+    //         error: function () {
+    //             alert("No Projects Found");
+    //             $("#tableContent").html('An error has occurred');
+    //         }
+    //     });
+    // }
+    function OpenChat(receiver1, receiver2, requesterType) {
+        debugger;
         $.ajax({
             url: "/Admin/_ChatPanel",
-            data: { 'phyid': phyid, 'requesterType': requesterType },
+            data: { 'receiver1': receiver1, 'receiver2': receiver2, 'requesterType': requesterType },
             type: "GET",
             dataType: "html",
             success: function (data) {
@@ -127,7 +143,6 @@
             }
         });
     }
-
 
 </script>
 <script>

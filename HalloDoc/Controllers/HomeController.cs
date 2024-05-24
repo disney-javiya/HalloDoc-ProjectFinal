@@ -613,65 +613,13 @@ namespace HalloDoc.Controllers
             _patientRepository.agreementApproved(req, aid, pid);
             return View("Index");
         }
-        public IActionResult _ChatPanel(int phyid, string requesterType)
+        public IActionResult _ChatPanel(int receiver, string requesterType)
         {
-            string patient_email = HttpContext.Session.GetString("key");
-            AspNetUser a = _patientRepository.GetUserByEmail(patient_email);
-            Physician p = _patientRepository.getPhysicianDetails(phyid);
-            ChatViewModel model = new ChatViewModel();
-            model.PhysicianId = phyid;
-            
-            model.PatientAspId = a.Id; 
-            model.SenderType = "Patient";
-            model.ReceiverType = requesterType;
-            model.CurrentUserId = a.Id;
-            model.physicianName = p.FirstName + " " + p.LastName;
+            string email = HttpContext.Session.GetString("key"); 
+            ChatViewModel model = _patientRepository._ChatPanel(email, receiver, "7b350ab0-7d76-4e74-bb49-253b33b96c76", requesterType);
             return PartialView("_ChatHub", model);
         }
 
-
-        public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            string admin_email = HttpContext.Session.GetString("key");
-
-            Physician p = _patientRepository.getPhysicianDetails(phyid);
-            GroupChatViewModel model = new GroupChatViewModel();
-
-            GroupsMain groupsMain = _patientRepository.getGroupMainDetails(requestId);
-
-            if (groupsMain == null)
-            {
-                _patientRepository.InsertGroupMains(requestId);
-                var g = _patientRepository.getGroupMainDetails(requestId);
-                model.GroupId = g.GroupId;
-                model.GroupName = g.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-            else
-            {
-
-                model.GroupId = groupsMain.GroupId;
-                model.GroupName = groupsMain.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-
-        }
-
-        public string getCurrentUserAspId()
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            string Id = _patientRepository.getCurrentUserAspId(ViewBag.Data);
-            return Id;
-        }
         /*-----------------------------------Logout--------------------------------------------------*/
         public IActionResult logOut()
         {

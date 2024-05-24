@@ -3244,5 +3244,14 @@ namespace Repository
            return _context.AspNetUsers.Where(x=>x.Email == email).Select(x=>x.Id).FirstOrDefault();
         }
 
+        public Request getRequestTableData(int requestId)
+        {
+           return _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+        }
+
+        public User GetUserByUserId(int userid)
+        {
+            return _context.Users.FirstOrDefault(e => e.UserId == userid);
+        }
     }
 }

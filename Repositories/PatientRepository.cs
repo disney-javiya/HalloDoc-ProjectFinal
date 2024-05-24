@@ -19,13 +19,14 @@ using System.Web.Mvc;
 using System.Web.Helpers;
 using System.Security.Policy;
 using DocumentFormat.OpenXml.InkML;
+using Twilio.TwiML.Fax;
 
 namespace Repository
 {
     public class PatientRepository : IPatientRepository
     {
         private readonly ApplicationDbContext _context;
-       
+
         public PatientRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -37,9 +38,9 @@ namespace Repository
             if (password != null)
             {
                 var plainText = Encoding.UTF8.GetBytes(password);
-                 passwordhash = Convert.ToBase64String(plainText);
+                passwordhash = Convert.ToBase64String(plainText);
             }
-           
+
             return _context.AspNetUsers.Where(x => x.Email == email && x.PasswordHash == passwordhash).FirstOrDefault();
         }
 
@@ -67,18 +68,18 @@ namespace Repository
             RequestStatusLog rs = new RequestStatusLog();
             Request r = new Request();
 
-            
-      
 
-            var res =  _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault(); 
-            var requeststatuslog = _context.RequestStatusLogs.Where(x=>x.RequestId == requestId && x.Status == 4).FirstOrDefault();
-           if(res != null)
-           {
+
+
+            var res = _context.Requests.Where(x => x.RequestId == requestId).FirstOrDefault();
+            var requeststatuslog = _context.RequestStatusLogs.Where(x => x.RequestId == requestId && x.Status == 4).FirstOrDefault();
+            if (res != null)
+            {
                 res.Status = 4;
-               
+
                 _context.SaveChanges();
-                
-               
+
+
                 if (requeststatuslog == null)
                 {
                     rs.RequestId = requestId;
@@ -110,8 +111,8 @@ namespace Repository
                     requeststatuslog.CreatedDate = DateTime.Now;
                     _context.SaveChanges();
                 }
-           }       
-           
+            }
+
         }
 
 
@@ -120,7 +121,7 @@ namespace Repository
 
         public void InsertPatientInfo(patientInfo RequestData, AspNetUser asp, User data, Request req, RequestClient rc)
         {
-           
+
             if (asp.UserName == null)
             {
                 asp.UserName = RequestData.FirstName + RequestData.LastName;
@@ -168,8 +169,8 @@ namespace Repository
             data.LastName = RequestData.LastName;
             data.Email = RequestData.Email;
             data.Mobile = RequestData.PhoneNumber;
-           
-            
+
+
             data.CreatedDate = DateTime.Now;
 
             System.String sDate = RequestData.DateOfBirth.ToString();
@@ -243,7 +244,7 @@ namespace Repository
             rc.FirstName = RequestData.FirstName;
             rc.LastName = RequestData.LastName;
             rc.PhoneNumber = RequestData.PhoneNumber;
-            
+
             rc.Notes = RequestData.Notes;
             if (req.RequestTypeId == 4)
             {
@@ -264,7 +265,7 @@ namespace Repository
                 rc.State = RequestData.State;
                 rc.ZipCode = RequestData.ZipCode;
             }
-           
+
             rc.Email = RequestData.Email;
             rc.StrMonth = mn;
             rc.IntDate = dy;
@@ -283,13 +284,13 @@ namespace Repository
             RequestClient rc = new RequestClient();
 
             asp.Id = Guid.NewGuid().ToString();
-            if(RequestData.PasswordHash != null)
+            if (RequestData.PasswordHash != null)
             {
                 var plainText = Encoding.UTF8.GetBytes(RequestData.PasswordHash);
                 var passwordhash = Convert.ToBase64String(plainText);
                 asp.PasswordHash = passwordhash;
             }
-           
+
             data.AspNetUserId = asp.Id;
             data.CreatedBy = RequestData.FirstName;
 
@@ -453,12 +454,12 @@ namespace Repository
 
         public List<Request> GetbyEmail(string email)
         {
-        
-           var userIds = _context.Users.Where(x => x.Email == email).Select(u => u.UserId).ToList();
+
+            var userIds = _context.Users.Where(x => x.Email == email).Select(u => u.UserId).ToList();
             var userData = new List<Request>();
             foreach (var userId in userIds)
             {
-                 userData.AddRange( _context.Requests.Where(ud => ud.UserId == userId).ToList());
+                userData.AddRange(_context.Requests.Where(ud => ud.UserId == userId).ToList());
             }
             return userData;
         }
@@ -488,7 +489,7 @@ namespace Repository
                         RequestId = requestId,
                         CreatedDate = DateTime.Now,
                         IsDeleted = new BitArray(new bool[] { false })
-                };
+                    };
 
                     _context.RequestWiseFiles.Add(newFile);
                 }
@@ -507,17 +508,17 @@ namespace Repository
         {
 
             var data = _context.Users.Where(x => x.Email == email).ToList().First();
-            
+
             return data;
         }
 
         public void updateProfile(string email, User u)
         {
 
-            var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(a=>a.Id).First();
+            var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(a => a.Id).First();
 
-           var listUsers = _context.Users.Where(x=>x.AspNetUserId==aspId).ToList();
-            if(listUsers!=null)
+            var listUsers = _context.Users.Where(x => x.AspNetUserId == aspId).ToList();
+            if (listUsers != null)
             {
                 foreach (var user in listUsers)
                 {
@@ -529,7 +530,7 @@ namespace Repository
                     user.City = u.City;
                     user.State = u.State;
                     user.ZipCode = u.ZipCode;
-                    int rid = _context.Regions.Where(x=>x.Name == u.City).Select(x=>x.RegionId).FirstOrDefault();
+                    int rid = _context.Regions.Where(x => x.Name == u.City).Select(x => x.RegionId).FirstOrDefault();
                     user.RegionId = rid;
                     _context.SaveChanges();
 
@@ -564,11 +565,11 @@ namespace Repository
                         _context.SaveChanges();
 
                     }
-                    var asp = _context.AspNetUsers.Where(x=>x.Id== aspId).ToList().First();
+                    var asp = _context.AspNetUsers.Where(x => x.Id == aspId).ToList().First();
                     asp.Email = u.Email;
-                    asp.UserName =  u.FirstName + u.LastName;
+                    asp.UserName = u.FirstName + u.LastName;
                     asp.PhoneNumber = u.Mobile;
-                    
+
 
                 }
             }
@@ -614,17 +615,17 @@ namespace Repository
         public void createPatientRequestMe(createPatientRequest RequestData)
         {
 
-      
+
             User data = new User();
             var d = _context.AspNetUsers.FirstOrDefault(x => x.Email == RequestData.Email);
-            if(d!= null)
+            if (d != null)
             {
                 data.AspNetUserId = d.Id;
             }
-          
-            
-         
-            
+
+
+
+
             data.FirstName = RequestData.FirstName;
             data.LastName = RequestData.LastName;
             data.Email = RequestData.Email;
@@ -726,11 +727,11 @@ namespace Repository
 
         }
 
-        public void createPatientRequestSomeoneElse(string email ,requestSomeoneElse r)
+        public void createPatientRequestSomeoneElse(string email, requestSomeoneElse r)
         {
-       
-            var existUser =  _context.AspNetUsers.FirstOrDefault(x => x.Email == r.Email);
-            if(existUser!=null)
+
+            var existUser = _context.AspNetUsers.FirstOrDefault(x => x.Email == r.Email);
+            if (existUser != null)
             {
                 /*User already exists*/
                 User data = new User();
@@ -759,7 +760,7 @@ namespace Repository
 
                 _context.Users.Add(data);
                 _context.SaveChanges();
-              
+
                 var emailUser = _context.Users.FirstOrDefault(x => x.Email == email);
                 Request req = new Request();
                 req.RequestTypeId = 2;
@@ -968,9 +969,40 @@ namespace Repository
             return _context.AspNetUsers.Where(x => x.Email == email).Select(x => x.Id).FirstOrDefault();
         }
 
+        public ChatViewModel _ChatPanel(string? email, int receiver, string receiver2, string requesterType)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Email == email);
+            ChatViewModel model = new ChatViewModel();
 
-
-
+            switch (requesterType)
+            {
+                case "Provider":
+                    Physician phy = _context.Physicians.FirstOrDefault(x => x.PhysicianId == receiver);
+          
+                    model.ReceiverName = "Dr." + phy.FirstName + " " + phy.LastName;
+                    model.Receiver1Name = "Dr." + phy.FirstName;
+                    model.Receiver = receiver.ToString();
+                    model.Receiver1 = phy.AspNetUserId;
+                    model.Receiver2 = "0";
+                    break;
+                case "PatientGroup":
+                    Physician phy1 = _context.Physicians.FirstOrDefault(x => x.PhysicianId == receiver);
+                    Admin admin = _context.Admins.FirstOrDefault(x => x.AspNetUserId == receiver2);
+                    model.ReceiverName = "Dr." + phy1.LastName + " & " + admin.FirstName;
+                    model.Receiver1Name = "Dr." + phy1.LastName;
+                    model.Receiver2Name = admin.FirstName;
+                    model.Receiver = receiver.ToString();
+                    model.Receiver1 = phy1.AspNetUserId;
+                    model.Receiver2 = receiver2;
+                    break;
+            }
+            model.Sender = user.AspNetUserId;
+            model.SenderType = "Patient";
+            model.ReceiverType = requesterType;
+            model.SenderName = user.FirstName + " " + user.LastName;
+            model.CurrentUserId = user.AspNetUserId;
+            return model;
+        }
     }
 
 

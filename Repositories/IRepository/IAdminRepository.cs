@@ -194,5 +194,7 @@ namespace Repository.IRepository
         public GroupsMain getGroupMainDetails(int requestId);
         public void InsertGroupMains(int requestId);
         public string getCurrentUserAspId(string email);
+        public Request getRequestTableData(int requestId);
+        User GetUserByUserId(int userid);
     }
 }

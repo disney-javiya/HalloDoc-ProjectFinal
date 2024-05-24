@@ -1,5 +1,7 @@
-﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ChatViewModel
+﻿
 
+ @model HalloDoc.DataAccessLayer.DataModels.ViewModels.ChatViewModel
+@*
 @{
     string name = "";
 }
@@ -189,3 +191,188 @@
 </div>
 
  
+ *@
+
+@* @model HalloDocWebEntity.ViewModel.ChatViewModel *@
+<style>
+    .ChatMessage {
+        padding: 3px;
+        border-radius: 5px;
+        font-size: 12px;
+        width: -webkit-fit-content;
+    }
+
+        .ChatMessage::before {
+            font-family: FontAwesome;
+            position: relative;
+        }
+
+    .ChatMessageSender {
+        padding: 3px;
+        border-radius: 5px;
+        font-size: 12px;
+        /*float: right;*/
+        width: -webkit-fit-content;
+    }
+
+    .ChatMessageSender1::after {
+        font-family: FontAwesome;
+        position: relative;
+        right: 10px;
+    }
+
+    .TimeShow {
+        display: block;
+        /*color: white;*/
+        font-size: 20px;
+        background-color: #EBFAFD;
+        border: solid thin #C8F1F9;
+    }
+
+    .self {
+        float: right;
+        clear: both;
+    }
+
+    .other {
+        float: left;
+        clear: both;
+    }
+</style>
+<script>
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        debugger;
+        var message = document.getElementById("messageInput").value;
+        var Sender = document.getElementById("Sender").value;
+        var SenderType = document.getElementById("SenderType").value;
+        var Receiver = document.getElementById("Receiver").value;
+        var Receiver2 = document.getElementById("Receiver2").value;
+        var Receiver1 = document.getElementById("Receiver1").value;
+        var ReceiverType = document.getElementById("ReceiverType").value;
+        if (message != "") {
+            connection.invoke("SaveData", Sender, SenderType, Receiver, ReceiverType, message, Receiver2).catch(function (err) {
+                return console.error(err.toString());
+            });
+            connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType, Receiver2).catch(function (err) {
+                return console.error(err.toString());
+            });
+            document.getElementById("messageInput").value = "";
+        }
+        event.preventDefault();
+    });
+    connection.on("ReceiveMessage", function (data) {
+        debugger;
+        console.log(data);
+        // //check 1
+        // var rgx = /[\{\-\}]/g;
+        // var temp = false;
+        // var regExp = new RegExp("@Model.Receiver1", "i");
+        // var temp = regExp.test(item.senderid);
+        // //check 2
+        // var temp1 = false;
+        // var regExp1 = new RegExp("@Model.Receiver2", "i");
+        // var temp1 = regExp1.test(item.senderid);
+        // //Message
+        const messagesList = document.getElementById('messagesList');
+        // messagesList.scrollTop = messagesList.scrollHeight;
+        document.getElementById("messagesList").innerHTML = '';
+        data.forEach(function (item) {
+            //list tage
+            console.log(item);
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            //Receiver name
+            // var recName = document.createElement("span");
+            // if (temp) {
+            //     recName.textContent = document.getElementById("Receiver1Name").value;
+            // }
+            // else if (temp1) {
+            //     recName.textContent = document.getElementById("Receiver2Name").value;
+            // }
+            // else {
+            //     recName.textContent = "Me";
+            // }
+            // li.appendChild(recName);
+            //Message
+            var p = document.createElement("span");
+            p.textContent = `${item.message}`;
+            li.appendChild(p);
+            //Sent Time
+            var paragraph = document.createElement("span");
+            li.appendChild(paragraph);
+            var time = `${item.senttime}`;
+            var trimmedTime = time.substring(0, 5);
+            paragraph.textContent = trimmedTime;
+            //add class list
+
+            var rgx = /[\{\-\}]/g;
+            var temp2 = false;
+            var regExp2 = new RegExp("@Model.CurrentUserId", "i");
+            var temp2 = regExp2.test(item.senderid);
+
+            if (temp2) {
+                p.classList.add("TimeShow", "bg-light", "p-2", "rounded", "border");
+                li.classList.add("ChatMessageSender", "self", "text-end");
+            } else {
+                p.classList.add("TimeShow", "p-2", "rounded");
+                li.classList.add("ChatMessage", "other", "w-80");
+            }
+            document.getElementById("list")
+        });
+    });
+    var input = document.getElementById("messageInput");
+    input.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("sendButton").click();
+        }
+    });
+    $(document).ready(function () {
+        debugger;
+        var myOffcanvas = document.getElementById('chatoffcanvas')
+        var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
+        bsOffcanvas.show();
+        var message = document.getElementById("messageInput").value;
+        var Sender = document.getElementById("Sender").value;
+        var SenderType = document.getElementById("SenderType").value;
+        var Receiver = document.getElementById("Receiver").value;
+        var Receiver2 = document.getElementById("Receiver2").value;
+        var ReceiverType = document.getElementById("ReceiverType").value;
+        connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType, Receiver2).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+</script>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="chatoffcanvas" aria-labelledby="offcanvasExampleLabel" style=" z-index: 1060;">
+    <div class="offcanvas-header bg-info text-white">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+            <i class="btn bi bi-person text-bg-light mx-3"></i>
+            @Model.ReceiverName
+        </h5>
+        <button type="button" class="btn-close  btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            <ul id="messagesList" style="list-style-type: none;padding-left: 0rem;"></ul>
+        </div>
+    </div>
+    <div class="row offcanvas-footer mx-3 my-2">
+        <div class="col-10 ps-0 form-floating text-muted">
+            <input type="text" class="form-control input-placeholder" id="messageInput" placeholder="">
+            <label class="form-label ms-2 ps-3">Message</label>
+        </div>
+        <div class="col-2 p-0">
+            <i class="btn btn-info fa fa-paper-plane fs-4 text-white" style="height:56px; width:56px;    padding-top: 14px;
+" id="sendButton"></i>
+        </div>
+        <input type="hidden" value="@Model.Receiver" id="Receiver" />
+        <input type="hidden" value="@Model.Receiver1" id="Receiver1" />
+        <input type="hidden" value="@Model.Receiver2" id="Receiver2" />
+        <input type="hidden" value="@Model.Receiver2Name" id="Receiver2Name" />
+        <input type="hidden" value="@Model.Receiver1Name" id="Receiver1Name" />
+        <input type="hidden" value="@Model.Sender" id="Sender" />
+        <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
+        <input type="hidden" value="@Model.SenderType" id="SenderType" />
+        @*<input type="text" class="w-100" id="messageInput" />*@
+    </div>
+</div>

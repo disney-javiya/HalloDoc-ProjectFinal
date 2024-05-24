@@ -52,8 +52,8 @@
                                 
                         </td>
                         <td class="d-flex flex-column">
-                            <a class="table-btn p-1" role="button" onclick="OpenChat('@item.PhysicianId','Provider')">Provider</a>
-                            <a class="table-btn p-1 mt-1" role="button" onclick="OpenGroupChat('1','@item.PhysicianId','@item.requestId')">Group Chat</a>
+                            <a class="table-btn p-1" role="button" onclick="OpenChat('@item.PhysicianId',0,'Provider')">Provider</a>
+                            <a class="table-btn p-1 mt-1" role="button" onclick="OpenChat(@item.PhysicianId,@item.requestId,'AdminGroup')">Group Chat</a>
                         </td>
                         <td>
                             <div class="dropdown">

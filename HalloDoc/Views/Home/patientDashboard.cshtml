@@ -92,9 +92,9 @@
                                     
                                 </td>
                                 <td>
-                                    <a class="table-btn p-1 text-info" role="button" style="border: 1px solid #01bce9;" onclick="OpenChat('@item.PhysicianId','Provider')">Provider</a>
+                                    <a class="table-btn p-1 text-info" role="button" style="border: 1px solid #01bce9;" onclick="OpenChat(@item.PhysicianId,'Provider')">Provider</a>
 
-                                    <a class="table-btn p-1 text-info" style="border: 1px solid #01bce9;" role="button" onclick="OpenGroupChat('1','@item.PhysicianId','@item.RequestId')">Group Chat</a>
+                                    <a class="table-btn p-1 text-info" style="border: 1px solid #01bce9;" role="button" onclick="OpenChat(@item.PhysicianId,'PatientGroup')">Group Chat</a>
                                 </td>
                                 <td>
                                     <a  role="button" class="document-btn p-1"  href="@Url.Action("ViewDocuments", "Home", new { requestId = item.RequestId })">Documents</a>    
@@ -165,16 +165,31 @@
         }).catch(function (err) {
             return console.error(err.toString());
         });
+        // function OpenChat(phyid, requesterType) {
+        //     $.ajax({
+        //         url: "/Home/_ChatPanel",
+        //         data: { 'phyid': phyid, 'requesterType': requesterType },
+        //         type: "GET",
+        //         dataType: "html",
+        //         success: function (data) {
+        //             debugger;                    
+        //             $("#modalpopup").html(data);
+        //             @* $("#modalpopup").show(); *@
+        //         },
+        //         error: function () {
+        //             alert("No Projects Found");
+        //             $("#tableContent").html('An error has occurred');
+        //         }
+        //     });
+        // }
         function OpenChat(phyid, requesterType) {
             $.ajax({
                 url: "/Home/_ChatPanel",
-                data: { 'phyid': phyid, 'requesterType': requesterType },
+                data: { 'receiver': phyid, 'requesterType': requesterType },
                 type: "GET",
                 dataType: "html",
                 success: function (data) {
-                    debugger;                    
                     $("#modalpopup").html(data);
-                    @* $("#modalpopup").show(); *@
                 },
                 error: function () {
                     alert("No Projects Found");
@@ -182,7 +197,6 @@
                 }
             });
         }
-        
 
     </script>
 

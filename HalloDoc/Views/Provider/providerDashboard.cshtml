@@ -82,10 +82,26 @@
 </script>
 <script>
 
-    function OpenChat(adminid, requesterType, patientRequestId= null) {
+    // function OpenChat(adminid, requesterType, patientRequestId= null) {
+    //     $.ajax({
+    //         url: "/Provider/_ChatPanel",
+    //         data: { 'adminid': adminid, 'requesterType': requesterType , 'patientRequestId': patientRequestId},
+    //         type: "GET",
+    //         dataType: "html",
+    //         success: function (data) {
+    //             $("#modalpopup").html(data);
+    //         },
+    //         error: function () {
+    //             alert("No Projects Found");
+    //             $("#tableContent").html('An error has occurred');
+    //         }
+    //     });
+    // }
+    function OpenChat(receiver, requesterType) {
+        debugger;
         $.ajax({
             url: "/Provider/_ChatPanel",
-            data: { 'adminid': adminid, 'requesterType': requesterType , 'patientRequestId': patientRequestId},
+            data: { 'receiver': receiver, 'requesterType': requesterType },
             type: "GET",
             dataType: "html",
             success: function (data) {

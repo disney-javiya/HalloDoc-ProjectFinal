@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Web.WebPages;
+using NuGet.Protocol.Core.Types;
 
 namespace HalloDoc.Controllers
 {
@@ -835,88 +836,24 @@ namespace HalloDoc.Controllers
             _providerRepository.FinalizeTimesheetProvider(s, e, HttpContext.Session.GetString("key"));
             return RedirectToAction(nameof(providerInvoicing));
         }
-
-        public IActionResult _ChatPanel(int adminid, string requesterType, string patientRequestId=null)
+        #region Chat
+        public IActionResult _ChatPanel(int receiver, string requesterType)
         {
-            if(patientRequestId == null && adminid !=0)
-            {
-                string phy_email = HttpContext.Session.GetString("key");
-                Physician phy = _providerRepository.getProviderInfo(phy_email);
-                ChatViewModel model = new ChatViewModel();
-                model.PhysicianId = phy.PhysicianId;
-                model.AdminId = adminid;
-                model.SenderType = "Provider";
-                model.ReceiverType = requesterType;
-                model.CurrentUserId = phy.AspNetUserId;
-                return PartialView("_ChatHub", model);
-            }
-            else
-            {
-                string phy_email = HttpContext.Session.GetString("key");
-                Physician phy = _providerRepository.getProviderInfo(phy_email);
-                AspNetUser a = _providerRepository.getPatientAspId(int.Parse(patientRequestId));
-               
-                ChatViewModel model = new ChatViewModel();
-                model.PhysicianId = phy.PhysicianId;
-               
-                model.SenderType = "Provider";
-                model.PatientAspId = a.Id;
-                model.ReceiverType = requesterType;
-                model.CurrentUserId = phy.AspNetUserId;
-                model.PatientName = a.UserName;
-                return PartialView("_ChatHub", model);
-            }
-            
+            ChatViewModel model = _providerRepository._ChatPanel(HttpContext.Session.GetString("key"), "7b350ab0-7d76-4e74-bb49-253b33b96c76", receiver, requesterType);
+
+            return PartialView("_ChatHub", model);
         }
+        
+            #endregion
 
-        public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            string admin_email = HttpContext.Session.GetString("key");
            
-            Physician p = _providerRepository.getPhysicianDetails(phyid);
-            GroupChatViewModel model = new GroupChatViewModel();
-
-            GroupsMain groupsMain = _providerRepository.getGroupMainDetails(requestId);
-
-            if (groupsMain == null)
-            {
-                _providerRepository.InsertGroupMains(requestId);
-                var g = _providerRepository.getGroupMainDetails(requestId);
-                model.GroupId = g.GroupId;
-                model.GroupName = g.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-            else
-            {
-
-                model.GroupId = groupsMain.GroupId;
-                model.GroupName = groupsMain.GroupName;
-                model.AdminId = adminId;
-                model.PhysicianId = phyid;
-                model.RequestId = requestId;
-                model.SenderId = getCurrentUserAspId();
-                return PartialView("_GroupChatHub", model);
-            }
-
-        }
-
-        public string getCurrentUserAspId()
-        {
-            ViewBag.Data = HttpContext.Session.GetString("key");
-            string Id = _providerRepository.getCurrentUserAspId(ViewBag.Data);
-            return Id;
-        }
-        public IActionResult logOut()
+            public IActionResult logOut()
         {
 
             Response.Cookies.Delete("jwt");
             HttpContext.Session.Remove("key");
             return RedirectToAction("Index", "Admin");
         }
+
     }
 }

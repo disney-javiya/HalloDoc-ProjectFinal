@@ -44,6 +44,6 @@ namespace Repository.IRepository
         public GroupsMain getGroupMainDetails(int requestId);
         public void InsertGroupMains(int requestId);
         public string getCurrentUserAspId(string email);
-
+        ChatViewModel _ChatPanel(string? email, int receiver, string v, string requesterType);
     }
 }

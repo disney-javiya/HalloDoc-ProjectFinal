@@ -1560,5 +1560,42 @@ namespace Repository
         {
             return _context.AspNetUsers.Where(x => x.Email == email).Select(x => x.Id).FirstOrDefault();
         }
+
+        ChatViewModel IProviderRepository._ChatPanel(string? email, string receiver1, int receiver2, string requesterType)
+        {
+
+            Physician phy = _context.Physicians.First(e => e.Email == email);
+            ChatViewModel model = new ChatViewModel();
+
+            switch (requesterType)
+            {
+                case "Patient":
+                    Request request = _context.Requests.FirstOrDefault(e => e.RequestId == receiver2);
+                    User user = _context.Users.FirstOrDefault(x => x.UserId == request.UserId);
+                    model.ReceiverName = user.FirstName + " " + user.LastName;
+                    model.Receiver = user.AspNetUserId;
+                    model.Receiver2 = "0";
+                    break;
+                case "ProviderGroup":
+                    Admin admin = _context.Admins.FirstOrDefault(e => e.AspNetUserId == receiver1);
+                    Request request1 = _context.Requests.FirstOrDefault(e => e.RequestId == receiver2);
+                    User user1 = _context.Users.FirstOrDefault(x => x.UserId == request1.UserId);
+                    model.ReceiverName = "Dr." + admin.LastName + " & " + admin.FirstName;
+                    model.Receiver1Name = admin.FirstName;
+                    model.Receiver2Name = user1.FirstName;
+                    model.Receiver = receiver1;
+                    model.Receiver1 = receiver1;
+                    model.Receiver2 = user1.AspNetUserId;
+                    break;
+            }
+            model.Sender = phy.PhysicianId.ToString();
+            model.SenderType = "Provider";
+            model.ReceiverType = requesterType;
+            model.SenderName = phy.FirstName + " " + phy.LastName;
+            model.CurrentUserId = phy.AspNetUserId;
+            return model;
+        }
+
+       
     }
 }

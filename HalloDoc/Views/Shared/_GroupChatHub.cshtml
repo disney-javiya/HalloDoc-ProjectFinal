@@ -53,9 +53,9 @@
         var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
         bsOffcanvas.show();
         var GroupId = document.getElementById("groupId").value;
-        console.log(typeof(GroupId));
+      
         connection.invoke("GroupSendMessage", GroupId).catch(function (err) {
-            return console.error(err.toString());
+            return console.log("errorabc");
         });
 
     });
@@ -69,13 +69,14 @@
         var PhysicianId = document.getElementById("physicianId").value;
         var AdminId = document.getElementById("adminId").value;
         var SenderId = document.getElementById("senderId").value;
+       
         if (message != "") {
 
             connection.invoke("GroupSaveData", GroupId, message, RequestId, PhysicianId, AdminId, SenderId).catch(function (err) {
                 return console.error("error");
             });
             connection.invoke("GroupSendMessage", GroupId).catch(function (err) {
-                return console.error("error");
+                return console.log("error");
             });
             document.getElementById("messageInput").value = "";
         }
@@ -86,9 +87,9 @@
 
     connection.on("ReceiveMessage", function (data) {
         debugger;
-        alert("Heuu");
+     
         document.getElementById("messagesList").innerHTML = '';
-
+        alert("Heuu");
         data.forEach(function (item) {
 
             var li = document.createElement("li");
@@ -112,7 +113,7 @@
             // } else {
             //     li.classList.add("ChatMessage");
             // }
-            document.getElementById("list")
+            document.getElementById("list");
 
             // console.log(item);
         })
