@@ -82,21 +82,7 @@
 </script>
 <script>
 
-    // function OpenChat(adminid, requesterType, patientRequestId= null) {
-    //     $.ajax({
-    //         url: "/Provider/_ChatPanel",
-    //         data: { 'adminid': adminid, 'requesterType': requesterType , 'patientRequestId': patientRequestId},
-    //         type: "GET",
-    //         dataType: "html",
-    //         success: function (data) {
-    //             $("#modalpopup").html(data);
-    //         },
-    //         error: function () {
-    //             alert("No Projects Found");
-    //             $("#tableContent").html('An error has occurred');
-    //         }
-    //     });
-    // }
+
     function OpenChat(receiver, requesterType) {
         debugger;
         $.ajax({
@@ -115,31 +101,13 @@
     }
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     connection.start().then(function () {
-        document.getElementById("sendButton").disabled = false;
+       
     }).catch(function (err) {
-        return console.log("error");
+        return console.log(err);
     });
 
 </script>
-<script>
 
-    function OpenGroupChat(adminId, phyid, requestId) {
-        $.ajax({
-            url: "/Provider/_GroupChatPanel",
-            data: { 'adminId': adminId, 'phyid': phyid, 'requestId': requestId },
-            type: "GET",
-            dataType: "html",
-            success: function (data) {
-                $("#modalpopup").html(data);
-            },
-            error: function () {
-                alert("No Projects Found");
-                $("#tableContent").html('An error has occurred');
-            }
-        });
-    }
-
-</script>
 <script>
  
     var patient_name;

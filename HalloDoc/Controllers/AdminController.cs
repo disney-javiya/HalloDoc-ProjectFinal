@@ -2135,56 +2135,6 @@ namespace HalloDoc.Controllers
             return PartialView("_ChatHub",model);
         }
 
-        //public IActionResult _ChatPanel(int phyid, string requesterType)
-        //{
-        //    string admin_email = HttpContext.Session.GetString("key");
-        //    Admin admin = _adminRepository.getAdminInfo(admin_email);
-        //    Physician p = _adminRepository.getPhysicianDetails(phyid);
-        //    ChatViewModel model = new ChatViewModel();
-        //    model.PhysicianId = phyid;
-        //    model.AdminId = admin.AdminId;
-        //    model.SenderType = "Admin";
-        //    model.ReceiverType = requesterType;
-        //    model.CurrentUserId =  admin.AspNetUserId;
-        //    model.physicianName = p.FirstName + " " + p.LastName; 
-        //    return PartialView("_ChatHub", model);
-        //}
-
-        //public IActionResult _GroupChatPanel(int adminId, int phyid, int requestId)
-        //{
-        //    ViewBag.Data = HttpContext.Session.GetString("key");
-        //    string admin_email = HttpContext.Session.GetString("key");
-        //    Admin admin = _adminRepository.getAdminInfo(admin_email);
-        //    Physician p = _adminRepository.getPhysicianDetails(phyid);
-        //    GroupChatViewModel model = new GroupChatViewModel();
-
-        //    GroupsMain groupsMain = _adminRepository.getGroupMainDetails(requestId);
-
-        //    if(groupsMain == null)
-        //    {
-        //        _adminRepository.InsertGroupMains(requestId);
-        //       var g = _adminRepository.getGroupMainDetails(requestId);
-        //        model.GroupId = g.GroupId;
-        //        model.GroupName = g.GroupName;
-        //        model.AdminId = adminId;
-        //        model.PhysicianId = phyid;
-        //        model.RequestId = requestId;
-        //        model.SenderId = getCurrentUserAspId();
-        //        return PartialView("_GroupChatHub", model);
-        //    }
-        //    else
-        //    {
-
-        //        model.GroupId = groupsMain.GroupId;
-        //        model.GroupName = groupsMain.GroupName;
-        //        model.AdminId = adminId;
-        //        model.PhysicianId = phyid;
-        //        model.RequestId = requestId;
-        //        model.SenderId = getCurrentUserAspId();
-        //        return PartialView("_GroupChatHub", model);
-        //    }
-
-        //}
 
         public string getCurrentUserAspId()
         {

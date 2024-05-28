@@ -843,11 +843,11 @@ namespace HalloDoc.Controllers
 
             return PartialView("_ChatHub", model);
         }
-        
-            #endregion
 
-           
-            public IActionResult logOut()
+        #endregion
+
+
+        public IActionResult logOut()
         {
 
             Response.Cookies.Delete("jwt");

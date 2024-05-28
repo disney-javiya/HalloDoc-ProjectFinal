@@ -57,6 +57,10 @@
       "PackagePath": "staticwebassets\\AdminFiles\\25\\Photo.jpg"
     },
     {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\32\\Agreement.xlsx",
+      "PackagePath": "staticwebassets\\AdminFiles\\32\\Agreement.xlsx"
+    },
+    {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\AdminFiles\\34\\Agreement.png",
       "PackagePath": "staticwebassets\\AdminFiles\\34\\Agreement.png"
     },
@@ -415,6 +419,10 @@
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\js\\sw.js",
+      "PackagePath": "staticwebassets\\js\\sw.js"
     },
     {
       "Id": "D:\\HalloDoc-MVCProjectFinal\\HalloDoc-MVCProjectFinal\\HalloDoc\\wwwroot\\lib\\bootstrap\\LICENSE",

@@ -1,199 +1,5 @@
-﻿
+﻿@model HalloDoc.DataAccessLayer.DataModels.ViewModels.ChatViewModel
 
- @model HalloDoc.DataAccessLayer.DataModels.ViewModels.ChatViewModel
-@*
-@{
-    string name = "";
-}
-
-<style>
-
-
-     .ChatMessage {
-        margin: 7px;
-        padding: 3px;
-        border-radius: 5px;
-        font-size: 19px;
-        background: #FBFBFB;
-        width: fit-content;
-    }
-
-        .ChatMessage::before {
-            content: "\f007";
-            font-family: FontAwesome; 
-            position: relative;
-            left: -10px;
-        }
-
-    .ChatMessageSender {
-        margin: 7px;
-        padding: 3px;
-        border-radius: 5px;
-        font-size: 19px;
-        background: #E6F5F8;
-        
-    }
-
-    .ChatMessageSender1::after {
-        content: "\f007";
-      font-family: FontAwesome;
-        position: absolute;
-        right: 10px;
- 
-    }
-
-    .TimeShow {
-        display: block;
-        font-size: 12px;
-        padding-left: 20px;
-    }
-</style>
-
-<script>
-  
-    $(document).ready(function () {
-
-        debugger;
-
-        var myOffcanvas = document.getElementById('chatoffcanvas');
-        var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
-        bsOffcanvas.show();
-        // var message = document.getElementById("messageInput").value;
-        var Sender = document.getElementById("Sender").value;
-        var SenderType = document.getElementById("SenderType").value;
-        var Receiver = document.getElementById("Receiver").value;
-        var ReceiverType = document.getElementById("ReceiverType").value;
-        connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
-            return console.error(err.toString());
-        });
-
-    });
-</script>
-<script>
-     document.getElementById("sendButton").addEventListener("click", function (event) {
-        debugger;
-        var message = document.getElementById("messageInput").value;
-        var Sender = document.getElementById("Sender").value;
-        var SenderType = document.getElementById("SenderType").value;
-        var Receiver = document.getElementById("Receiver").value;
-        var ReceiverType = document.getElementById("ReceiverType").value;
-        if (message != "") {
-
-            connection.invoke("SaveData", Sender, SenderType, Receiver, ReceiverType, message).catch(function (err) {
-                return console.error("error");
-            });
-            connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType).catch(function (err) {
-                return console.error("error");
-            });
-            document.getElementById("messageInput").value = "";
-        }
-        event.preventDefault();
-    }); 
-
-
-
-    connection.on("ReceiveMessage", function (data) {
-        debugger;
-        document.getElementById("messagesList").innerHTML = '';
-
-        data.forEach(function (item) {
-
-            var li = document.createElement("li");
-            document.getElementById("messagesList").appendChild(li);
-            li.textContent = `${item.message}`;
-           
-            var paragraph = document.createElement("span");
-            paragraph.classList.add("TimeShow");
-            li.appendChild(paragraph);
-            var time = `${item.senttime}`;
-            var trimmedTime = time.substring(0, 5);
-            paragraph.textContent = trimmedTime;
-            var rgx = /[\{\-\}]/g;
-            var temp = false;
-            var regExp = new RegExp("@Model.CurrentUserId", "i");
-            var temp = regExp.test(item.senderid);
-            if (temp) {
-                li.classList.add("ChatMessageSender");
-                li.classList.add("text-end");
-                li.style.backgroundColor = "#E6F5F8";
-            } else {
-                li.classList.add("ChatMessage");
-            }
-            document.getElementById("list")
-
-            // console.log(item);
-        })
-    });
-   
-
-   
-</script>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="chatoffcanvas" aria-labelledby="offcanvasExampleLabel" style=" z-index: 1060;">
-    @if (Model.ReceiverType == "Provider" && Model.SenderType == "Admin")
-    {
-        <input type="hidden" value="@Model.PhysicianId" id="Receiver" />
-        <input type="hidden" value="@Model.AdminId" id="Sender" />
-        <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
-        <input type="hidden" value="@Model.SenderType" id="SenderType" />
-        name = @Model.physicianName;
-
-    }
-    else if (Model.ReceiverType == "Provider" && Model.SenderType == "Patient")
-    {
-        <input type="hidden" value="@Model.PhysicianId" id="Receiver" />
-        <input type="hidden" value="@Model.PatientAspId" id="Sender" />
-        <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
-        <input type="hidden" value="@Model.SenderType" id="SenderType" />
-        name = @Model.physicianName;
-    }
-    else if (Model.ReceiverType == "Patient" && Model.SenderType == "Provider")
-    {
-        <input type="hidden" value="@Model.PatientAspId" id="Receiver" />
-        <input type="hidden" value="@Model.PhysicianId" id="Sender" />
-        <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
-        <input type="hidden" value="@Model.SenderType" id="SenderType" />
-        name = Model.PatientName;
-    }
-    else
-    {
-        <input type="hidden" value="@Model.AdminId" id="Receiver" />
-        <input type="hidden" value="@Model.PhysicianId" id="Sender" />
-        <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
-        <input type="hidden" value="@Model.SenderType" id="SenderType" />
-    }
-
-    <div class="offcanvas-header bg-info text-white">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel"> @name</h5>
-        <button type="button" class="btn-close  btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div>
-            <ul id="messagesList" style="list-style-type: none;"></ul>
-        </div>
-
-    </div>
-    <div class="row offcanvas-footer mx-3 my-2">
-        <div class="col-10 form-floating text-muted">
-
-
-            <emoji-picker></emoji-picker>
-            <input type="text" class="form-control input-placeholder" id="messageInput" placeholder="">
-            <label class="form-label ms-2 ps-3">Message</label>
-        </div>
-        <div class="col-2">
-            
-            <i class="btn btn-info fa-regular fa-paper-plane  fs-4 mt-1 text-white" style="height:56px; width:56px" id="sendButton"></i> 
-           
-        </div>
-        
-
-    </div>
-</div>
-
- 
- *@
-
-@* @model HalloDocWebEntity.ViewModel.ChatViewModel *@
 <style>
     .ChatMessage {
         padding: 3px;
@@ -239,9 +45,135 @@
         clear: both;
     }
 </style>
+
+
+@* <script>
+    // Function to request notification permission
+    function askNotificationPermission() {
+        if ('Notification' in window && navigator.serviceWorker) {
+            Notification.requestPermission().then(status => {
+                console.log('Notification permission status:', status);
+                if (status === 'granted') {
+                    initializeServiceWorker();
+                  
+                } else {
+                    console.warn('Notification permission not granted');
+                }
+            });
+        }
+    }
+
+    // Function to initialize the service worker
+    function initializeServiceWorker() {
+       
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/js/sw.js')
+                .then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch(function (error) {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+    }
+
+    // Function to display notification
+    function displayNotification(user, message) {
+
+        if (Notification.permission === 'granted') {
+            alert("granted!");
+            navigator.serviceWorker.getRegistration().then(function (reg) {
+               
+                if (reg) {
+                   alert("hiii");
+
+                    const options = {
+                        body: `${user}: ${message}`,
+                        data: {
+                            dateOfArrival: Date.now(),
+                            primaryKey: 1
+                        }
+                    };
+                    reg.showNotification('New Message', options);
+                }
+            });
+        } else {
+            console.warn('Notification permission not granted');
+        }
+    }
+
+</script> *@
+
+
+<script>
+    // Function to request notification permission
+    function askNotificationPermission() {
+        if ('Notification' in window && navigator.serviceWorker) {
+            Notification.requestPermission().then(status => {
+                console.log('Notification permission status:', status);
+                if (status === 'granted') {
+                    initializeServiceWorker();
+                } else {
+                    console.warn('Notification permission not granted');
+                }
+            });
+        } else {
+            console.warn('Notifications or Service Workers are not supported in this browser.');
+        }
+    }
+
+    // Function to initialize the service worker
+    function initializeServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/js/sw.js')
+                .then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch(function (error) {
+                    console.error('Service Worker registration failed:', error);
+                });
+        } else {
+            console.warn('Service Workers are not supported in this browser.');
+        }
+    }
+
+    // Function to display notification
+    // function displayNotification(user, message) {
+    //     if (Notification.permission === 'granted') {
+    //         alert("Notification permission granted!");
+    //         navigator.serviceWorker.getRegistration().then(function (reg) {
+    //             alert(reg);
+    //             if (reg) {
+    //                 alert("Service Worker registration found!");
+
+    //                 const options = {
+    //                     body: `${user}: ${message}`,
+    //                     data: {
+    //                         dateOfArrival: Date.now(),
+    //                         primaryKey: 1
+    //                     }
+    //                 };
+    //                 reg.showNotification('New Message', options);
+    //             } else {
+    //                 alert("No Service Worker registration found.");
+    //             }
+    //         }).catch(function (error) {
+    //             console.error('Error getting Service Worker registration:', error);
+    //         });
+    //     } else {
+    //         console.warn('Notification permission not granted');
+    //     }
+    // }
+    
+  
+    // askNotificationPermission(); // Call this to request notification permission
+    // displayNotification('User', 'Hello, this is a test message!'); // Call this to display a notification
+</script>
+
+
 <script>
     document.getElementById("sendButton").addEventListener("click", function (event) {
-        debugger;
+       
         var message = document.getElementById("messageInput").value;
         var Sender = document.getElementById("Sender").value;
         var SenderType = document.getElementById("SenderType").value;
@@ -256,44 +188,31 @@
             connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType, Receiver2).catch(function (err) {
                 return console.error(err.toString());
             });
+
+            new Notification('New message', {
+                body: message
+            });
+            // askNotificationPermission();
+            // displayNotification(Sender, message);
+            // displayNotification('User', 'Hello, this is a test message!');
+
             document.getElementById("messageInput").value = "";
         }
         event.preventDefault();
     });
+
+
     connection.on("ReceiveMessage", function (data) {
-        debugger;
-        console.log(data);
-        // //check 1
-        // var rgx = /[\{\-\}]/g;
-        // var temp = false;
-        // var regExp = new RegExp("@Model.Receiver1", "i");
-        // var temp = regExp.test(item.senderid);
-        // //check 2
-        // var temp1 = false;
-        // var regExp1 = new RegExp("@Model.Receiver2", "i");
-        // var temp1 = regExp1.test(item.senderid);
-        // //Message
         const messagesList = document.getElementById('messagesList');
+        
+
         // messagesList.scrollTop = messagesList.scrollHeight;
         document.getElementById("messagesList").innerHTML = '';
         data.forEach(function (item) {
             //list tage
-            console.log(item);
             var li = document.createElement("li");
             document.getElementById("messagesList").appendChild(li);
-            //Receiver name
-            // var recName = document.createElement("span");
-            // if (temp) {
-            //     recName.textContent = document.getElementById("Receiver1Name").value;
-            // }
-            // else if (temp1) {
-            //     recName.textContent = document.getElementById("Receiver2Name").value;
-            // }
-            // else {
-            //     recName.textContent = "Me";
-            // }
-            // li.appendChild(recName);
-            //Message
+         
             var p = document.createElement("span");
             p.textContent = `${item.message}`;
             li.appendChild(p);
@@ -317,9 +236,12 @@
                 p.classList.add("TimeShow", "p-2", "rounded");
                 li.classList.add("ChatMessage", "other", "w-80");
             }
+           
             document.getElementById("list")
         });
     });
+
+   
     var input = document.getElementById("messageInput");
     input.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
@@ -328,7 +250,7 @@
         }
     });
     $(document).ready(function () {
-        debugger;
+       
         var myOffcanvas = document.getElementById('chatoffcanvas')
         var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
         bsOffcanvas.show();
@@ -341,6 +263,7 @@
         connection.invoke("SendMessage", Sender, SenderType, Receiver, ReceiverType, Receiver2).catch(function (err) {
             return console.error(err.toString());
         });
+
     });
 </script>
 <div class="offcanvas offcanvas-end" tabindex="-1" id="chatoffcanvas" aria-labelledby="offcanvasExampleLabel" style=" z-index: 1060;">
@@ -373,6 +296,5 @@
         <input type="hidden" value="@Model.Sender" id="Sender" />
         <input type="hidden" value="@Model.ReceiverType" id="ReceiverType" />
         <input type="hidden" value="@Model.SenderType" id="SenderType" />
-        @*<input type="text" class="w-100" id="messageInput" />*@
     </div>
 </div>

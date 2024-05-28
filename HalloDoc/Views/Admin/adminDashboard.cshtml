@@ -112,21 +112,6 @@
 </script>
 <script>
 
-    // function OpenChat(phyid, requesterType) {
-    //     $.ajax({
-    //         url: "/Admin/_ChatPanel",
-    //         data: { 'phyid': phyid, 'requesterType': requesterType },
-    //         type: "GET",
-    //         dataType: "html",
-    //         success: function (data) {
-    //             $("#modalpopup").html(data);
-    //         },
-    //         error: function () {
-    //             alert("No Projects Found");
-    //             $("#tableContent").html('An error has occurred');
-    //         }
-    //     });
-    // }
     function OpenChat(receiver1, receiver2, requesterType) {
         debugger;
         $.ajax({
@@ -145,33 +130,11 @@
     }
 
 </script>
-<script>
-
-    function OpenGroupChat(adminId, phyid, requestId) {
-        $.ajax({
-            url: "/Admin/_GroupChatPanel",
-            data: { 'adminId': adminId, 'phyid': phyid, 'requestId': requestId },
-            type: "GET",
-            dataType: "html",
-            success: function (data) {
-                $("#modalpopup").html(data);
-            },
-            error: function () {
-                alert("No Projects Found");
-                $("#tableContent").html('An error has occurred');
-            }
-        });
-    }
-
-</script>
     <script>
         $(document).ready(function () {
-           
-
                 $.ajax({
                     url: '/Admin/getAllRegions',
                     type: 'GET',
-                   
                     success: function (data) {
                     var regionDropdown = $('#region');
                     regionDropdown.empty();
