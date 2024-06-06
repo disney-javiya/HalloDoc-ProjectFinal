@@ -417,11 +417,25 @@ namespace HalloDoc.Controllers
 
 
         [CustomeAuthorize("Admin", "AdminDashboard")]
-        public IActionResult adminViewCase(int requestId)
+        //public IActionResult adminViewCase(int requestId)
+        //{
+        //    ViewBag.Data = HttpContext.Session.GetString("key");
+
+        //    Task<RequestClient> requestClient = _adminRepository.getPatientInfoAsync(requestId);
+        //    if (requestClient != null)
+        //    {
+        //        var confirmationNumber = _adminRepository.getConfirmationNumber(requestId);
+        //        ViewBag.ConfirmationNumber = confirmationNumber;
+        //    }
+
+        //    return View(requestClient);
+
+        //}
+        public async Task<IActionResult> adminViewCase(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
 
-            var requestClient = _adminRepository.getPatientInfo(requestId);
+            RequestClient requestClient = await _adminRepository.getPatientInfoAsync(requestId);
             if (requestClient != null)
             {
                 var confirmationNumber = _adminRepository.getConfirmationNumber(requestId);
@@ -429,8 +443,9 @@ namespace HalloDoc.Controllers
             }
 
             return View(requestClient);
-
         }
+
+
         [CustomeAuthorize("Admin", "AdminDashboard")]
         [HttpGet]
         public IActionResult adminViewNotes(int requestId)
@@ -883,10 +898,10 @@ namespace HalloDoc.Controllers
             return RedirectToAction("adminDashboard");
         }
 
-        public RequestClient getPatientInfo(int requestId)
+        public Task<RequestClient> getPatientInfo(int requestId)
         {
-            RequestClient r = new RequestClient();
-            r = _adminRepository.getPatientInfo(requestId);
+            Task<RequestClient> r = _adminRepository.getPatientInfoAsync(requestId);
+
             return r;
         }
 
@@ -966,9 +981,9 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin" , "AdminDashboard")]
         public IActionResult adminCreateRequest()
         {
+            
             ViewBag.Data = HttpContext.Session.GetString("key");
-
-           
+         
             return View();
 
         }
@@ -976,6 +991,7 @@ namespace HalloDoc.Controllers
         [HttpPost]
         public IActionResult adminCreateRequest(createAdminRequest RequestData)
         {
+            
             ViewBag.Data = HttpContext.Session.GetString("key");
             string email = RequestData.Email;
             var row = _adminRepository.GetUserByEmail(email);
@@ -2142,6 +2158,8 @@ namespace HalloDoc.Controllers
             string Id = _adminRepository.getCurrentUserAspId(ViewBag.Data);
             return Id;
         }
+
+        
         public IActionResult logOut()
         {
 
@@ -2149,6 +2167,8 @@ namespace HalloDoc.Controllers
             HttpContext.Session.Remove("key");
             return RedirectToAction("Index");
         }
+
+
     }
 }
 

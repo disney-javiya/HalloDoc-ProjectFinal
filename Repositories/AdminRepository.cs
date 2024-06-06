@@ -31,19 +31,34 @@ using Paragraph = iText.Layout.Element.Paragraph;
 using iText.Layout.Properties;
 using Table = iText.Layout.Element.Table;
 using Cell = iText.Layout.Element.Cell;
-
+using Npgsql;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
 
 namespace Repository
 {
-    public class AdminRepository : IAdminRepository
+    public static class DataReaderExtensions    {        public static T MapTo<T>(this NpgsqlDataReader reader) where T : new()        {            T obj = new T();            var properties = typeof(T).GetProperties();            foreach (var prop in properties)            {                if (!reader.HasColumn(prop.Name) || reader[prop.Name] == DBNull.Value)                    continue;                if (prop.PropertyType == typeof(BitArray) && reader[prop.Name] is bool booleanValue)                {
+                    // Convert boolean to BitArray
+                    prop.SetValue(obj, new BitArray(new[] { booleanValue }));                }                else                {                    prop.SetValue(obj, reader[prop.Name]);                }
+
+            }            return obj;        }        private static bool HasColumn(this NpgsqlDataReader reader, string columnName)        {            for (int i = 0; i < reader.FieldCount; i++)            {                if (reader.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))                    return true;            }            return false;        }    }
+   
+    public class AdminRepository : IAdminRepository , IDisposable
     {
         private readonly ApplicationDbContext _context;
 
-        public AdminRepository(ApplicationDbContext context)
+        private readonly NpgsqlConnection _connection;
+        public AdminRepository(ApplicationDbContext context , NpgsqlConnection connection)
         {
             _context = context;
+            _connection = connection;           
         }
 
+        public void Dispose()
+        {
+            _connection?.Dispose();
+            _connection.Close();
+        }
         public AspNetUser ValidateUser(string email, string password)
         {
             var passwordhash = "";
@@ -63,19 +78,76 @@ namespace Repository
             return rolename;
         }
 
+
+
+
+        //public async Task<User> GetUserByEmail1Async(string email)
+        //{
+        //    using (var command = new NpgsqlCommand("select * from get_user_by_email(@email)", _connection))
+        //    {
+        //        command.Parameters.AddWithValue("@email", email);
+
+        //        using (var reader = await command.ExecuteReaderAsync())
+        //        {
+        //            if (await reader.ReadAsync())
+        //            {
+        //                User user = DataReaderExtensions.MapTo<User>(reader);
+        //                return user;
+        //            }
+        //            else
+        //            {
+        //                return null; // User not found
+        //            }
+        //        }
+        //    }
+        //}
         public AspNetUser GetUserByEmail(string email)
         {
+            //using (var command = new NpgsqlCommand("select * from get_user_by_email(@email)", _connection))
+            //{
+            //    command.Parameters.AddWithValue("@email", email);
+
+            //    using (var reader = await command.ExecuteReaderAsync())
+            //    {
+            //        if (await reader.ReadAsync())
+            //        {
+            //            AspNetUser asp = DataReaderExtensions.MapTo<AspNetUser>(reader);
+            //            return asp;
+            //        }
+            //        else
+            //        {
+            //            return null; // User not found
+            //        }
+            //    }
+            //}
             return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
 
-        public RequestClient getPatientInfo(int requestId)
+        public async Task<RequestClient> getPatientInfoAsync(int requestId)
         {
-            return _context.RequestClients.FirstOrDefault(x => x.RequestId == requestId);
+            using (var command = new NpgsqlCommand("select * from get_patient_info(@request_id)", _connection))
+            {
+                command.Parameters.AddWithValue("@request_id", requestId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        RequestClient rc = DataReaderExtensions.MapTo<RequestClient>(reader);
+                        return rc;
+                    }
+                    else
+                    {
+                        return null; // User not found
+                    }
+                }
+            }
+            //return _context.RequestClients.FirstOrDefault(x => x.RequestId == requestId);
         }
         public int GetUserByRequestId(string Id)
         {
-            var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u=>u.UserId).FirstOrDefault();
-            return _context.Requests.Where(u=>u.UserId == user).Select(x=>x.RequestId).FirstOrDefault();
+            var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u => u.UserId).FirstOrDefault();
+            return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
         }
         public string getConfirmationNumber(int requestId)
         {
@@ -3253,5 +3325,7 @@ namespace Repository
         {
             return _context.Users.FirstOrDefault(e => e.UserId == userid);
         }
+
+       
     }
 }

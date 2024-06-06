@@ -18,9 +18,11 @@ namespace Repository.IRepository
         AspNetUser ValidateUser(string email, string password);
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type);
         public string getRoleName(AspNetUser asp);
-        public AspNetUser GetUserByEmail(string email);
-        public RequestClient getPatientInfo(int requestId);
+       public AspNetUser GetUserByEmail(string email);
+        //public Task<AspNetUser> GetUserByEmailAsync(string email);
+        //public RequestClient getPatientInfo(int requestId);
         public int GetUserByRequestId(string Id);
+     
         public string getConfirmationNumber(int requestId);
 
         public List<RequestandRequestClient> getFilterByRegions(IEnumerable<RequestandRequestClient> r, int regionId);
@@ -196,5 +198,6 @@ namespace Repository.IRepository
         public string getCurrentUserAspId(string email);
         public Request getRequestTableData(int requestId);
         User GetUserByUserId(int userid);
+        public Task<RequestClient> getPatientInfoAsync(int requestId);
     }
 }

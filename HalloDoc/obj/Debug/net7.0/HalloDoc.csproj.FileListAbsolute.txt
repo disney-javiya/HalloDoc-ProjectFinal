@@ -819,3 +819,5 @@ D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\obj\Debug\net7.0\r
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\obj\Debug\net7.0\HalloDoc.pdb
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\obj\Debug\net7.0\HalloDoc.genruntimeconfig.cache
 D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\obj\Debug\net7.0\ref\HalloDoc.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\System.Net.Http.Extensions.dll
+D:\HalloDoc-MVCProjectFinal\HalloDoc-MVCProjectFinal\HalloDoc\bin\Debug\net7.0\System.Net.Http.Primitives.dll
