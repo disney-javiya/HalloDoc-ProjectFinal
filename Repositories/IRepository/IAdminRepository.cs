@@ -18,12 +18,12 @@ namespace Repository.IRepository
         AspNetUser ValidateUser(string email, string password);
         public IEnumerable<RequestandRequestClient> getRequestStateData(int type);
         public string getRoleName(AspNetUser asp);
-       public AspNetUser GetUserByEmail(string email);
+        public Task<AspNetUser> GetUserByEmail(string email);
         //public Task<AspNetUser> GetUserByEmailAsync(string email);
         //public RequestClient getPatientInfo(int requestId);
-        public int GetUserByRequestId(string Id);
+        public Task<int> GetUserByRequestId(string Id);
      
-        public string getConfirmationNumber(int requestId);
+        public Task<string> getConfirmationNumber(int requestId);
 
         public List<RequestandRequestClient> getFilterByRegions(IEnumerable<RequestandRequestClient> r, int regionId);
 
@@ -34,16 +34,14 @@ namespace Repository.IRepository
 
         public List<RequestandRequestClient> getByRequesttypeIdRegionAndName(IEnumerable<RequestandRequestClient> r, int requesttypeId, int? regionId, string? patient_name);
         public void adminNotes(int requestId, viewNotes v, string email);
-        //public void adminCancelNote([FromBody] viewNotes viewNoteData, string email);
-        public void adminCancelNote(string requestId, string reason, string additionalNotes, string email);
+       
+        public System.Threading.Tasks.Task adminCancelNote(string requestId, string reason, string additionalNotes, string email);
+        public Task<string> getName(string requestId);
 
-        public string getName(string requestId);
-
-        public string getConfirmationNumber(string requestId);
+        public Task<string> getConfirmationNumber(string requestId);
         public viewNotes getNotes(int requestId, string email);
-        public List<Physician> GetPhysicians(int? regionId);
-        public void adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email);
-
+        public Task<List<Physician>> GetPhysicians(int? regionId);
+        public  System.Threading.Tasks.Task adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email);
         public void adminBlockNote(string requestId, string additionalNotesBlock, string email);
 
         public void adminTransferCase(string requestId, string physician, string additionalNotesTransfer, string email);
@@ -182,7 +180,7 @@ namespace Repository.IRepository
         public byte[] GeneratePDF(encounterModel encounter);
         public bool IsUserExists(string email);
         public string GetRequestName(int RequestId);
-        public List<RequestClient> GetAllRequestClient();
+        public Task<List<RequestClient>> GetAllRequestClient();
         public PayRateViewModel GetPayRate(int id);
         public void UpdatePayRate(PayRateViewModel model, int phyid);
         public TimesheetModel providerTimesheetData(DateTime startDate, DateTime endDate, int phyId);

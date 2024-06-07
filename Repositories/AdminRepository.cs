@@ -79,48 +79,26 @@ namespace Repository
         }
 
 
-
-
-        //public async Task<User> GetUserByEmail1Async(string email)
-        //{
-        //    using (var command = new NpgsqlCommand("select * from get_user_by_email(@email)", _connection))
-        //    {
-        //        command.Parameters.AddWithValue("@email", email);
-
-        //        using (var reader = await command.ExecuteReaderAsync())
-        //        {
-        //            if (await reader.ReadAsync())
-        //            {
-        //                User user = DataReaderExtensions.MapTo<User>(reader);
-        //                return user;
-        //            }
-        //            else
-        //            {
-        //                return null; // User not found
-        //            }
-        //        }
-        //    }
-        //}
-        public AspNetUser GetUserByEmail(string email)
+        public async Task<AspNetUser> GetUserByEmail(string email)
         {
-            //using (var command = new NpgsqlCommand("select * from get_user_by_email(@email)", _connection))
-            //{
-            //    command.Parameters.AddWithValue("@email", email);
+            using (var command = new NpgsqlCommand("select * from get_user_by_email(@email)", _connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
 
-            //    using (var reader = await command.ExecuteReaderAsync())
-            //    {
-            //        if (await reader.ReadAsync())
-            //        {
-            //            AspNetUser asp = DataReaderExtensions.MapTo<AspNetUser>(reader);
-            //            return asp;
-            //        }
-            //        else
-            //        {
-            //            return null; // User not found
-            //        }
-            //    }
-            //}
-            return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        AspNetUser asp = DataReaderExtensions.MapTo<AspNetUser>(reader);
+                        return asp;
+                    }
+                    else
+                    {
+                        return null; // User not found
+                    }
+                }
+            }
+            //return _context.AspNetUsers.Where(x => x.Email == email).FirstOrDefault();
         }
 
         public async Task<RequestClient> getPatientInfoAsync(int requestId)
@@ -138,25 +116,80 @@ namespace Repository
                     }
                     else
                     {
-                        return null; // User not found
+                        return null; 
                     }
                 }
             }
             //return _context.RequestClients.FirstOrDefault(x => x.RequestId == requestId);
         }
-        public int GetUserByRequestId(string Id)
+        public async Task<int> GetUserByRequestId(string Id)
         {
-            var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u => u.UserId).FirstOrDefault();
-            return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
+            using (var command = new NpgsqlCommand("select * from get_user_by_requestid(@id)", _connection))
+            {
+                command.Parameters.AddWithValue("@id", Id);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        int req = DataReaderExtensions.MapTo<int>(reader);
+                        return req;
+                    }
+                    else
+                    {
+                        return 0; 
+                    }
+                }
+            }
+            //var user = _context.Users.Where(x => x.AspNetUserId == Id).Select(u => u.UserId).FirstOrDefault();
+            //return _context.Requests.Where(u => u.UserId == user).Select(x => x.RequestId).FirstOrDefault();
         }
-        public string getConfirmationNumber(int requestId)
+       
+
+        public async Task<string> getConfirmationNumber(int requestId)
         {
-            return _context.Requests.Where(r => r.RequestId == requestId).Select(r => r.ConfirmationNumber).FirstOrDefault();
+            using (var command = new NpgsqlCommand("select * from get_confirmation_number(@request_id)", _connection))
+            {
+                command.Parameters.AddWithValue("@request_id", requestId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        // Assuming the confirmation number is the first column in the result set
+                        string confirmation_no = reader.GetString(0);
+                        return confirmation_no;
+                    }
+                    else
+                    {
+                        return null; 
+                    }
+                }
+            }
+            //return _context.Requests.Where(r => r.RequestId == requestId).Select(r => r.ConfirmationNumber).FirstOrDefault();
         }
 
-        public List<RequestClient> GetAllRequestClient()
+        public async Task<List<RequestClient>> GetAllRequestClient()
         {
-          return  _context.RequestClients.ToList();
+            using (var command = new NpgsqlCommand("select * from get_all_request_clients()", _connection))
+            {
+                
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        // Assuming the confirmation number is the first column in the result set
+                        List<RequestClient> rc = DataReaderExtensions.MapTo<List<RequestClient>>(reader);
+                        return rc;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            //return  _context.RequestClients.ToList();
         }
 
 
@@ -261,84 +294,146 @@ namespace Repository
 
         }
 
-        public void adminCancelNote(string requestId, string reason, string additionalNotes, string email)
+        public async System.Threading.Tasks.Task adminCancelNote(string requestId, string reason, string additionalNotes, string email)
         {
-            RequestStatusLog rs = new RequestStatusLog();
-            Request r = new Request();
-            int reqId = int.Parse(requestId);
+            using (var command = new NpgsqlCommand("SELECT * FROM admin_cancel_note(@request_id, @reason, @additional_note, @Email)", _connection))
+            {
+                command.Parameters.AddWithValue("@request_id", requestId);
+                command.Parameters.AddWithValue("@reason", reason);
+                command.Parameters.AddWithValue("@additional_note", additionalNotes);
+                command.Parameters.AddWithValue("@Email", email);
+
+                // Ensure the connection is open
+                if (_connection.State != System.Data.ConnectionState.Open)
+                {
+                    await _connection.OpenAsync();
+                }
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task<string> getName(string requestId)
+        {
+            //int reqId = int.Parse(requestId);
+            //string name = _context.RequestClients.Where(x => x.RequestId == reqId).Select(u => u.FirstName + " " + u.LastName).FirstOrDefault();
+
+            //return name;
+
+            using (var command = new NpgsqlCommand("select * from get_name(@request_id)", _connection))
+            {
+                command.Parameters.AddWithValue("@request_id", requestId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        // Assuming the confirmation number is the first column in the result set
+                        string name = reader.GetString(0);
+                        return name;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public async Task<string> getConfirmationNumber(string requestId)
+        {
+            using (var command = new NpgsqlCommand("select * from get_confirmation_number_string(@id)", _connection))
+            {
+                command.Parameters.AddWithValue("@id", requestId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        string cn = reader.GetString(0);
+                        return cn;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            //int reqId = int.Parse(requestId);
+            //string number = _context.Requests.Where(x => x.RequestId == reqId).Select(u => u.ConfirmationNumber).FirstOrDefault();
+            //return number;
+        }
+
+        public async Task<List<Physician>> GetPhysicians(int? regionId)
+        {
+            using (var command = new NpgsqlCommand("select * from get_physicians(@id)", _connection))
+            {
+                command.Parameters.AddWithValue("@id", regionId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        List<Physician> res = DataReaderExtensions.MapTo<List<Physician>>(reader);
+                        return res;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            //return _context.Physicians.Where(x => x.RegionId == regionId).ToList();
+        }
+
+
+        public async System.Threading.Tasks.Task adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email)
+        {
+
+            using (var command = new NpgsqlCommand("SELECT * FROM admin_assign_note(@request_id, @region, @physician, @additional_note_assign, @email)", _connection))
+            {
+                command.Parameters.AddWithValue("@request_id",requestId);
+                command.Parameters.AddWithValue("@region", region);
+                command.Parameters.AddWithValue("@physician", physician);
+                command.Parameters.AddWithValue("@additional_note_assign", additionalNotesAssign);
+                command.Parameters.AddWithValue("@email", email);
+
+                // Ensure the connection is open
+                if (_connection.State != System.Data.ConnectionState.Open)
+                {
+                    await _connection.OpenAsync();
+                }
+
+                await command.ExecuteNonQueryAsync();
+            }
           
-            var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
-            if (reqId != null && reason != "Reason for Cancellation")
-            {
-                res.Status = 3;
-               
-                res.CaseTag = reason;
-                res.DeclinedBy = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
-                res.ModifiedDate = DateTime.Now;
-                _context.SaveChanges();
-                rs.RequestId = reqId;
-                rs.Status = 3;
-                var aspId = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.Id).FirstOrDefault();
-                var id = _context.Admins.Where(x => x.AspNetUserId == aspId).Select(u => u.AdminId).FirstOrDefault();
-                rs.AdminId = id;
-                rs.Notes = additionalNotes;
-                rs.CreatedDate = DateTime.Now;
-                _context.RequestStatusLogs.Add(rs);
-                _context.SaveChanges();
-            }
-         
-        }
+            //Request r = new Request();
+            //RequestNote rn = new RequestNote();
+            //int reqId = int.Parse(requestId);
 
-        public string getName(string requestId)
-        {
-            int reqId = int.Parse(requestId);
-            string name = _context.RequestClients.Where(x => x.RequestId == reqId).Select(u => u.FirstName + " " + u.LastName).FirstOrDefault();
+            //var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
+            //if (res != null && physician != "Select Physician" && region != "Select Region")
+            //{
 
-            return name;
-        }
+            //    res.PhysicianId = int.Parse(physician);
+            //    res.ModifiedDate = DateTime.Now;
+            //    _context.SaveChanges();
 
-        public string getConfirmationNumber(string requestId)
-        {
-            int reqId = int.Parse(requestId);
-            string number = _context.Requests.Where(x => x.RequestId == reqId).Select(u => u.ConfirmationNumber).FirstOrDefault();
-            return number;
-        }
+            //    rn.RequestId = reqId;
+            //    rn.AdminNotes = additionalNotesAssign;
+            //    var aspUsername = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
 
-        public List<Physician> GetPhysicians(int? regionId)
-        {
-            return _context.Physicians.Where(x => x.RegionId == regionId).ToList();
-        }
+            //    rn.CreatedBy = aspUsername;
+            //    rn.CreatedDate = DateTime.Now;
 
 
-        public void adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign, string email)
-        {
-           
-            Request r = new Request();
-            RequestNote rn = new RequestNote();
-            int reqId = int.Parse(requestId);
-            
-            var res = _context.Requests.Where(x => x.RequestId == reqId).FirstOrDefault();
-            if (res != null && physician != "Select Physician" && region != "Select Region")
-            {
-                
-                res.PhysicianId = int.Parse(physician);
-                res.ModifiedDate = DateTime.Now;
-                _context.SaveChanges();
 
-                rn.RequestId = reqId;
-                rn.AdminNotes = additionalNotesAssign;
-                var aspUsername = _context.AspNetUsers.Where(x => x.Email == email).Select(u => u.UserName).FirstOrDefault();
-
-                rn.CreatedBy = aspUsername;
-                rn.CreatedDate = DateTime.Now;
+            //    _context.RequestNotes.Add(rn);
+            //    _context.SaveChanges();
+            //}
 
 
-                
-                _context.RequestNotes.Add(rn);
-                _context.SaveChanges();
-            }
-        
-           
         }
 
         public void adminBlockNote(string requestId, string additionalNotesBlock, string email)
@@ -455,7 +550,7 @@ namespace Repository
                          select new
                          {
                              Request = req,
-                             Client = client,
+                                Client = client,
                              Status = req.Status
                          })
                          .Select(x => new RequestandRequestClient
@@ -1042,18 +1137,18 @@ namespace Repository
           return  _context.Passwordresets.Where(u => u.Token == token).FirstOrDefault();
         }
 
-        public void ResetPassword(ResetPasswordVM obj)
+        public async void ResetPassword(ResetPasswordVM obj)
         {
             var passwordReset = _context.Passwordresets.Where(u => u.Token == obj.Token).FirstOrDefault();
 
-            AspNetUser aspNetUser =  GetUserByEmail(obj.Email);
+            AspNetUser aspNetUser = await GetUserByEmail(obj.Email);
 
             if (aspNetUser != null)
             {
 
                 var plainText = Encoding.UTF8.GetBytes(obj.Password);
                var passwordhash = Convert.ToBase64String(plainText);
-                aspNetUser.PasswordHash = passwordhash;
+                 aspNetUser.PasswordHash = passwordhash;
                 passwordReset.Isupdated = new BitArray(1, true);
                 _context.SaveChanges();
                

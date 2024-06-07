@@ -93,9 +93,9 @@ namespace HalloDoc.Controllers
 
 
         [HttpPost]
-        public IActionResult Reset(PatientLoginVM obj)
+        public async Task<IActionResult> Reset(PatientLoginVM obj)
         {
-            AspNetUser aspNetUser = _adminRepository.GetUserByEmail(obj.Email);
+            AspNetUser aspNetUser = await _adminRepository.GetUserByEmail(obj.Email);
             if (aspNetUser == null)
             {
 
@@ -438,7 +438,7 @@ namespace HalloDoc.Controllers
             RequestClient requestClient = await _adminRepository.getPatientInfoAsync(requestId);
             if (requestClient != null)
             {
-                var confirmationNumber = _adminRepository.getConfirmationNumber(requestId);
+                string confirmationNumber = await _adminRepository.getConfirmationNumber(requestId);
                 ViewBag.ConfirmationNumber = confirmationNumber;
             }
 
@@ -468,37 +468,37 @@ namespace HalloDoc.Controllers
         }
         [CustomeAuthorize("Admin", "AdminDashboard")]
         [HttpGet]
-        public string adminCancelNote(string requestId)
+        public async Task<string> adminCancelNote(string requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            string pname = _adminRepository.getName(requestId);
+            string pname = await _adminRepository.getName(requestId);
             return pname;
 
         }
         [CustomeAuthorize("Admin", "AdminDashboard")]
         [HttpPost]
-        public IActionResult adminCancelNote(string requestId, string reason, string additionalNotes)
+        public async Task<IActionResult> adminCancelNote(string requestId, string reason, string additionalNotes)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             ViewBag.CancelNote = true;
-            _adminRepository.adminCancelNote(requestId, reason, additionalNotes, ViewBag.Data);
+            await _adminRepository.adminCancelNote(requestId, reason, additionalNotes, ViewBag.Data);
             TempData["CancelNote"] = true;
             return RedirectToAction("adminDashboard");
 
         }
 
         [HttpGet]
-        public List<Physician> GetPhysicians(int regionId)
+        public async Task<List<Physician>> GetPhysicians(int regionId)
         {
-            var res = _adminRepository.GetPhysicians(regionId);
+            var res = await _adminRepository.GetPhysicians(regionId);
             return res;
         }
 
         [HttpPost]
-        public IActionResult adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign)
+        public async Task<IActionResult> adminAssignNote(string requestId, string region, string physician, string additionalNotesAssign)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            _adminRepository.adminAssignNote(requestId, region, physician, additionalNotesAssign, ViewBag.Data);
+            await _adminRepository.adminAssignNote(requestId, region, physician, additionalNotesAssign, ViewBag.Data);
 
             TempData["AssignNote"] = true;
             return RedirectToAction("adminDashboard");
@@ -507,10 +507,10 @@ namespace HalloDoc.Controllers
 
         [CustomeAuthorize("Admin", "AdminDashboard")]
         [HttpGet]
-        public string adminBlockNote(string requestId)
+        public async Task<string> adminBlockNote(string requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
-            string pname = _adminRepository.getName(requestId);
+            string pname = await _adminRepository.getName(requestId);
             return pname;
 
         }
@@ -536,13 +536,13 @@ namespace HalloDoc.Controllers
 
 
         [CustomeAuthorize("Admin", "AdminDashboard")]
-        public IActionResult adminViewUploads(int requestId)
+        public async Task<IActionResult> adminViewUploads(int requestId)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             
             var document = _adminRepository.GetDocumentsByRequestId(requestId);
-            ViewBag.pname = _adminRepository.getName(requestId.ToString());
-            ViewBag.num = _adminRepository.getConfirmationNumber(requestId.ToString());
+            ViewBag.pname = await _adminRepository.getName(requestId.ToString());
+            ViewBag.num =  _adminRepository.getConfirmationNumber(requestId.ToString());
             if (document == null)
             {
                 return NotFound();
@@ -805,11 +805,11 @@ namespace HalloDoc.Controllers
 
         [HttpPost]
         [CustomeAuthorize("Admin", "AdminDashboard")]
-        public IActionResult adminSendAgreement(string requestId, string email, string mobile)
+        public async Task<IActionResult> adminSendAgreement(string requestId, string email, string mobile)
         {
 
             ViewBag.Data = HttpContext.Session.GetString("key");
-            AspNetUser aspNetUser = _adminRepository.GetUserByEmail(email);
+            AspNetUser aspNetUser = await _adminRepository.GetUserByEmail(email);
             Admin admin = _adminRepository.getAdminInfo(ViewBag.Data);
             if (aspNetUser == null)
             {
@@ -875,10 +875,10 @@ namespace HalloDoc.Controllers
         }
 
         [CustomeAuthorize("Admin", "AdminDashboard")]
-        public IActionResult closeCase(int requestId)
+        public async Task<IActionResult> closeCase(int requestId)
         {
             var document = _adminRepository.GetDocumentsByRequestId(requestId);
-            ViewBag.pname = _adminRepository.getName(requestId.ToString());
+            ViewBag.pname = await _adminRepository.getName(requestId.ToString());
             ViewBag.num = _adminRepository.getConfirmationNumber(requestId.ToString());
 
             if (document == null)
@@ -989,26 +989,31 @@ namespace HalloDoc.Controllers
         }
         [CustomeAuthorize("Admin", "AdminDashboard")]
         [HttpPost]
-        public IActionResult adminCreateRequest(createAdminRequest RequestData)
+       
+
+        public async Task<IActionResult> adminCreateRequest(createAdminRequest RequestData)
         {
-            
             ViewBag.Data = HttpContext.Session.GetString("key");
             string email = RequestData.Email;
-            var row = _adminRepository.GetUserByEmail(email);
+
+            // Await the asynchronous call to get the user by email
+            AspNetUser row = await _adminRepository.GetUserByEmail(email);
+
             var res = _adminRepository.adminCreateRequest(RequestData, ViewBag.Data);
 
             if (row == null)
             {
                 SendEmailUser(RequestData.Email, res);
             }
-            return RedirectToAction("adminDashboard");
 
+            return RedirectToAction("adminDashboard");
         }
 
-        public Action SendEmailUser(System.String Email, string id)
+
+        public async Task<Action> SendEmailUser(System.String Email, string id)
         {
 
-            AspNetUser aspNetUser = _adminRepository.GetUserByEmail(Email);
+            AspNetUser aspNetUser = await _adminRepository.GetUserByEmail(Email);
 
 
             string senderEmail = "tatva.dotnet.disneyjaviya@outlook.com";
@@ -1039,7 +1044,7 @@ namespace HalloDoc.Controllers
 
             client.SendMailAsync(mailMessage);
             ViewBag.Data = HttpContext.Session.GetString("key");
-           int requestId = _adminRepository.GetUserByRequestId(aspNetUser.Id);
+           int requestId = await _adminRepository.GetUserByRequestId(aspNetUser.Id);
             _adminRepository.insertEmailLog(mailMessage.Body, mailMessage.Subject, mailMessage.To.ToString(), requestId, ViewBag.Data, null);
             return null;
         }
@@ -1105,14 +1110,14 @@ namespace HalloDoc.Controllers
         [CustomeAuthorize("Admin", "ProviderMenu")]
 
 
-        public IActionResult providerMenuTable(int? regionId,  int pagenumber = 1)
+        public async Task<IActionResult> providerMenuTable(int? regionId,  int pagenumber = 1)
         {
             
             ViewBag.Data = HttpContext.Session.GetString("key");
             dashboardTableModel model = new dashboardTableModel();
             if (regionId != null )
             {
-                model.physicians = _adminRepository.GetPhysicians(regionId);
+                model.physicians = await _adminRepository.GetPhysicians(regionId);
             }
             else
             {
@@ -1541,12 +1546,12 @@ namespace HalloDoc.Controllers
             return View();
         }
 
-        public IActionResult blockedHistoryTable(string? patientName, DateOnly? date, string? email, string? phone, int pagenumber = 1)
+        public async Task<IActionResult> blockedHistoryTable(string? patientName, DateOnly? date, string? email, string? phone, int pagenumber = 1)
         {
             
             ViewBag.Data = HttpContext.Session.GetString("key");
             dashboardTableModel model = new dashboardTableModel();
-            model.requestClients = _adminRepository.GetAllRequestClient();
+            model.requestClients = await _adminRepository.GetAllRequestClient();
             if (patientName != null || date != null || email != null || phone != null)
             {
                 model.blockRequests = _adminRepository.filterBlockedHistory(patientName, date, email, phone);
@@ -1723,7 +1728,7 @@ namespace HalloDoc.Controllers
         }
         [CustomeAuthorize("Admin", "EmailLogs")]
 
-        public IActionResult emailLogsTable(int? role, string? recieverName, string? email,  DateOnly? createdDate, DateOnly? sentDate, int pagenumber = 1)
+        public async Task<IActionResult> emailLogsTable(int? role, string? recieverName, string? email,  DateOnly? createdDate, DateOnly? sentDate, int pagenumber = 1)
         {
             ViewBag.Data = HttpContext.Session.GetString("key");
             dashboardTableModel model = new dashboardTableModel();
@@ -1736,7 +1741,7 @@ namespace HalloDoc.Controllers
                 model.emailLogs = _adminRepository.emailLogs();
             }
 
-            model.requestClients = _adminRepository.GetAllRequestClient();
+            model.requestClients = await _adminRepository.GetAllRequestClient();
             var count = model.emailLogs.Count();
             if (count > 0)
             {
@@ -1758,7 +1763,7 @@ namespace HalloDoc.Controllers
             return View();
         }
         [CustomeAuthorize("Admin", "SMSLogs")]
-        public IActionResult SMSLogsTable(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate, int pagenumber=1)
+        public async Task<IActionResult> SMSLogsTable(int? role, string? recieverName, string? mobile, DateOnly? createdDate, DateOnly? sentDate, int pagenumber=1)
         {
            
             ViewBag.Data = HttpContext.Session.GetString("key");
@@ -1772,7 +1777,7 @@ namespace HalloDoc.Controllers
                 model.SMSLogs = _adminRepository.SMSLogs();
             }
 
-            model.requestClients = _adminRepository.GetAllRequestClient();
+            model.requestClients = await _adminRepository.GetAllRequestClient();
             var count = model.SMSLogs.Count();
             if (count > 0)
             {
